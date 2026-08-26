@@ -23,12 +23,12 @@ export default function Header({ onOpenAccess }: HeaderProps) {
   return (
     <header className={`site-header ${scrolled ? 'shadow-md border-slate-200' : ''}`}>
       <div className="container header-inner">
-        <Link className="flex items-center gap-2" href="/" aria-label="Risiko home">
+        <Link className="flex items-center gap-2" href="/" aria-label="ALTIX Exchange home">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/assets/img/logo.png"
-            alt="Risiko"
-            className="h-9 sm:h-10 w-auto object-contain"
+            alt="ALTIX Exchange"
+            className="h-10 sm:h-12 w-auto object-contain"
           />
         </Link>
 

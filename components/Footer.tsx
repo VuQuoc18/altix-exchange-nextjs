@@ -6,13 +6,13 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="container footer-grid">
         <div>
-          <Link className="inline-block mb-4" href="/" aria-label="Risiko home">
-            <div className="bg-white/95 px-3 py-2 rounded-lg inline-block shadow-sm">
+          <Link className="inline-block mb-4" href="/" aria-label="ALTIX Exchange home">
+            <div className="bg-white px-3.5 py-2 rounded-xl inline-block shadow-sm">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/assets/img/logo.png"
-                alt="Risiko"
-                className="h-8 w-auto object-contain"
+                alt="ALTIX Exchange"
+                className="h-9 sm:h-10 w-auto object-contain"
               />
             </div>
           </Link>
@@ -46,7 +46,7 @@ export default function Footer() {
       </div>
       <div className="container footer-bottom">
         <p>
-          © 2026 RISIKO. <strong>Production note:</strong> replace this footer with verified legal entity details before launch.
+          © 2026 ALTIX Exchange. <strong>Production note:</strong> replace this footer with verified legal entity details before launch.
         </p>
         <p>
           <a href="mailto:info@altix.exchange">info@altix.exchange</a>
