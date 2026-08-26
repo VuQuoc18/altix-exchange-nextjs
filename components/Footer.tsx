@@ -6,16 +6,19 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="container footer-grid">
         <div>
-          <Link className="footer-logo" href="/" aria-label="ALTIX home">
-            <svg className="brand-mark" viewBox="0 0 180 46" role="img" aria-label="ALTIX">
-              <text x="1" y="34" fontFamily="Arial,Helvetica,sans-serif" fontSize="39" fontWeight="900" letterSpacing="-2.2" fill="currentColor">
-                ALTIX
-              </text>
-              <path d="M119 39c18-4 31-13 43-28" fill="none" stroke="currentColor" strokeWidth="3.6" strokeLinecap="round" />
-              <path d="m157 7 12-2-4 12" fill="none" stroke="currentColor" strokeWidth="3.6" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
+          <Link className="inline-block mb-4" href="/" aria-label="Risiko home">
+            <div className="bg-white/95 px-3 py-2 rounded-lg inline-block shadow-sm">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/assets/img/logo.png"
+                alt="Risiko"
+                className="h-8 w-auto object-contain"
+              />
+            </div>
           </Link>
-          <p>Technology and services for litigation finance and global asset recovery.</p>
+          <p className="mt-2 text-sm text-slate-400">
+            Technology and services for litigation finance and global asset recovery.
+          </p>
         </div>
         <div>
           <h3>Navigate</h3>
@@ -43,7 +46,7 @@ export default function Footer() {
       </div>
       <div className="container footer-bottom">
         <p>
-          © 2026 ALTIX Exchange. <strong>Production note:</strong> replace this footer with the verified legal entity name, UEN and registered-office details before launch.
+          © 2026 RISIKO. <strong>Production note:</strong> replace this footer with verified legal entity details before launch.
         </p>
         <p>
           <a href="mailto:info@altix.exchange">info@altix.exchange</a>

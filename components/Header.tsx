@@ -24,22 +24,13 @@ export default function Header({ onOpenSubmit, onOpenAccess }: HeaderProps) {
   return (
     <header className={`site-header ${scrolled ? 'shadow-md border-slate-200' : ''}`}>
       <div className="container header-inner">
-        <Link className="logo" href="/" aria-label="ALTIX home">
-          <svg className="brand-mark" viewBox="0 0 180 46" role="img" aria-label="ALTIX">
-            <text
-              x="1"
-              y="34"
-              fontFamily="Arial,Helvetica,sans-serif"
-              fontSize="39"
-              fontWeight="900"
-              letterSpacing="-2.2"
-              fill="currentColor"
-            >
-              ALTIX
-            </text>
-            <path d="M119 39c18-4 31-13 43-28" fill="none" stroke="currentColor" strokeWidth="3.6" strokeLinecap="round" />
-            <path d="m157 7 12-2-4 12" fill="none" stroke="currentColor" strokeWidth="3.6" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
+        <Link className="flex items-center gap-2" href="/" aria-label="Risiko home">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/assets/img/logo.png"
+            alt="Risiko"
+            className="h-9 sm:h-10 w-auto object-contain"
+          />
         </Link>
 
         {/* Mobile Toggle Button */}
