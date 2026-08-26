@@ -64,7 +64,7 @@ export default function SubmitMatterModal({ isOpen, onClose }: SubmitMatterModal
                 Case Screening & Intake
               </div>
               <h2 className="text-2xl sm:text-3xl font-serif font-bold text-white">
-                Submit a Matter for Initial Review
+                Submit a Case for Initial Review
               </h2>
               <p className="text-slate-300 text-sm mt-2">
                 ALTIX prepares selected legal and recovery opportunities for professional capital providers.
@@ -194,7 +194,7 @@ export default function SubmitMatterModal({ isOpen, onClose }: SubmitMatterModal
                       type="submit"
                       className="px-6 py-2.5 rounded-lg bg-[#e6463a] hover:bg-[#d1372b] text-white text-sm font-bold flex items-center gap-2 shadow-lg shadow-red-500/20 transition-all"
                     >
-                      <span>Submit for Initial Review</span>
+                      <span>Submit Case for Initial Review</span>
                       <Send className="w-4 h-4" />
                     </button>
                   </div>

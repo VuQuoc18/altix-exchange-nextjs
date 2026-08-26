@@ -20,23 +20,17 @@ export default function HomePage() {
 
   return (
     <>
-      <Header
-        onOpenSubmit={() => setIsSubmitOpen(true)}
-        onOpenAccess={() => setIsAccessOpen(true)}
-      />
+      <Header onOpenAccess={() => setIsAccessOpen(true)} />
 
       <main id="main">
-        <HeroSection
-          onOpenSubmit={() => setIsSubmitOpen(true)}
-          onOpenAccess={() => setIsAccessOpen(true)}
-        />
+        <HeroSection onOpenAccess={() => setIsAccessOpen(true)} />
         <WhatWeDoSection />
         <EcosystemSection />
         <ProcessSection />
         <UnderwritingSection />
         <RoadmapSection />
         <LeadershipSection />
-        <CtaBandSection onOpenSubmit={() => setIsSubmitOpen(true)} />
+        <CtaBandSection />
       </main>
 
       <Footer />

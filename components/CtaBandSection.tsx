@@ -4,11 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, ShieldAlert, Sparkles } from 'lucide-react';
 
-interface CtaBandSectionProps {
-  onOpenSubmit?: () => void;
-}
-
-export default function CtaBandSection({ onOpenSubmit }: CtaBandSectionProps) {
+export default function CtaBandSection() {
   return (
     <section className="cta-band">
       {/* Background Cyber Grid */}
@@ -45,13 +41,15 @@ export default function CtaBandSection({ onOpenSubmit }: CtaBandSectionProps) {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <button
-            onClick={onOpenSubmit}
+          <a
+            href="https://platform.altix.exchange/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="px-7 py-4 rounded-xl bg-[#e6463a] hover:bg-[#d1372b] text-white font-bold text-base shadow-xl shadow-red-500/30 flex items-center gap-2 transition-all hover:scale-105"
           >
-            <span>Submit a Matter</span>
+            <span>Submit a case</span>
             <ArrowRight className="w-5 h-5" />
-          </button>
+          </a>
         </motion.div>
       </div>
     </section>

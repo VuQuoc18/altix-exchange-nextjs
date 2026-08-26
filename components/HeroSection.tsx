@@ -3,14 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import InteractiveCaseStage from '@/components/hero/InteractiveCaseStage';
-import { ArrowRight, ShieldCheck, Scale, FileCheck, Lock, Sparkles } from 'lucide-react';
+import { ArrowRight, ShieldCheck, Scale, FileCheck, Lock } from 'lucide-react';
 
 interface HeroSectionProps {
-  onOpenSubmit?: () => void;
   onOpenAccess?: () => void;
 }
 
-export default function HeroSection({ onOpenSubmit, onOpenAccess }: HeroSectionProps) {
+export default function HeroSection({ onOpenAccess }: HeroSectionProps) {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
 
@@ -98,13 +97,15 @@ export default function HeroSection({ onOpenSubmit, onOpenAccess }: HeroSectionP
               transition={{ duration: 0.5, delay: 0.3 }}
               className="flex flex-wrap items-center gap-4 pt-2"
             >
-              <button
-                onClick={onOpenSubmit}
+              <a
+                href="https://platform.altix.exchange/"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#e6463a] to-[#d1372b] hover:from-[#f38d84] hover:to-[#e6463a] text-white font-bold text-sm tracking-wide transition-all shadow-lg shadow-red-500/25 hover:shadow-red-500/40 hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2"
               >
-                <span>Submit a Matter for Review</span>
+                <span>Submit a Case for Initial Review</span>
                 <ArrowRight className="w-4 h-4" />
-              </button>
+              </a>
 
               <button
                 onClick={onOpenAccess}

@@ -5,11 +5,10 @@ import Link from 'next/link';
 import { Menu, X, ArrowUpRight, Lock, FileText } from 'lucide-react';
 
 interface HeaderProps {
-  onOpenSubmit?: () => void;
   onOpenAccess?: () => void;
 }
 
-export default function Header({ onOpenSubmit, onOpenAccess }: HeaderProps) {
+export default function Header({ onOpenAccess }: HeaderProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -78,16 +77,16 @@ export default function Header({ onOpenSubmit, onOpenAccess }: HeaderProps) {
               <Lock className="w-3.5 h-3.5" />
               Institutional access
             </button>
-            <button
-              onClick={() => {
-                setIsOpen(false);
-                onOpenSubmit?.();
-              }}
+            <a
+              href="https://platform.altix.exchange/"
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsOpen(false)}
               className="button button--sm w-full"
             >
               <FileText className="w-3.5 h-3.5" />
-              Submit a matter
-            </button>
+              Submit a case
+            </a>
           </div>
         </nav>
 
@@ -101,14 +100,15 @@ export default function Header({ onOpenSubmit, onOpenAccess }: HeaderProps) {
             <Lock className="w-3.5 h-3.5 text-slate-600" />
             Institutional access
           </button>
-          <button
-            type="button"
-            onClick={onOpenSubmit}
+          <a
+            href="https://platform.altix.exchange/"
+            target="_blank"
+            rel="noopener noreferrer"
             className="button button--sm"
           >
-            Submit a matter
+            Submit a case
             <ArrowUpRight className="w-3.5 h-3.5" />
-          </button>
+          </a>
         </div>
       </div>
     </header>
