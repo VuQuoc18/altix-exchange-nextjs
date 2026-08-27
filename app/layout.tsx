@@ -11,7 +11,8 @@ export const metadata: Metadata = {
   description:
     'ALTIX prepares selected legal and recovery matters for professional funding through structured assessment, evidence organization, collectability analysis and controlled investor access.',
   icons: {
-    icon: '/assets/img/favicon.svg',
+    icon: '/favicon.png',
+    apple: '/favicon.png',
   },
   openGraph: {
     type: 'website',
