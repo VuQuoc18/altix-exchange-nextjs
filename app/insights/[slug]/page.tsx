@@ -78,14 +78,18 @@ export default function InsightPostPage() {
       try {
         const post = await getPublicBlog(slug);
         if (cancelled) return;
-        setPublishedAt(post.published_at);
-        setFields({
-          title: post.title,
-          excerpt: post.excerpt,
-          cover_image_url: post.cover_image_url,
-          body_html: post.body_html,
-        });
-        setBlogId(null);
+        if (isAdmin && isEditing) {
+          await loadAdminPost();
+        } else {
+          setPublishedAt(post.published_at);
+          setFields({
+            title: post.title,
+            excerpt: post.excerpt,
+            cover_image_url: post.cover_image_url,
+            body_html: post.body_html,
+          });
+          setBlogId(null);
+        }
       } catch (error) {
         if (cancelled) return;
         if (isCmsApiError(error) && error.status === 404 && isAdmin && isEditing) {
