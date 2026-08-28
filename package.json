@@ -1,11 +1,11 @@
 {
-  "name": "emdash-scaffold",
+  "name": "altix-marketing",
   "version": "0.0.3",
   "private": true,
   "type": "module",
   "emdash": {
     "label": "Marketing",
-    "seed": ".emdash/seed.json"
+    "seed": "seed/seed.json"
   },
   "scripts": {
     "dev": "astro dev",

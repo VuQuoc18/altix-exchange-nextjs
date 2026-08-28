@@ -32,6 +32,13 @@ const STATIC_ROUTES = [
 	"/insights",
 ];
 
+function escapeXml(str: string): string {
+	return str
+		.replace(/&/g, "&amp;")
+		.replace(/</g, "&lt;")
+		.replace(/>/g, "&gt;");
+}
+
 export const GET: APIRoute = async () => {
 	const urls = new Set<string>();
 
@@ -51,7 +58,7 @@ export const GET: APIRoute = async () => {
 				if (status === "published" || !status) {
 					const slug = (post as any).slug || post.data?.slug || post.id;
 					if (slug) {
-						urls.add(`${BASE_URL}/insights/${slug}`);
+						urls.add(`${BASE_URL}/insights/${escapeXml(slug)}`);
 					}
 				}
 			}
