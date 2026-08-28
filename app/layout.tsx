@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import UtilityBar from '@/components/UtilityBar';
+import { CmsProvider } from '@/components/cms/CmsProvider';
+import EditToolbar from '@/components/cms/EditToolbar';
 
 export const viewport: Viewport = {
   themeColor: '#17192b',
@@ -60,11 +62,14 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <a className="skip-link" href="#main">
-          Skip to content
-        </a>
-        <UtilityBar />
-        {children}
+        <CmsProvider>
+          <EditToolbar />
+          <a className="skip-link" href="#main">
+            Skip to content
+          </a>
+          <UtilityBar />
+          {children}
+        </CmsProvider>
       </body>
     </html>
   );
