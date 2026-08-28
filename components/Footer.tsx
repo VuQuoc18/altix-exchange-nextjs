@@ -45,9 +45,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="container footer-bottom">
-        <p>
-          © 2026 ALTIX Exchange. <strong>Production note:</strong> replace this footer with verified legal entity details before launch.
-        </p>
+        <p>© 2026 ALTIX Exchange. All rights reserved.</p>
         <p>
           <a href="mailto:info@altix.exchange">info@altix.exchange</a>
         </p>
