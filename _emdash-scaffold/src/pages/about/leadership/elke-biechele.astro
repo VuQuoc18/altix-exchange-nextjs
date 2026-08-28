@@ -1,0 +1,157 @@
+---
+import { getEmDashEntry } from "emdash";
+import Base from "../../../layouts/Base.astro";
+import CtaBand from "../../../components/sections/CtaBand.astro";
+import { User, Award, ShieldCheck, Briefcase, TrendingUp, Globe } from "lucide-react";
+
+const { entry: page, cacheHint } = (await getEmDashEntry("pages", "about-leadership")) || {};
+
+if (Astro.cache?.enabled && cacheHint) {
+  Astro.cache.set(cacheHint);
+}
+
+const pageData = (page?.data || {}) as Record<string, any>;
+
+const title = pageData.title || "Elke Biechele - Leadership Profile";
+const eyebrow = pageData.eyebrow || "Leadership Profile";
+const name = pageData.name || "Elke Biechele";
+const role = pageData.role || "Chief Executive Officer & Founder";
+const photoUrl = pageData.photoUrl || pageData.image || "/assets/img/elke-biechele.webp";
+const lead = pageData.lead || "Founder & CEO with 25+ years in financial services, risk management, and cross-border asset recovery.";
+
+const bio = pageData.bio || pageData.body || "ALTIX was founded by Elke Biechele, whose management biography describes more than 25 years across financial services, risk, financial crime, technology and entrepreneurship, followed by a focus on international financial-crime investigations and asset recovery.";
+const trackRecord = pageData.trackRecord || "Specializing in cross-border asset recovery, complex financial dispute intelligence, and litigation capital structuring. Leading global initiatives to bring institutional diligence standards and transparent governance to legal finance.";
+const background = pageData.background || "Over two decades leading risk management, financial crime intelligence, and litigation finance initiatives across global financial centers.";
+
+const cmsSections = pageData.sections && Array.isArray(pageData.sections) ? pageData.sections : [];
+---
+
+<Base title={title} description={lead} image={photoUrl}>
+  <div class="leadership-profile-page">
+    {/* Executive Hero / Profile Section */}
+    <section class="hero-section section bg-[#f8fafc] border-b border-slate-200 py-12 md:py-16">
+      <div class="container">
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-12 items-center">
+          {/* Profile Photo */}
+          <div class="md:col-span-4 flex justify-center md:justify-start">
+            <div class="relative w-full max-w-[300px] rounded-2xl overflow-hidden shadow-xl border-4 border-white bg-slate-900">
+              <img
+                src={photoUrl}
+                alt={`${name}, ${role}`}
+                class="w-full h-auto object-cover aspect-[4/5]"
+              />
+              <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-transparent opacity-80 pointer-events-none" />
+              <div class="absolute bottom-4 left-4 right-4 text-white">
+                <span class="text-xs font-mono font-bold uppercase tracking-wider text-red-400 block mb-0.5">
+                  {role}
+                </span>
+                <span class="text-sm font-semibold">{name}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Leader Info */}
+          <div class="md:col-span-8 space-y-5">
+            <div class="inline-flex items-center gap-2 text-xs font-bold font-mono tracking-widest text-[#e6463a] uppercase">
+              <User className="w-4 h-4" />
+              <span>{eyebrow}</span>
+            </div>
+
+            <div>
+              <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">
+                {name}
+              </h1>
+              <p class="text-lg sm:text-xl font-semibold text-[#e6463a] mt-1">
+                {role}
+              </p>
+            </div>
+
+            <p class="text-slate-600 text-base sm:text-lg leading-relaxed max-w-3xl">
+              {lead}
+            </p>
+
+            {/* Feature Highlights */}
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+              <div class="p-4 rounded-xl bg-white border border-slate-200 flex items-start gap-3 shadow-sm">
+                <Award className="w-5 h-5 text-[#e6463a] flex-shrink-0 mt-0.5" />
+                <div>
+                  <h2 class="text-xs font-bold text-slate-900 uppercase tracking-wider">25+ Years Experience</h2>
+                  <p class="text-xs text-slate-500 mt-0.5">Across financial services, risk, technology & asset recovery.</p>
+                </div>
+              </div>
+
+              <div class="p-4 rounded-xl bg-white border border-slate-200 flex items-start gap-3 shadow-sm">
+                <ShieldCheck className="w-5 h-5 text-sky-500 flex-shrink-0 mt-0.5" />
+                <div>
+                  <h2 class="text-xs font-bold text-slate-900 uppercase tracking-wider">Financial Crime Focus</h2>
+                  <p class="text-xs text-slate-500 mt-0.5">Specializing in cross-border investigations & litigation capital.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* Bio & Background Sections */}
+    <section class="section py-12 md:py-16 bg-white">
+      <div class="container">
+        <div class="max-w-3xl mb-10">
+          <h2 class="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
+            Executive Profile & Career Overview
+          </h2>
+          <p class="text-slate-500 text-sm mt-2">
+            Detailed overview of executive leadership, sector expertise, and strategic focus at ALTIX.
+          </p>
+        </div>
+
+        {/* Core Section Cards */}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-3 hover:border-slate-300 transition-colors">
+            <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center text-[#e6463a]">
+              <Briefcase className="w-5 h-5" />
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">Executive Bio</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">{bio}</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-3 hover:border-slate-300 transition-colors">
+            <div class="w-10 h-10 rounded-xl bg-sky-50 flex items-center justify-center text-sky-600">
+              <TrendingUp className="w-5 h-5" />
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">Track Record</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">{trackRecord}</p>
+          </div>
+
+          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200 space-y-3 hover:border-slate-300 transition-colors">
+            <div class="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600">
+              <Globe className="w-5 h-5" />
+            </div>
+            <h3 class="text-lg font-bold text-slate-900">Background & Experience</h3>
+            <p class="text-slate-600 text-sm leading-relaxed">{background}</p>
+          </div>
+        </div>
+
+        {/* Additional CMS Sections */}
+        {cmsSections.length > 0 && (
+          <div class="mt-10 space-y-6">
+            <h3 class="text-xl font-bold text-slate-900">Additional Information</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {cmsSections.map((sec: any) => (
+                <div class="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm">
+                  {sec.title && <h4 class="text-lg font-bold text-slate-900 mb-2">{sec.title}</h4>}
+                  {(sec.body || sec.description) && (
+                    <p class="text-slate-600 text-sm leading-relaxed">{sec.body || sec.description}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+
+    {/* CTA Band */}
+    <CtaBand data={pageData.cta_band} />
+  </div>
+</Base>
