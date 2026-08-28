@@ -146,21 +146,21 @@
 		}
 	],
 	"redirects": [
-		{ "source": "/en-us", "destination": "/" },
+		{ "source": "/en-us", "destination": "/", "status": 301 },
 		{ "source": "/en-us/", "destination": "/", "status": 301 },
-		{ "source": "/about-us", "destination": "/about" },
-		{ "source": "/how-altix-works", "destination": "/how-it-works" },
-		{ "source": "/how-altix-works-for-claimants", "destination": "/claimants-and-businesses" },
-		{ "source": "/how-altix-works-for-lawyers", "destination": "/law-firms" },
-		{ "source": "/how-altix-works-for-investors", "destination": "/funding-participants" },
-		{ "source": "/become-a-partner", "destination": "/expert-network" },
-		{ "source": "/expert-panel", "destination": "/expert-network" },
-		{ "source": "/contact-us", "destination": "/" },
-		{ "source": "/altixblogs", "destination": "/insights" },
+		{ "source": "/about-us", "destination": "/about", "status": 301 },
+		{ "source": "/how-altix-works", "destination": "/how-it-works", "status": 301 },
+		{ "source": "/how-altix-works-for-claimants", "destination": "/claimants-and-businesses", "status": 301 },
+		{ "source": "/how-altix-works-for-lawyers", "destination": "/law-firms", "status": 301 },
+		{ "source": "/how-altix-works-for-investors", "destination": "/funding-participants", "status": 301 },
+		{ "source": "/become-a-partner", "destination": "/expert-network", "status": 301 },
+		{ "source": "/expert-panel", "destination": "/expert-network", "status": 301 },
+		{ "source": "/contact-us", "destination": "/", "status": 301 },
+		{ "source": "/altixblogs", "destination": "/insights", "status": 301 },
 		{ "source": "/altixblogs/:slug", "destination": "/insights/:slug", "status": 301 },
-		{ "source": "/privacy-policy", "destination": "/privacy" },
-		{ "source": "/terms-of-service", "destination": "/terms" },
-		{ "source": "/newsroom", "destination": "/insights" }
+		{ "source": "/privacy-policy", "destination": "/privacy", "status": 301 },
+		{ "source": "/terms-of-service", "destination": "/terms", "status": 301 },
+		{ "source": "/newsroom", "destination": "/insights", "status": 301 }
 	],
 	"content": {
 		"pages": [
