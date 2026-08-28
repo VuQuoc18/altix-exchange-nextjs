@@ -33,6 +33,7 @@ type CmsContextValue = {
   getString: (pageSlug: string, path: string, fallback: string) => string;
   patch: (pageSlug: string, path: string, value: string) => void;
   patchBlogField: (blogId: string, path: string, value: string) => void;
+  registerBlog: (blogId: string, draftUpdatedAt: string) => void;
   publishDirty: () => Promise<void>;
   enterEditMode: () => Promise<void>;
   exitEditMode: () => void;
@@ -243,17 +244,26 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
     [schedulePatch],
   );
 
+  const registerBlog = useCallback((blogId: string, draftUpdatedAt: string) => {
+    const nextBlog = { draftUpdatedAt, dirty: false };
+    blogsRef.current = { ...blogsRef.current, [blogId]: nextBlog };
+    setBlogs((prev) => ({
+      ...prev,
+      [blogId]: nextBlog,
+    }));
+  }, []);
+
   const patchBlogField = useCallback(
     (blogId: string, path: string, value: string) => {
-      const draftUpdatedAt =
-        blogsRef.current[blogId]?.draftUpdatedAt ?? new Date().toISOString();
-      const nextBlog = { draftUpdatedAt, dirty: true };
+      const draftUpdatedAt = blogsRef.current[blogId]?.draftUpdatedAt;
+      if (!draftUpdatedAt) return;
 
+      const nextBlog = { draftUpdatedAt, dirty: true };
+      blogsRef.current = { ...blogsRef.current, [blogId]: nextBlog };
       setBlogs((prev) => ({
         ...prev,
         [blogId]: nextBlog,
       }));
-      blogsRef.current = { ...blogsRef.current, [blogId]: nextBlog };
 
       setStatus('saving');
       void cmsApi
@@ -263,14 +273,14 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
           value,
         })
         .then((updated) => {
-          const nextBlog = {
+          const savedBlog = {
             draftUpdatedAt: updated.draft_updated_at,
             dirty: true,
           };
-          blogsRef.current = { ...blogsRef.current, [blogId]: nextBlog };
+          blogsRef.current = { ...blogsRef.current, [blogId]: savedBlog };
           setBlogs((prev) => ({
             ...prev,
-            [blogId]: nextBlog,
+            [blogId]: savedBlog,
           }));
           setStatus('saved');
         })
@@ -377,6 +387,7 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
       getString,
       patch,
       patchBlogField,
+      registerBlog,
       publishDirty,
       enterEditMode,
       exitEditMode,
@@ -391,6 +402,7 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
       getString,
       patch,
       patchBlogField,
+      registerBlog,
       publishDirty,
       enterEditMode,
       exitEditMode,
