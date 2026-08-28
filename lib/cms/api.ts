@@ -62,7 +62,7 @@ async function authFetch(
     headers.Authorization = `Bearer ${accessToken}`;
   }
 
-  if (options.body && !headers['Content-Type']) {
+  if (options.body && !headers['Content-Type'] && !(options.body instanceof FormData)) {
     headers['Content-Type'] = 'application/json';
   }
 

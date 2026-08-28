@@ -166,6 +166,16 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
         value: pending.value,
       });
 
+      const nextPage: PageState = {
+        content: updated.draft_content,
+        draftUpdatedAt: updated.draft_updated_at,
+        dirty: true,
+      };
+      pagesRef.current = {
+        ...pagesRef.current,
+        [pending.pageSlug]: nextPage,
+      };
+
       setPages((prev) =>
         mergePageState(
           prev,
