@@ -22,7 +22,7 @@ export default function HomePage() {
     <>
       <Header onOpenAccess={() => setIsAccessOpen(true)} />
 
-      <main id="main">
+      <main id="main" data-cms-page="home">
         <HeroSection onOpenAccess={() => setIsAccessOpen(true)} />
         <WhatWeDoSection />
         <EcosystemSection />

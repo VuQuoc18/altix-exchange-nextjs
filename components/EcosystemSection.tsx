@@ -3,44 +3,69 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import EditableText from '@/components/cms/EditableText';
 import { Users, Briefcase, Landmark, SearchCode, ArrowRight } from 'lucide-react';
 
 const ecosystemItems = [
   {
     no: '01',
-    title: 'Claimants & Businesses',
     icon: Users,
-    description: 'Individuals, SMEs, companies, insolvency estates and claimant groups with significant legal or recovery rights.',
     link: '/claimants-and-businesses',
-    linkText: 'For claimants',
-    points: ['Portfolio dispute assessment', 'Non-recourse legal capital', 'Damages & budget modeling'],
+    fallbacks: {
+      title: 'Claimants & Businesses',
+      description:
+        'Individuals, SMEs, companies, insolvency estates and claimant groups with significant legal or recovery rights.',
+      linkText: 'For claimants',
+      points: [
+        'Portfolio dispute assessment',
+        'Non-recourse legal capital',
+        'Damages & budget modeling',
+      ],
+    },
   },
   {
     no: '02',
-    title: 'Law Firms',
     icon: Briefcase,
-    description: 'Legal teams seeking a structured route to prepare and present suitable client matters to professional capital.',
     link: '/law-firms',
-    linkText: 'For law firms',
-    points: ['Streamlined funder intake', 'Fee budget structure', 'Workload & liability sharing'],
+    fallbacks: {
+      title: 'Law Firms',
+      description:
+        'Legal teams seeking a structured route to prepare and present suitable client matters to professional capital.',
+      linkText: 'For law firms',
+      points: ['Streamlined funder intake', 'Fee budget structure', 'Workload & liability sharing'],
+    },
   },
   {
     no: '03',
-    title: 'Funding Participants',
     icon: Landmark,
-    description: 'Litigation funders, family offices, special-situations investors, private-credit firms and other eligible professional capital providers.',
     link: '/funding-participants',
-    linkText: 'For funding participants',
-    points: ['Permission-based Data Room', 'Pre-screened claim merit', 'Enforcement collectability review'],
+    fallbacks: {
+      title: 'Funding Participants',
+      description:
+        'Litigation funders, family offices, special-situations investors, private-credit firms and other eligible professional capital providers.',
+      linkText: 'For funding participants',
+      points: [
+        'Permission-based Data Room',
+        'Pre-screened claim merit',
+        'Enforcement collectability review',
+      ],
+    },
   },
   {
     no: '04',
-    title: 'Forensic Experts',
     icon: SearchCode,
-    description: 'Investigators, forensic accountants, asset tracers, cyber intelligence professionals and other specialists.',
     link: '/forensic-experts',
-    linkText: 'Forensic network',
-    points: ['Cross-border asset tracing', 'Financial-crime intelligence', 'Solvency & recovery analytics'],
+    fallbacks: {
+      title: 'Forensic Experts',
+      description:
+        'Investigators, forensic accountants, asset tracers, cyber intelligence professionals and other specialists.',
+      linkText: 'Forensic network',
+      points: [
+        'Cross-border asset tracing',
+        'Financial-crime intelligence',
+        'Solvency & recovery analytics',
+      ],
+    },
   },
 ];
 
@@ -57,7 +82,11 @@ export default function EcosystemSection() {
           className="eyebrow mb-2"
         >
           <Users className="w-4 h-4 text-[#e6463a]" />
-          <span>Who we work with</span>
+          <EditableText
+            pageSlug="home"
+            path="ecosystem.eyebrow"
+            fallback="Who we work with"
+          />
         </motion.div>
 
         {/* Section Head */}
@@ -68,8 +97,20 @@ export default function EcosystemSection() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="section-head"
         >
-          <h2>Built for the full recovery ecosystem.</h2>
-          <p>ALTIX coordinates the parties needed to assess, fund and execute selected matters.</p>
+          <h2>
+            <EditableText
+              pageSlug="home"
+              path="ecosystem.title"
+              fallback="Built for the full recovery ecosystem."
+            />
+          </h2>
+          <p>
+            <EditableText
+              pageSlug="home"
+              path="ecosystem.body"
+              fallback="ALTIX coordinates the parties needed to assess, fund and execute selected matters."
+            />
+          </p>
         </motion.div>
 
         {/* Ecosystem Grid */}
@@ -93,21 +134,41 @@ export default function EcosystemSection() {
                     <span className="text-xs font-mono font-bold text-slate-400">{item.no}</span>
                   </div>
 
-                  <h3 className="text-xl font-bold text-slate-900 mb-2">{item.title}</h3>
-                  <p className="text-sm text-slate-600 mb-4">{item.description}</p>
+                  <h3 className="text-xl font-bold text-slate-900 mb-2">
+                    <EditableText
+                      pageSlug="home"
+                      path={`ecosystem.items[${index}].title`}
+                      fallback={item.fallbacks.title}
+                    />
+                  </h3>
+                  <p className="text-sm text-slate-600 mb-4">
+                    <EditableText
+                      pageSlug="home"
+                      path={`ecosystem.items[${index}].description`}
+                      fallback={item.fallbacks.description}
+                    />
+                  </p>
 
                   <ul className="space-y-1.5 mb-6 text-xs text-slate-500 border-t border-slate-200 pt-3">
-                    {item.points.map((pt, i) => (
-                      <li key={i} className="flex items-center gap-1.5">
+                    {item.fallbacks.points.map((pt, pointIndex) => (
+                      <li key={pointIndex} className="flex items-center gap-1.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-[#e6463a]" />
-                        {pt}
+                        <EditableText
+                          pageSlug="home"
+                          path={`ecosystem.items[${index}].points[${pointIndex}]`}
+                          fallback={pt}
+                        />
                       </li>
                     ))}
                   </ul>
                 </div>
 
                 <Link className="text-link text-sm" href={item.link}>
-                  <span>{item.linkText}</span>
+                  <EditableText
+                    pageSlug="home"
+                    path={`ecosystem.items[${index}].linkText`}
+                    fallback={item.fallbacks.linkText}
+                  />
                   <ArrowRight className="w-4 h-4" />
                 </Link>
               </motion.article>
