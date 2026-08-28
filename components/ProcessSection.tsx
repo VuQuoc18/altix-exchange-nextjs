@@ -2,18 +2,73 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import EditableText from '@/components/cms/EditableText';
 import { GitCommit, CheckCircle2, ChevronRight } from 'lucide-react';
 
 const processSteps = [
-  { no: '01', title: 'Submit the opportunity', desc: 'Claimant or counsel submits initial non-confidential claim overview.' },
-  { no: '02', title: 'Verify claimant & authority', desc: 'Identity verification, corporate standing, KYC/AML and conflict screening.' },
-  { no: '03', title: 'Review legal merit & evidence', desc: 'Independent legal review of cause of action, evidence burden and defenses.' },
-  { no: '04', title: 'Assess budget, duration & collectability', desc: 'Damages calculation, litigation cost budget, defendant asset & solvency audit.' },
-  { no: '05', title: 'Prepare investment materials & VDR', desc: 'Structure funder executive summary and populate secure data room.' },
-  { no: '06', title: 'Present to suitable funding participants', desc: 'Controlled, permissioned disclosure to eligible litigation capital providers.' },
-  { no: '07', title: 'Structure and close vehicle', desc: 'Negotiate funding terms, governance rights, adverse cost & security agreements.' },
-  { no: '08', title: 'Monitor budgets & reporting', desc: 'Track case milestones, legal expenditure drawdowns and procedural updates.' },
-  { no: '09', title: 'Support settlement & distributions', desc: 'Enforcement management, recovery collection and waterfall distribution.' },
+  {
+    no: '01',
+    fallbacks: {
+      title: 'Submit the opportunity',
+      desc: 'Claimant or counsel submits initial non-confidential claim overview.',
+    },
+  },
+  {
+    no: '02',
+    fallbacks: {
+      title: 'Verify claimant & authority',
+      desc: 'Identity verification, corporate standing, KYC/AML and conflict screening.',
+    },
+  },
+  {
+    no: '03',
+    fallbacks: {
+      title: 'Review legal merit & evidence',
+      desc: 'Independent legal review of cause of action, evidence burden and defenses.',
+    },
+  },
+  {
+    no: '04',
+    fallbacks: {
+      title: 'Assess budget, duration & collectability',
+      desc: 'Damages calculation, litigation cost budget, defendant asset & solvency audit.',
+    },
+  },
+  {
+    no: '05',
+    fallbacks: {
+      title: 'Prepare investment materials & VDR',
+      desc: 'Structure funder executive summary and populate secure data room.',
+    },
+  },
+  {
+    no: '06',
+    fallbacks: {
+      title: 'Present to suitable funding participants',
+      desc: 'Controlled, permissioned disclosure to eligible litigation capital providers.',
+    },
+  },
+  {
+    no: '07',
+    fallbacks: {
+      title: 'Structure and close vehicle',
+      desc: 'Negotiate funding terms, governance rights, adverse cost & security agreements.',
+    },
+  },
+  {
+    no: '08',
+    fallbacks: {
+      title: 'Monitor budgets & reporting',
+      desc: 'Track case milestones, legal expenditure drawdowns and procedural updates.',
+    },
+  },
+  {
+    no: '09',
+    fallbacks: {
+      title: 'Support settlement & distributions',
+      desc: 'Enforcement management, recovery collection and waterfall distribution.',
+    },
+  },
 ];
 
 export default function ProcessSection() {
@@ -31,7 +86,11 @@ export default function ProcessSection() {
           className="eyebrow mb-2"
         >
           <GitCommit className="w-4 h-4 text-[#e6463a]" />
-          <span>How it works</span>
+          <EditableText
+            pageSlug="home"
+            path="process.eyebrow"
+            fallback="How it works"
+          />
         </motion.div>
 
         {/* Section Head */}
@@ -42,8 +101,20 @@ export default function ProcessSection() {
           transition={{ duration: 0.5, delay: 0.1 }}
           className="section-head"
         >
-          <h2>A controlled process from case to capital.</h2>
-          <p>Every matter is case-specific. The workflow below describes the intended coordination model.</p>
+          <h2>
+            <EditableText
+              pageSlug="home"
+              path="process.title"
+              fallback="A controlled process from case to capital."
+            />
+          </h2>
+          <p>
+            <EditableText
+              pageSlug="home"
+              path="process.body"
+              fallback="Every matter is case-specific. The workflow below describes the intended coordination model."
+            />
+          </p>
         </motion.div>
 
         {/* Interactive Process Stepper */}
@@ -76,7 +147,13 @@ export default function ProcessSection() {
                     </span>
                     {isActive && <CheckCircle2 className="w-4 h-4 text-[#e6463a]" />}
                   </div>
-                  <h4 className="text-sm font-bold text-slate-900 leading-snug">{step.title}</h4>
+                  <h4 className="text-sm font-bold text-slate-900 leading-snug">
+                    <EditableText
+                      pageSlug="home"
+                      path={`process.steps[${index}].title`}
+                      fallback={step.fallbacks.title}
+                    />
+                  </h4>
                 </motion.div>
               );
             })}
@@ -100,15 +177,27 @@ export default function ProcessSection() {
               </span>
 
               <h3 className="text-2xl font-serif font-bold text-white">
-                {processSteps[activeStep].title}
+                <EditableText
+                  pageSlug="home"
+                  path={`process.steps[${activeStep}].title`}
+                  fallback={processSteps[activeStep].fallbacks.title}
+                />
               </h3>
 
               <p className="text-slate-300 text-sm leading-relaxed">
-                {processSteps[activeStep].desc}
+                <EditableText
+                  pageSlug="home"
+                  path={`process.steps[${activeStep}].desc`}
+                  fallback={processSteps[activeStep].fallbacks.desc}
+                />
               </p>
 
               <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-slate-400">
-                <span>Coordination Milestone</span>
+                <EditableText
+                  pageSlug="home"
+                  path="process.milestoneLabel"
+                  fallback="Coordination Milestone"
+                />
                 <span className="text-red-400 font-bold flex items-center gap-1">
                   Active Workflow <ChevronRight className="w-3.5 h-3.5" />
                 </span>

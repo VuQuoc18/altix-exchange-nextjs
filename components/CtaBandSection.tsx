@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
+import EditableText from '@/components/cms/EditableText';
 import { ArrowRight, ShieldAlert, Sparkles } from 'lucide-react';
 
 export default function CtaBandSection() {
@@ -26,12 +27,26 @@ export default function CtaBandSection() {
         >
           <span className="eyebrow eyebrow--light">
             <Sparkles className="w-3.5 h-3.5" />
-            Start here
+            <EditableText
+              pageSlug="home"
+              path="ctaBand.eyebrow"
+              fallback="Start here"
+            />
           </span>
-          <h2>Start with a structured initial review.</h2>
+          <h2>
+            <EditableText
+              pageSlug="home"
+              path="ctaBand.title"
+              fallback="Start with a structured initial review."
+            />
+          </h2>
           <p className="flex items-center gap-2">
             <ShieldAlert className="w-5 h-5 text-red-400 flex-shrink-0" />
-            Do not send privileged or highly sensitive evidence through the initial contact form. ALTIX will provide secure upload instructions if further materials are required.
+            <EditableText
+              pageSlug="home"
+              path="ctaBand.body"
+              fallback="Do not send privileged or highly sensitive evidence through the initial contact form. ALTIX will provide secure upload instructions if further materials are required."
+            />
           </p>
         </motion.div>
 
@@ -47,7 +62,11 @@ export default function CtaBandSection() {
             rel="noopener noreferrer"
             className="px-7 py-4 rounded-xl bg-[#e6463a] hover:bg-[#d1372b] text-white font-bold text-base shadow-xl shadow-red-500/30 flex items-center gap-2 transition-all hover:scale-105"
           >
-            <span>Submit a case</span>
+            <EditableText
+              pageSlug="home"
+              path="ctaBand.button"
+              fallback="Submit a case"
+            />
             <ArrowRight className="w-5 h-5" />
           </a>
         </motion.div>

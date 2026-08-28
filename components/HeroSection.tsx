@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import InteractiveCaseStage from '@/components/hero/InteractiveCaseStage';
+import EditableText from '@/components/cms/EditableText';
 import { ArrowRight, ShieldCheck, Scale, FileCheck, Lock } from 'lucide-react';
 
 interface HeroSectionProps {
@@ -64,7 +65,11 @@ export default function HeroSection({ onOpenAccess }: HeroSectionProps) {
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-500/15 border border-red-500/30 text-red-300 text-xs font-mono font-semibold tracking-wider uppercase"
             >
               <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-              <span>Litigation finance & global asset recovery</span>
+              <EditableText
+                pageSlug="home"
+                path="hero.eyebrow"
+                fallback="Litigation finance & global asset recovery"
+              />
             </motion.div>
 
             {/* Headline */}
@@ -74,9 +79,17 @@ export default function HeroSection({ onOpenAccess }: HeroSectionProps) {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="font-serif font-black text-4xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-[1.08]"
             >
-              Preparing qualified legal claims for{' '}
+              <EditableText
+                pageSlug="home"
+                path="hero.headlineBefore"
+                fallback="Preparing qualified legal claims for"
+              />{' '}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-rose-300 to-amber-300">
-                professional capital.
+                <EditableText
+                  pageSlug="home"
+                  path="hero.headlineAccent"
+                  fallback="professional capital."
+                />
               </span>
             </motion.h1>
 
@@ -87,7 +100,18 @@ export default function HeroSection({ onOpenAccess }: HeroSectionProps) {
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-base sm:text-lg text-slate-300 leading-relaxed font-normal"
             >
-              <strong className="text-white font-semibold">ALTIX helps claimants and law firms turn complex disputes into funder-ready opportunities.</strong> We coordinate case screening, evidence organization, financial analysis, financial-crime intelligence, collectability work, investor materials and ongoing administration.
+              <strong className="text-white font-semibold">
+                <EditableText
+                  pageSlug="home"
+                  path="hero.leadStrong"
+                  fallback="ALTIX helps claimants and law firms turn complex disputes into funder-ready opportunities."
+                />
+              </strong>
+              <EditableText
+                pageSlug="home"
+                path="hero.leadRest"
+                fallback=" We coordinate case screening, evidence organization, financial analysis, financial-crime intelligence, collectability work, investor materials and ongoing administration."
+              />
             </motion.p>
 
             {/* CTA Buttons */}
@@ -103,7 +127,11 @@ export default function HeroSection({ onOpenAccess }: HeroSectionProps) {
                 rel="noopener noreferrer"
                 className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#e6463a] to-[#d1372b] hover:from-[#f38d84] hover:to-[#e6463a] text-white font-bold text-sm tracking-wide transition-all shadow-lg shadow-red-500/25 hover:shadow-red-500/40 hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2"
               >
-                <span>Submit a Case for Initial Review</span>
+                <EditableText
+                  pageSlug="home"
+                  path="hero.primaryCta"
+                  fallback="Submit a Case for Initial Review"
+                />
                 <ArrowRight className="w-4 h-4" />
               </a>
 
@@ -112,7 +140,11 @@ export default function HeroSection({ onOpenAccess }: HeroSectionProps) {
                 className="px-6 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/15 hover:border-sky-400/40 font-semibold text-sm tracking-wide transition-all hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2"
               >
                 <Lock className="w-4 h-4 text-sky-400" />
-                <span>Request Institutional Access</span>
+                <EditableText
+                  pageSlug="home"
+                  path="hero.secondaryCta"
+                  fallback="Request Institutional Access"
+                />
               </button>
             </motion.div>
 
@@ -125,20 +157,37 @@ export default function HeroSection({ onOpenAccess }: HeroSectionProps) {
             >
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-sky-400 flex-shrink-0" />
-                <span>Structured Diligence</span>
+                <EditableText
+                  pageSlug="home"
+                  path="hero.badge1"
+                  fallback="Structured Diligence"
+                />
               </div>
               <div className="flex items-center gap-2">
                 <Scale className="w-4 h-4 text-red-400 flex-shrink-0" />
-                <span>Jurisdiction Assessment</span>
+                <EditableText
+                  pageSlug="home"
+                  path="hero.badge2"
+                  fallback="Jurisdiction Assessment"
+                />
               </div>
               <div className="flex items-center gap-2">
                 <FileCheck className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                <span>Encrypted Data Rooms</span>
+                <EditableText
+                  pageSlug="home"
+                  path="hero.badge3"
+                  fallback="Encrypted Data Rooms"
+                />
               </div>
             </motion.div>
 
             <p className="text-xs text-slate-400 italic pt-1">
-              Submission does not guarantee acceptance, funding, recovery, liquidity or any particular outcome.
+              <EditableText
+                pageSlug="home"
+                path="hero.disclaimer"
+                fallback="Submission does not guarantee acceptance, funding, recovery, liquidity or any particular outcome."
+                as="span"
+              />
             </p>
           </div>
 

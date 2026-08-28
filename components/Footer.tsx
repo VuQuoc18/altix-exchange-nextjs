@@ -1,5 +1,8 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
+import EditableText from '@/components/cms/EditableText';
 
 export default function Footer() {
   return (
@@ -16,9 +19,13 @@ export default function Footer() {
               />
             </div>
           </Link>
-          <p className="mt-2 text-sm text-slate-400">
-            Technology and services for litigation finance and global asset recovery.
-          </p>
+          <EditableText
+            pageSlug="site"
+            path="footerTagline"
+            fallback="Technology and services for litigation finance and global asset recovery."
+            as="p"
+            className="mt-2 text-sm text-slate-400"
+          />
         </div>
         <div>
           <h3>Navigate</h3>
