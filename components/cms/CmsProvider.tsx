@@ -33,7 +33,9 @@ type CmsContextValue = {
   getString: (pageSlug: string, path: string, fallback: string) => string;
   patch: (pageSlug: string, path: string, value: string) => void;
   patchBlogField: (blogId: string, path: string, value: string) => void;
-  registerBlog: (blogId: string, draftUpdatedAt: string) => void;
+  registerBlog: (blogId: string, draftUpdatedAt: string, draft?: Record<string, unknown>) => void;
+  registerBlogFlush: (flush: () => void) => () => void;
+  flushBlogPending: () => Promise<void>;
   publishDirty: () => Promise<void>;
   enterEditMode: () => Promise<void>;
   exitEditMode: () => void;
@@ -77,6 +79,8 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
 
   const pagesRef = useRef(pages);
   const blogsRef = useRef(blogs);
+  const blogDraftsRef = useRef<Record<string, Record<string, unknown>>>({});
+  const blogFlushRef = useRef<Set<() => void>>(new Set());
   const pendingRef = useRef<Map<string, PendingPatch>>(new Map());
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -155,9 +159,9 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
     [pages],
   );
 
-  const executePatch = useCallback(async (pending: PendingPatch) => {
+  const executePatch = useCallback(async (pending: PendingPatch): Promise<'ok' | 'conflict' | 'error'> => {
     const page = pagesRef.current[pending.pageSlug];
-    if (!page) return;
+    if (!page) return 'ok';
 
     setStatus('saving');
     try {
@@ -188,12 +192,15 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
       );
       backupDraft(pending.pageSlug, updated.draft_content);
       setStatus('saved');
+      return 'ok';
     } catch (error) {
       if (cmsApi.isCmsApiError(error) && error.status === 409) {
         setStatus('conflict');
-        return;
+        return 'conflict';
       }
+      backupDraft(pending.pageSlug, page.content);
       setStatus('error');
+      return 'error';
     }
   }, []);
 
@@ -208,7 +215,8 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
     if (pending.length === 0) return;
     pendingRef.current.clear();
     for (const patch of pending) {
-      await executePatch(patch);
+      const result = await executePatch(patch);
+      if (result === 'conflict') break;
     }
   }, [executePatch]);
 
@@ -244,19 +252,42 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
     [schedulePatch],
   );
 
-  const registerBlog = useCallback((blogId: string, draftUpdatedAt: string) => {
-    const nextBlog = { draftUpdatedAt, dirty: false };
-    blogsRef.current = { ...blogsRef.current, [blogId]: nextBlog };
-    setBlogs((prev) => ({
-      ...prev,
-      [blogId]: nextBlog,
-    }));
+  const registerBlog = useCallback(
+    (blogId: string, draftUpdatedAt: string, draft?: Record<string, unknown>) => {
+      const nextBlog = { draftUpdatedAt, dirty: false };
+      blogsRef.current = { ...blogsRef.current, [blogId]: nextBlog };
+      if (draft) {
+        blogDraftsRef.current = { ...blogDraftsRef.current, [blogId]: { ...draft } };
+      }
+      setBlogs((prev) => ({
+        ...prev,
+        [blogId]: nextBlog,
+      }));
+    },
+    [],
+  );
+
+  const registerBlogFlush = useCallback((flush: () => void) => {
+    blogFlushRef.current.add(flush);
+    return () => {
+      blogFlushRef.current.delete(flush);
+    };
+  }, []);
+
+  const flushBlogPending = useCallback(async () => {
+    for (const flush of Array.from(blogFlushRef.current)) {
+      flush();
+    }
   }, []);
 
   const patchBlogField = useCallback(
     (blogId: string, path: string, value: string) => {
       const draftUpdatedAt = blogsRef.current[blogId]?.draftUpdatedAt;
       if (!draftUpdatedAt) return;
+
+      const currentDraft = blogDraftsRef.current[blogId] ?? {};
+      const nextDraft = setByPath(currentDraft, path, value);
+      blogDraftsRef.current = { ...blogDraftsRef.current, [blogId]: nextDraft };
 
       const nextBlog = { draftUpdatedAt, dirty: true };
       blogsRef.current = { ...blogsRef.current, [blogId]: nextBlog };
@@ -278,6 +309,10 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
             dirty: true,
           };
           blogsRef.current = { ...blogsRef.current, [blogId]: savedBlog };
+          blogDraftsRef.current = {
+            ...blogDraftsRef.current,
+            [blogId]: { ...updated.draft },
+          };
           setBlogs((prev) => ({
             ...prev,
             [blogId]: savedBlog,
@@ -285,6 +320,7 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
           setStatus('saved');
         })
         .catch((error) => {
+          backupDraft(`blog:${blogId}`, nextDraft);
           if (cmsApi.isCmsApiError(error) && error.status === 409) {
             setStatus('conflict');
             return;
@@ -338,6 +374,7 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
   }, [currentPageSlug, loadPublicPage]);
 
   const publishDirty = useCallback(async () => {
+    await flushBlogPending();
     await flushPendingPatch();
     setStatus('saving');
 
@@ -372,7 +409,7 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
     } catch {
       setStatus('error');
     }
-  }, [flushPendingPatch]);
+  }, [flushBlogPending, flushPendingPatch]);
 
   const uploadMedia = useCallback(async (file: File) => {
     const result = await cmsApi.uploadMedia(file);
@@ -388,6 +425,8 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
       patch,
       patchBlogField,
       registerBlog,
+      registerBlogFlush,
+      flushBlogPending,
       publishDirty,
       enterEditMode,
       exitEditMode,
@@ -403,6 +442,8 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
       patch,
       patchBlogField,
       registerBlog,
+      registerBlogFlush,
+      flushBlogPending,
       publishDirty,
       enterEditMode,
       exitEditMode,

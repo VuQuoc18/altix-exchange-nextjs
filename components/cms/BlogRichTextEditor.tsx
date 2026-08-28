@@ -20,7 +20,7 @@ export default function BlogRichTextEditor({
   onValueChange,
   className,
 }: Props) {
-  const { patchBlogField } = useCms();
+  const { patchBlogField, registerBlogFlush } = useCms();
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const { quill, quillRef } = useQuill({
     theme: 'snow',
@@ -57,6 +57,20 @@ export default function BlogRichTextEditor({
       }
     };
   }, [blogId, html, onValueChange, patchBlogField, path, quill]);
+
+  useEffect(() => {
+    if (!quill) return;
+    const flush = () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+        debounceRef.current = null;
+      }
+      const nextHtml = quill.root.innerHTML;
+      onValueChange(nextHtml);
+      patchBlogField(blogId, path, nextHtml);
+    };
+    return registerBlogFlush(flush);
+  }, [blogId, onValueChange, patchBlogField, path, quill, registerBlogFlush]);
 
   return (
     <div className={className}>

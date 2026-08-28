@@ -20,7 +20,7 @@ export default function EditableBlogText({
   as: Tag = 'span',
   className,
 }: EditableBlogTextProps) {
-  const { isEditing, patchBlogField } = useCms();
+  const { isEditing, patchBlogField, registerBlogFlush } = useCms();
   const ref = useRef<HTMLElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -37,6 +37,18 @@ export default function EditableBlogText({
     },
     [blogId, onValueChange, patchBlogField, path],
   );
+
+  useEffect(() => {
+    const flush = () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+        debounceRef.current = null;
+      }
+      if (!ref.current) return;
+      flushPatch(ref.current.textContent ?? '');
+    };
+    return registerBlogFlush(flush);
+  }, [flushPatch, registerBlogFlush]);
 
   const handleInput = useCallback(() => {
     if (!ref.current) return;

@@ -52,7 +52,7 @@ export default function InsightPostPage() {
     if (!match) return false;
 
     setBlogId(match.id);
-    registerBlog(match.id, match.draft_updated_at);
+    registerBlog(match.id, match.draft_updated_at, match.draft);
     setPublishedAt(match.published_at);
     setFields({
       title: match.draft.title ?? '',

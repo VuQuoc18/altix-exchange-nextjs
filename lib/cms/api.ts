@@ -26,9 +26,19 @@ async function parseError(response: Response): Promise<CmsApiError> {
   return { status: response.status, detail };
 }
 
+async function redirectToLogin(): Promise<void> {
+  if (typeof window !== 'undefined') {
+    window.location.href = '/login';
+  }
+}
+
 async function refreshAccessToken(): Promise<boolean> {
   const refreshToken = getRefreshToken();
-  if (!refreshToken) return false;
+  if (!refreshToken) {
+    clearTokens();
+    await redirectToLogin();
+    return false;
+  }
 
   const response = await fetch(`${BASE_URL}/api/v1/auth/refresh`, {
     method: 'POST',
@@ -40,6 +50,7 @@ async function refreshAccessToken(): Promise<boolean> {
 
   if (!response.ok) {
     clearTokens();
+    await redirectToLogin();
     return false;
   }
 
@@ -76,6 +87,7 @@ async function authFetch(
     if (refreshed) {
       return authFetch(endpoint, options, false);
     }
+    await redirectToLogin();
   }
 
   return response;
