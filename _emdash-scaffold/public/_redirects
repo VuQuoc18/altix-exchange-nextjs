@@ -1,0 +1,15 @@
+/en-us / 301
+/en-us/ / 301
+/about-us /about 301
+/how-altix-works /how-it-works 301
+/how-altix-works-for-claimants /claimants-and-businesses 301
+/how-altix-works-for-lawyers /law-firms 301
+/how-altix-works-for-investors /funding-participants 301
+/become-a-partner /expert-network 301
+/expert-panel /expert-network 301
+/contact-us / 301
+/altixblogs /insights 301
+/altixblogs/* /insights/:splat 301
+/privacy-policy /privacy 301
+/terms-of-service /terms 301
+/newsroom /insights 301
