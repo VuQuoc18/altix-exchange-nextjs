@@ -138,7 +138,7 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [pathname]);
 
   const getString = useCallback(
     (pageSlug: string, path: string, fallback: string): string => {
@@ -263,9 +263,14 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
           value,
         })
         .then((updated) => {
+          const nextBlog = {
+            draftUpdatedAt: updated.draft_updated_at,
+            dirty: true,
+          };
+          blogsRef.current = { ...blogsRef.current, [blogId]: nextBlog };
           setBlogs((prev) => ({
             ...prev,
-            [blogId]: { draftUpdatedAt: updated.draft_updated_at, dirty: true },
+            [blogId]: nextBlog,
           }));
           setStatus('saved');
         })
