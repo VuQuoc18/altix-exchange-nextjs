@@ -1,0 +1,206 @@
+---
+import { getEmDashEntry } from "emdash";
+import { Image, PortableText } from "emdash/ui";
+import Base from "../../layouts/Base.astro";
+
+const { slug } = Astro.params;
+
+if (!slug) {
+	Astro.response.status = 404;
+	return Astro.rewrite("/404");
+}
+
+const { entry: post, cacheHint } = await getEmDashEntry("posts", slug);
+
+if (Astro.cache?.enabled && cacheHint) {
+	Astro.cache.set(cacheHint);
+}
+
+const postStatus = post?.data?.status || (post as any)?.status;
+
+if (!post || postStatus !== "published") {
+	Astro.response.status = 404;
+	return Astro.rewrite("/404");
+}
+
+const postData = post.data || {};
+const title = postData.title || slug;
+const postDate = postData.publishedAt || postData.createdAt;
+const formattedDate = postDate
+	? new Date(postDate).toLocaleDateString("en-US", {
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+		})
+	: null;
+
+const featuredImage = postData.featured_image;
+const content = postData.content;
+const excerpt = postData.excerpt;
+---
+
+<Base title={`${title} | Insights | ALTIX Exchange`} description={excerpt}>
+	<article class="post-detail-page section">
+		<div class="container narrow">
+			<nav class="back-nav mb-6">
+				<a href="/insights" class="text-link">
+					&larr; Back to Insights
+				</a>
+			</nav>
+
+			<header class="post-header mb-8">
+				<div class="eyebrow mb-2">
+					<span>Insight Article</span>
+				</div>
+				<h1 class="post-title" {...post.edit?.title}>{title}</h1>
+				{
+					formattedDate && (
+						<time datetime={new Date(postDate).toISOString()} class="post-date">
+							{formattedDate}
+						</time>
+					)
+				}
+			</header>
+
+			{
+				featuredImage && (
+					<div class="featured-image-wrapper mb-10" {...post.edit?.featured_image}>
+						<Image image={featuredImage} />
+					</div>
+				)
+			}
+
+			<div class="post-content">
+				{
+					content && (
+						<div {...post.edit?.content}>
+							<PortableText value={content} />
+						</div>
+					)
+				}
+			</div>
+
+			<footer class="post-footer mt-12 pt-6 border-t border-[var(--line)]">
+				<a href="/insights" class="button button--secondary">
+					&larr; Back to Insights
+				</a>
+			</footer>
+		</div>
+	</article>
+</Base>
+
+<style>
+	.post-detail-page {
+		padding-top: 3rem;
+		padding-bottom: 5rem;
+	}
+
+	.back-nav {
+		margin-bottom: 1.5rem;
+	}
+
+	.post-header {
+		margin-bottom: 2rem;
+	}
+
+	.post-title {
+		font-family: var(--font-serif);
+		font-size: clamp(2.25rem, 4vw, 3rem);
+		font-weight: 700;
+		color: var(--navy);
+		line-height: 1.2;
+		margin-top: 0.5rem;
+		margin-bottom: 1rem;
+	}
+
+	.post-date {
+		display: inline-block;
+		font-size: 0.9rem;
+		font-weight: 600;
+		color: var(--muted);
+		text-transform: uppercase;
+		letter-spacing: 0.05em;
+	}
+
+	.featured-image-wrapper {
+		width: 100%;
+		border-radius: 12px;
+		overflow: hidden;
+		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+		background: var(--soft);
+		margin-bottom: 2.5rem;
+	}
+
+	.featured-image-wrapper :global(img) {
+		width: 100%;
+		height: auto;
+		display: block;
+	}
+
+	.post-content {
+		font-size: 1.125rem;
+		line-height: 1.75;
+		color: var(--text);
+	}
+
+	.post-content :global(h2) {
+		font-family: var(--font-serif);
+		font-size: 1.75rem;
+		font-weight: 700;
+		color: var(--navy);
+		margin-top: 2.5rem;
+		margin-bottom: 1rem;
+		line-height: 1.3;
+	}
+
+	.post-content :global(h3) {
+		font-family: var(--font-serif);
+		font-size: 1.4rem;
+		font-weight: 700;
+		color: var(--navy);
+		margin-top: 2rem;
+		margin-bottom: 0.75rem;
+		line-height: 1.3;
+	}
+
+	.post-content :global(p) {
+		margin-bottom: 1.5rem;
+	}
+
+	.post-content :global(ul),
+	.post-content :global(ol) {
+		margin-bottom: 1.5rem;
+		padding-left: 1.5rem;
+	}
+
+	.post-content :global(li) {
+		margin-bottom: 0.5rem;
+	}
+
+	.post-content :global(blockquote) {
+		border-left: 4px solid var(--red);
+		padding-left: 1.25rem;
+		margin-left: 0;
+		margin-right: 0;
+		margin-bottom: 1.5rem;
+		font-style: italic;
+		color: var(--navy);
+	}
+
+	.post-footer {
+		margin-top: 3rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid var(--line);
+	}
+
+	@media (max-width: 768px) {
+		.post-title {
+			font-size: 1.85rem;
+		}
+
+		.post-content {
+			font-size: 1rem;
+			line-height: 1.65;
+		}
+	}
+</style>

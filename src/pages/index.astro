@@ -1,0 +1,30 @@
+---
+import { getEmDashEntry } from "emdash";
+import Base from "../layouts/Base.astro";
+import HeroIsland from "../components/react/HeroIsland";
+import WhatWeDo from "../components/sections/WhatWeDo.astro";
+import Ecosystem from "../components/sections/Ecosystem.astro";
+import Process from "../components/sections/Process.astro";
+import Underwriting from "../components/sections/Underwriting.astro";
+import Roadmap from "../components/sections/Roadmap.astro";
+import Leadership from "../components/sections/Leadership.astro";
+import CtaBand from "../components/sections/CtaBand.astro";
+
+const { entry: page, cacheHint } = await getEmDashEntry("pages", "home");
+
+if (Astro.cache?.enabled) Astro.cache.set(cacheHint);
+
+const pageData = (page?.data || {}) as Record<string, any>;
+const pageTitle = pageData.title;
+---
+
+<Base title={pageTitle !== "Home" ? pageTitle : undefined}>
+  <HeroIsland client:load {...(pageData.hero || {})} />
+  <WhatWeDo data={pageData.what_we_do} />
+  <Ecosystem data={pageData.ecosystem} />
+  <Process data={pageData.process} />
+  <Underwriting data={pageData.underwriting} />
+  <Roadmap data={pageData.roadmap} />
+  <Leadership data={pageData.leadership} />
+  <CtaBand data={pageData.cta_band} />
+</Base>

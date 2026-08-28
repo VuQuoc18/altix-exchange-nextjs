@@ -1,0 +1,85 @@
+---
+import { GitCommit, CheckCircle2 } from "lucide-react";
+
+interface ProcessStep {
+  title?: string;
+  desc?: string;
+}
+
+interface ProcessData {
+  eyebrow?: string;
+  title?: string;
+  body?: string;
+  milestoneLabel?: string;
+  steps?: ProcessStep[];
+}
+
+interface Props {
+  data?: ProcessData;
+}
+
+const { data } = Astro.props;
+
+const eyebrow = data?.eyebrow ?? "How it works";
+const title = data?.title ?? "A controlled process from case to capital.";
+const body = data?.body ?? "Every matter is case-specific. The workflow below describes the intended coordination model.";
+
+const defaultSteps = [
+  { no: '01', title: 'Submit the opportunity', desc: 'Claimant or counsel submits initial non-confidential claim overview.' },
+  { no: '02', title: 'Verify claimant & authority', desc: 'Identity verification, corporate standing, KYC/AML and conflict screening.' },
+  { no: '03', title: 'Review legal merit & evidence', desc: 'Independent legal review of cause of action, evidence burden and defenses.' },
+  { no: '04', title: 'Assess budget, duration & collectability', desc: 'Damages calculation, litigation cost budget, defendant asset & solvency audit.' },
+  { no: '05', title: 'Prepare investment materials & VDR', desc: 'Structure funder executive summary and populate secure data room.' },
+  { no: '06', title: 'Present to suitable funding participants', desc: 'Controlled, permissioned disclosure to eligible litigation capital providers.' },
+  { no: '07', title: 'Structure and close vehicle', desc: 'Negotiate funding terms, governance rights, adverse cost & security agreements.' },
+  { no: '08', title: 'Monitor budgets & reporting', desc: 'Track case milestones, legal expenditure drawdowns and procedural updates.' },
+  { no: '09', title: 'Support settlement & distributions', desc: 'Enforcement management, recovery collection and waterfall distribution.' },
+];
+
+const steps = defaultSteps.map((step, index) => {
+  const stepData = data?.steps?.[index];
+  return {
+    ...step,
+    title: stepData?.title ?? step.title,
+    desc: stepData?.desc ?? step.desc,
+  };
+});
+---
+
+<section class="section bg-[#f8fafc]">
+  <div class="container">
+    {/* Eyebrow */}
+    <div class="eyebrow mb-2">
+      <GitCommit className="w-4 h-4 text-[#e6463a]" />
+      <span>{eyebrow}</span>
+    </div>
+
+    {/* Section Head */}
+    <div class="section-head">
+      <h2>{title}</h2>
+      <p>{body}</p>
+    </div>
+
+    {/* Static Process Grid */}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {steps.map((step) => (
+        <div class="bg-white border border-slate-200 p-5 rounded-xl flex flex-col justify-between hover:border-[#e6463a]/40 hover:shadow-md transition-all duration-200">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-xs font-mono font-bold px-2 py-0.5 rounded bg-slate-100 text-slate-600">
+                {step.no}
+              </span>
+              <CheckCircle2 className="w-4 h-4 text-[#e6463a]" />
+            </div>
+            <h3 class="text-base font-bold text-slate-900 leading-snug mb-2">
+              {step.title}
+            </h3>
+            <p class="text-xs text-slate-600 leading-relaxed">
+              {step.desc}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

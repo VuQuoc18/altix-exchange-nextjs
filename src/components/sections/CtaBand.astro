@@ -1,0 +1,58 @@
+---
+import { Sparkles, ShieldAlert, ArrowRight } from "lucide-react";
+
+interface CtaBandData {
+  eyebrow?: string;
+  title?: string;
+  body?: string;
+  button?: string;
+}
+
+interface Props {
+  data?: CtaBandData;
+}
+
+const { data } = Astro.props;
+
+const eyebrow = data?.eyebrow ?? "Start here";
+const title = data?.title ?? "Start with a structured initial review.";
+const body = data?.body ?? "Do not send privileged or highly sensitive evidence through the initial contact form. ALTIX will provide secure upload instructions if further materials are required.";
+const button = data?.button ?? "Submit a case";
+---
+
+<section class="cta-band">
+  {/* Background Cyber Grid */}
+  <div
+    class="absolute inset-0 opacity-10 pointer-events-none"
+    style={{
+      backgroundImage: `linear-gradient(to right, rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.08) 1px, transparent 1px)`,
+      backgroundSize: '40px 40px',
+    }}
+  ></div>
+
+  <div class="container">
+    <div class="space-y-3">
+      <span class="eyebrow eyebrow--light">
+        <Sparkles className="w-3.5 h-3.5" />
+        <span>{eyebrow}</span>
+      </span>
+      <h2>{title}</h2>
+      <p class="flex items-center gap-2">
+        <ShieldAlert className="w-5 h-5 text-red-400 flex-shrink-0" />
+        <span>{body}</span>
+      </p>
+    </div>
+
+    <div>
+      <a
+        href="https://platform.altix.exchange/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="px-7 py-4 rounded-xl bg-[#e6463a] hover:bg-[#d1372b] text-white font-bold text-base shadow-xl shadow-red-500/30 flex items-center gap-2 transition-all hover:scale-105"
+      >
+        <span>{button}</span>
+        <ArrowRight className="w-5 h-5" />
+      </a>
+    </div>
+  </div>
+</section>

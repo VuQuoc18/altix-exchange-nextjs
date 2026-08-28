@@ -1,0 +1,121 @@
+---
+import { FolderCheck, Coins, BarChart3, ArrowRight, Shield } from "lucide-react";
+
+interface CardItem {
+  title?: string;
+  description?: string;
+  linkText?: string;
+  badge?: string;
+}
+
+interface WhatWeDoData {
+  eyebrow?: string;
+  title?: string;
+  body?: string;
+  cards?: CardItem[];
+}
+
+interface Props {
+  data?: WhatWeDoData;
+}
+
+const { data } = Astro.props;
+
+const eyebrow = data?.eyebrow ?? "What ALTIX does";
+const title = data?.title ?? "A more structured route from case to capital.";
+const body = data?.body ?? "Legal merit alone is not enough for a funding decision. Professional capital also needs clear evidence, realistic budgets, supported damages, jurisdiction analysis, collectability information, enforcement planning and appropriate terms.";
+
+const defaultCards = [
+  {
+    no: '01',
+    icon: FolderCheck,
+    link: '/case-readiness',
+    fallback: {
+      title: 'Case Readiness',
+      description: 'Organize authority, evidence, damages, budget, jurisdiction and collectability into a coherent funding package.',
+      linkText: 'Explore Case Readiness',
+      badge: 'STAGE 1: PREPARATION',
+    },
+  },
+  {
+    no: '02',
+    icon: Coins,
+    link: '/litigation-funding',
+    fallback: {
+      title: 'Professional Funding Process',
+      description: 'Suitable matters may be presented to eligible funding participants through a permission-based process.',
+      linkText: 'How funding works',
+      badge: 'STAGE 2: CAPITAL ACCESS',
+    },
+  },
+  {
+    no: '03',
+    icon: BarChart3,
+    link: '/case-administration',
+    fallback: {
+      title: 'Administration & Reporting',
+      description: 'Support agreed budgets, milestones, controlled information access and reporting through the life of a matter.',
+      linkText: 'Case administration',
+      badge: 'STAGE 3: EXECUTION',
+    },
+  },
+];
+
+const cards = defaultCards.map((card, index) => {
+  const cardData = data?.cards?.[index];
+  return {
+    ...card,
+    title: cardData?.title ?? card.fallback.title,
+    description: cardData?.description ?? card.fallback.description,
+    linkText: cardData?.linkText ?? card.fallback.linkText,
+    badge: cardData?.badge ?? card.fallback.badge,
+  };
+});
+---
+
+<section class="section bg-[#f8fafc]">
+  <div class="container">
+    {/* Eyebrow */}
+    <div class="eyebrow mb-2">
+      <Shield className="w-4 h-4 text-[#e6463a]" />
+      <span>{eyebrow}</span>
+    </div>
+
+    {/* Section Head */}
+    <div class="section-head">
+      <h2>{title}</h2>
+      <p>{body}</p>
+    </div>
+
+    {/* Card Grid */}
+    <div class="card-grid">
+      {cards.map((card) => {
+        const Icon = card.icon;
+        return (
+          <article class="card group hover:border-[#e6463a]/40">
+            <div class="flex items-center justify-between mb-2">
+              <span class="card-no">{card.no}</span>
+              <span class="text-[10px] font-mono font-bold tracking-wider px-2 py-0.5 rounded bg-slate-100 text-slate-600">
+                {card.badge}
+              </span>
+            </div>
+
+            <h3>
+              <span class="p-2 rounded-lg bg-red-50 text-[#e6463a] group-hover:bg-[#e6463a] group-hover:text-white transition-colors duration-300">
+                <Icon className="w-5 h-5" />
+              </span>
+              <span>{card.title}</span>
+            </h3>
+
+            <p>{card.description}</p>
+
+            <a class="text-link" href={card.link}>
+              <span>{card.linkText}</span>
+              <ArrowRight className="w-4 h-4" />
+            </a>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
