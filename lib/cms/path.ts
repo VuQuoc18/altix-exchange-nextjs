@@ -66,10 +66,11 @@ export function setByPath(
   if (typeof last === 'number') {
     (cur as unknown[])[last] = value;
   } else {
-    if (!(cur as Record<string, unknown>)[last]) {
+    const parent = cur as Record<string, unknown>;
+    if (!(last in parent)) {
       throw new Error(`path not found: ${path}`);
     }
-    (cur as Record<string, unknown>)[last] = value;
+    parent[last] = value;
   }
   return newObj;
 }

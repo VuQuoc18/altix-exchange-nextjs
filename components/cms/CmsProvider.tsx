@@ -76,7 +76,7 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
 
   const pagesRef = useRef(pages);
   const blogsRef = useRef(blogs);
-  const pendingRef = useRef<PendingPatch | null>(null);
+  const pendingRef = useRef<Map<string, PendingPatch>>(new Map());
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -186,34 +186,34 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
+  const pendingPatchKey = (pageSlug: string, path: string) => `${pageSlug}:${path}`;
+
   const flushPendingPatch = useCallback(async () => {
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
       debounceRef.current = null;
     }
-    const pending = pendingRef.current;
-    if (!pending) return;
-    pendingRef.current = null;
-    await executePatch(pending);
+    const pending = Array.from(pendingRef.current.values());
+    if (pending.length === 0) return;
+    pendingRef.current.clear();
+    for (const patch of pending) {
+      await executePatch(patch);
+    }
   }, [executePatch]);
 
   const schedulePatch = useCallback(
     (pageSlug: string, path: string, value: string) => {
-      pendingRef.current = { pageSlug, path, value };
+      pendingRef.current.set(pendingPatchKey(pageSlug, path), { pageSlug, path, value });
       setStatus('unsaved');
       if (debounceRef.current) {
         clearTimeout(debounceRef.current);
       }
       debounceRef.current = setTimeout(() => {
         debounceRef.current = null;
-        const next = pendingRef.current;
-        if (next) {
-          pendingRef.current = null;
-          void executePatch(next);
-        }
+        void flushPendingPatch();
       }, 1000);
     },
-    [executePatch],
+    [flushPendingPatch],
   );
 
   const patch = useCallback(
@@ -235,21 +235,20 @@ export function CmsProvider({ children }: { children: React.ReactNode }) {
 
   const patchBlogField = useCallback(
     (blogId: string, path: string, value: string) => {
+      const draftUpdatedAt =
+        blogsRef.current[blogId]?.draftUpdatedAt ?? new Date().toISOString();
+      const nextBlog = { draftUpdatedAt, dirty: true };
+
       setBlogs((prev) => ({
         ...prev,
-        [blogId]: {
-          draftUpdatedAt: prev[blogId]?.draftUpdatedAt ?? new Date().toISOString(),
-          dirty: true,
-        },
+        [blogId]: nextBlog,
       }));
-
-      const blog = blogsRef.current[blogId];
-      if (!blog) return;
+      blogsRef.current = { ...blogsRef.current, [blogId]: nextBlog };
 
       setStatus('saving');
       void cmsApi
         .patchBlog(blogId, {
-          expected_draft_updated_at: blog.draftUpdatedAt,
+          expected_draft_updated_at: draftUpdatedAt,
           path,
           value,
         })
