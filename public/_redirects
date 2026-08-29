@@ -8,6 +8,7 @@
 /become-a-partner /expert-network 301
 /expert-panel /expert-network 301
 /contact-us / 301
+/contact / 301
 /altixblogs /insights 301
 /altixblogs/* /insights/:splat 301
 /privacy-policy /privacy 301

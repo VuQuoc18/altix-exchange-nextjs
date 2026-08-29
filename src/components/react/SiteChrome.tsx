@@ -1,5 +1,3 @@
-'use client';
-
 import React, { useState, useEffect } from 'react';
 import { Menu, X, ArrowUpRight, Lock, FileText } from 'lucide-react';
 import InstitutionalAccessModal from './InstitutionalAccessModal';

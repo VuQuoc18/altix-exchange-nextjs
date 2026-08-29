@@ -156,6 +156,7 @@
 		{ "source": "/become-a-partner", "destination": "/expert-network", "status": 301 },
 		{ "source": "/expert-panel", "destination": "/expert-network", "status": 301 },
 		{ "source": "/contact-us", "destination": "/", "status": 301 },
+		{ "source": "/contact", "destination": "/", "status": 301 },
 		{ "source": "/altixblogs", "destination": "/insights", "status": 301 },
 		{ "source": "/altixblogs/:slug", "destination": "/insights/:slug", "status": 301 },
 		{ "source": "/privacy-policy", "destination": "/privacy", "status": 301 },

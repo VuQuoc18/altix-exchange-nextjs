@@ -55,7 +55,7 @@ export const GET: APIRoute = async () => {
 		if (Array.isArray(posts)) {
 			for (const post of posts) {
 				const status = post.data?.status || (post as any).status;
-				if (status === "published" || !status) {
+				if (status === "published") {
 					const slug = (post as any).slug || post.data?.slug || post.id;
 					if (slug) {
 						urls.add(`${BASE_URL}/insights/${escapeXml(slug)}`);

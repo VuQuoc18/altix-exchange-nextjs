@@ -20,6 +20,7 @@ export default defineConfig({
 		"/become-a-partner": { destination: "/expert-network", status: 301 },
 		"/expert-panel": { destination: "/expert-network", status: 301 },
 		"/contact-us": { destination: "/", status: 301 },
+		"/contact": { destination: "/", status: 301 },
 		"/privacy-policy": { destination: "/privacy", status: 301 },
 		"/terms-of-service": { destination: "/terms", status: 301 },
 		"/newsroom": { destination: "/insights", status: 301 },
