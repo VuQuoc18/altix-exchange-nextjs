@@ -1,0 +1,24 @@
+---
+import Leadership from "../../sections/Leadership.astro";
+
+interface Props {
+	node: {
+		eyebrow?: string;
+		title?: string;
+		body?: string;
+		kicker?: string;
+		name?: string;
+		role?: string;
+		stat1Title?: string;
+		stat1Body?: string;
+		stat2Title?: string;
+		stat2Body?: string;
+		cta?: string;
+		photoUrl?: string;
+	};
+}
+
+const { node } = Astro.props;
+---
+
+<Leadership data={node} />

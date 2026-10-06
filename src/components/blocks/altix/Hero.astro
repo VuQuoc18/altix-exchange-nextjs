@@ -1,0 +1,36 @@
+---
+import HeroIsland from "../../react/HeroIsland";
+
+interface Props {
+	node: {
+		eyebrow?: string;
+		headlineBefore?: string;
+		headlineAccent?: string;
+		leadStrong?: string;
+		leadRest?: string;
+		primaryCta?: string;
+		secondaryCta?: string;
+		badge1?: string;
+		badge2?: string;
+		badge3?: string;
+		disclaimer?: string;
+	};
+}
+
+const { node } = Astro.props;
+---
+
+<HeroIsland
+	client:load
+	eyebrow={node.eyebrow}
+	headlineBefore={node.headlineBefore}
+	headlineAccent={node.headlineAccent}
+	leadStrong={node.leadStrong}
+	leadRest={node.leadRest}
+	primaryCta={node.primaryCta}
+	secondaryCta={node.secondaryCta}
+	badge1={node.badge1}
+	badge2={node.badge2}
+	badge3={node.badge3}
+	disclaimer={node.disclaimer}
+/>

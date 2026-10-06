@@ -6,18 +6,27 @@ interface CtaBandData {
   title?: string;
   body?: string;
   button?: string;
+  url?: string;
 }
 
 interface Props {
   data?: CtaBandData;
+  fields?: {
+    eyebrow?: Record<string, unknown>;
+    title?: Record<string, unknown>;
+    body?: Record<string, unknown>;
+    button?: Record<string, unknown>;
+  };
 }
 
-const { data } = Astro.props;
+const { data, fields } = Astro.props;
 
 const eyebrow = data?.eyebrow ?? "Start here";
 const title = data?.title ?? "Start with a structured initial review.";
 const body = data?.body ?? "Do not send privileged or highly sensitive evidence through the initial contact form. ALTIX will provide secure upload instructions if further materials are required.";
 const button = data?.button ?? "Submit a case";
+const href = data?.url?.trim() || "https://platform.altix.exchange/";
+const isExternal = /^https?:\/\//.test(href);
 ---
 
 <section class="cta-band">
@@ -34,23 +43,23 @@ const button = data?.button ?? "Submit a case";
     <div class="space-y-3">
       <span class="eyebrow eyebrow--light">
         <Sparkles className="w-3.5 h-3.5" />
-        <span>{eyebrow}</span>
+        <span {...fields?.eyebrow}>{eyebrow}</span>
       </span>
-      <h2>{title}</h2>
+      <h2 {...fields?.title}>{title}</h2>
       <p class="flex items-center gap-2">
         <ShieldAlert className="w-5 h-5 text-red-400 flex-shrink-0" />
-        <span>{body}</span>
+        <span {...fields?.body}>{body}</span>
       </p>
     </div>
 
     <div>
       <a
-        href="https://platform.altix.exchange/"
-        target="_blank"
-        rel="noopener noreferrer"
+        href={href}
+        target={isExternal ? "_blank" : undefined}
+        rel={isExternal ? "noopener noreferrer" : undefined}
         class="px-7 py-4 rounded-xl bg-[#e6463a] hover:bg-[#d1372b] text-white font-bold text-base shadow-xl shadow-red-500/30 flex items-center gap-2 transition-all hover:scale-105"
       >
-        <span>{button}</span>
+        <span {...fields?.button}>{button}</span>
         <ArrowRight className="w-5 h-5" />
       </a>
     </div>

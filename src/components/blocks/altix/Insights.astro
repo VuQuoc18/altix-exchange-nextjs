@@ -1,0 +1,17 @@
+---
+/**
+ * "Latest insights" block — fetches the newest published posts itself so
+ * editors only have to place the block. Pages that include it should also
+ * add the posts collection to their cache tags (see index.astro).
+ */
+import { getEmDashCollection } from "emdash";
+import Insights from "../../sections/Insights.astro";
+
+const { entries } = await getEmDashCollection("posts", {
+	status: "published",
+	limit: 12,
+	orderBy: { published_at: "desc" },
+});
+---
+
+<Insights posts={entries || []} />

@@ -1,10 +1,24 @@
 ---
 import { getEmDashCollection } from "emdash";
 import { Image } from "emdash/ui";
+import { 
+	BookOpen, 
+	ArrowRight, 
+	Calendar, 
+	Clock, 
+	Sparkles, 
+	ShieldAlert, 
+	Scale, 
+	Building, 
+	TrendingUp,
+	Search
+} from "lucide-react";
 import Base from "../../layouts/Base.astro";
+import { getPostCategory, estimateReadTime, formatPostDate } from "../../lib/blog-helpers";
 
 const { entries: posts, cacheHint } = await getEmDashCollection("posts", {
 	status: "published",
+	limit: 50,
 	orderBy: { published_at: "desc" },
 });
 
@@ -12,80 +26,281 @@ if (Astro.cache?.enabled && cacheHint) {
 	Astro.cache.set(cacheHint);
 }
 
+function postTime(post: any): number {
+	const raw = post.data?.published_at || post.data?.publishedAt || post.data?.created_at || post.data?.createdAt || 0;
+	return new Date(raw).getTime();
+}
+
 const publishedPosts = (posts || []).filter((post) => {
-	const status = post.data?.status || (post as any).status;
+	const status = post.data?.status || (post as any)?.status || "published";
 	return status === "published";
 });
 
-const sortedPosts = publishedPosts.toSorted((a, b) => {
-	const dateA = new Date(a.data.publishedAt || a.data.createdAt || 0).getTime();
-	const dateB = new Date(b.data.publishedAt || b.data.createdAt || 0).getTime();
-	return dateB - dateA;
-});
+const sortedPosts = publishedPosts.toSorted((a, b) => postTime(b) - postTime(a));
+
+const featuredPost = sortedPosts[0];
+const remainingPosts = sortedPosts.slice(1);
+
+const categories = [
+	"All",
+	"Litigation Finance",
+	"Case Readiness",
+	"Asset Recovery",
+	"Financial Crime",
+	"Institutional Capital"
+];
 ---
 
 <Base
-	title="Insights | ALTIX Exchange"
-	description="Market Analysis & Professional Commentary"
+	title="Litigation Finance & Asset Recovery Insights | ALTIX Blog"
+	description="Educational analysis on litigation finance, case readiness, asset recovery, financial crime and forensic intelligence."
 >
 	<div class="insights-page">
-		<section class="hero-section section bg-[#f8fafc]">
-			<div class="container">
-				<div class="eyebrow mb-3">
-					<span>Market Analysis & Professional Commentary</span>
+		{/* Hero Section */}
+		<section class="hero relative overflow-hidden bg-gradient-to-br from-[#1a1d30] via-[#24263f] to-[#42222e] text-white py-20 sm:py-24">
+			<div class="container hero-grid">
+				<div class="z-10">
+					<span class="eyebrow eyebrow--light flex items-center gap-2 mb-3">
+						<BookOpen className="w-4 h-4 text-[#ff8d84]" />
+						<span>Insights & Perspectives</span>
+					</span>
+					<h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold leading-[1.1] mb-6 tracking-tight">
+						Analysis of litigation finance, asset recovery and <em>financial-crime developments.</em>
+					</h1>
+					<p class="hero-lead text-lg sm:text-xl text-slate-300 max-w-2xl leading-relaxed">
+						ALTIX Insights publishes educational analysis on case preparation, third-party funding, defendant collectability, international asset recovery, and forensic intelligence.
+					</p>
 				</div>
-				<h1 class="page-title">Insights</h1>
-				<p class="lead-text">
-					Market Analysis & Professional Commentary
-				</p>
+				<div class="hero-art hidden lg:block" aria-hidden="true">
+					<div class="orbit o1"></div>
+					<div class="orbit o2"></div>
+					<div class="hero-panel backdrop-blur-xl bg-slate-950/70 border border-white/15 p-7 rounded-2xl shadow-2xl">
+						<small class="text-[#ff8d84] font-mono tracking-widest uppercase text-xs block mb-2 font-bold">ALTIX RESEARCH ENGINE</small>
+						<strong class="text-white text-xl font-serif block mb-3 leading-snug">Case → diligence → structure → capital → reporting</strong>
+						<span class="text-slate-400 text-xs leading-relaxed block">Professional access • permission-based data • case-specific forensic analysis</span>
+					</div>
+				</div>
 			</div>
 		</section>
 
-		<section class="content-section section">
+		{/* Featured Post Spotlight */}
+		{featuredPost && (() => {
+			const slug = featuredPost.data?.slug || featuredPost.id;
+			const href = `/insights/${slug}`;
+			const title = featuredPost.data?.title || slug;
+			const excerpt = featuredPost.data?.excerpt || "";
+			const rawDate = featuredPost.data?.published_at || featuredPost.data?.publishedAt || featuredPost.data?.created_at || featuredPost.data?.createdAt;
+			const formattedDate = formatPostDate(rawDate);
+			const category = getPostCategory(slug, title);
+			const readTime = estimateReadTime(featuredPost.data?.content, excerpt);
+			const image = featuredPost.data?.featured_image;
+
+			return (
+				<section class="py-12 bg-slate-50/80 border-b border-slate-200">
+					<div class="container">
+						<div class="flex items-center gap-2 mb-6">
+							<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-[#e6463a]/10 text-[#e6463a] border border-[#e6463a]/20">
+								<Sparkles className="w-3.5 h-3.5" />
+								<span>Featured Story</span>
+							</span>
+						</div>
+
+						<div class="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group">
+							<div class="grid grid-cols-1 lg:grid-cols-12 gap-0">
+								<a href={href} class="lg:col-span-7 relative aspect-[16/10] lg:aspect-auto overflow-hidden bg-[#1e2137] block">
+									{image ? (
+										<div class="w-full h-full min-h-[300px] lg:min-h-[420px] featured-thumb" {...featuredPost.edit?.featured_image}>
+											<Image image={image} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+										</div>
+									) : (
+										<div class="w-full h-full min-h-[300px] lg:min-h-[420px] bg-gradient-to-br from-[#1a1d30] via-[#242742] to-[#3a202c] relative flex items-center justify-center p-8 select-none">
+											<div class="absolute inset-0 opacity-15 bg-[radial-gradient(#e6463a_1.5px,transparent_1.5px)] [background-size:24px_24px]" />
+											<div class="absolute -right-12 -bottom-12 w-64 h-64 rounded-full bg-[#e6463a]/20 blur-3xl" />
+											<div class="z-10 text-center">
+												<div class="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center mx-auto mb-4 shadow-xl group-hover:scale-110 group-hover:bg-[#e6463a]/30 transition-all duration-300">
+													<BookOpen className="w-8 h-8 text-[#ff8d84]" />
+												</div>
+												<span class="text-sm font-mono uppercase tracking-widest text-slate-300 font-semibold block">
+													ALTIX Featured Insight
+												</span>
+											</div>
+										</div>
+									)}
+									<div class="absolute top-5 left-5 flex gap-2">
+										<span class="px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wider uppercase bg-white/95 text-slate-900 shadow-md backdrop-blur-md border border-white/50">
+											{category}
+										</span>
+									</div>
+								</a>
+
+								<div class="lg:col-span-5 p-8 sm:p-10 lg:p-12 flex flex-col justify-center">
+									<div class="flex items-center gap-2.5 text-xs font-medium text-slate-400 mb-4">
+										<time datetime={rawDate ? new Date(rawDate).toISOString() : undefined} class="flex items-center gap-1.5">
+											<Calendar className="w-3.5 h-3.5" />
+											{formattedDate}
+										</time>
+										<span>·</span>
+										<span class="flex items-center gap-1">
+											<Clock className="w-3.5 h-3.5" />
+											{readTime}
+										</span>
+										<span>·</span>
+										<span class="font-semibold text-slate-600">ALTIX Editorial</span>
+									</div>
+
+									<h2 class="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-slate-900 leading-tight mb-4 group-hover:text-[#e6463a] transition-colors" {...featuredPost.edit?.title}>
+										<a href={href} class="no-underline text-inherit">
+											{title}
+										</a>
+									</h2>
+
+									{excerpt && (
+										<p class="text-slate-600 text-base sm:text-lg leading-relaxed mb-8 line-clamp-4" {...featuredPost.edit?.excerpt}>
+											{excerpt}
+										</p>
+									)}
+
+									<div>
+										<a href={href} class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#24263f] hover:bg-[#e6463a] text-white font-bold text-sm shadow-md transition-all duration-300 hover:gap-3">
+											<span>Read Featured Story</span>
+											<ArrowRight className="w-4 h-4" />
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			);
+		})()}
+
+		{/* Blog Articles Section */}
+		<section class="section py-16 bg-white">
 			<div class="container">
+				<div class="flex flex-col md:flex-row md:items-end md:justify-between mb-10 gap-6">
+					<div>
+						<span class="eyebrow block mb-2">All Articles</span>
+						<h2 class="text-3xl sm:text-4xl font-serif font-bold text-slate-900 tracking-tight">
+							Research, guides & commentary.
+						</h2>
+						<p class="text-slate-600 text-lg mt-2 max-w-2xl">
+							Explore all publications from the ALTIX team covering case preparation, litigation funding, and forensic intelligence.
+						</p>
+					</div>
+
+					{/* Category Filter Pills */}
+					<div class="flex flex-wrap gap-2 filter-tabs" id="category-filters">
+						{categories.map((cat) => (
+							<button
+								type="button"
+								class={`category-tab px-4 py-2 rounded-xl text-xs font-bold uppercase tracking-wider border transition-all cursor-pointer ${
+									cat === "All"
+										? "bg-slate-900 text-white border-slate-900 active-tab shadow-sm"
+										: "bg-white text-slate-600 border-slate-200 hover:border-slate-400 hover:text-slate-900"
+								}`}
+								data-category={cat}
+							>
+								{cat}
+							</button>
+						))}
+					</div>
+				</div>
+
 				{
 					sortedPosts.length === 0 ? (
-						<div class="empty-state">
-							<h3>No insights published yet</h3>
-							<p>Check back soon for market analysis and professional commentary from ALTIX Exchange.</p>
+						<div class="border border-dashed border-slate-300 rounded-3xl p-16 text-center bg-slate-50">
+							<BookOpen className="w-12 h-12 text-slate-400 mx-auto mb-4" />
+							<h3 class="text-2xl font-serif font-bold text-slate-800 mb-2">No posts found</h3>
+							<p class="text-slate-600 max-w-md mx-auto">
+								Articles and guides will appear here once published from the EmDash content management system.
+							</p>
 						</div>
 					) : (
-						<div class="posts-grid">
+						<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="posts-grid">
 							{sortedPosts.map((post) => {
-								const slug = post.data.slug || post.id;
-								const postDate = post.data.publishedAt || post.data.createdAt;
-								const formattedDate = postDate
-									? new Date(postDate).toLocaleDateString("en-US", {
-											year: "numeric",
-											month: "long",
-											day: "numeric",
-										})
-									: null;
+								const slug = post.data?.slug || post.id;
+								const href = `/insights/${slug}`;
+								const title = post.data?.title || slug;
+								const excerpt = post.data?.excerpt || "";
+								const rawDate = post.data?.published_at || post.data?.publishedAt || post.data?.created_at || post.data?.createdAt;
+								const formattedDate = formatPostDate(rawDate);
+								const category = getPostCategory(slug, title);
+								const readTime = estimateReadTime(post.data?.content, excerpt);
+								const image = post.data?.featured_image;
 
 								return (
-									<article class="post-card">
-										{post.data.featured_image && (
-											<div class="post-image-wrapper" {...post.edit?.featured_image}>
-												<Image image={post.data.featured_image} />
-											</div>
-										)}
-										<div class="post-card-content">
-											{formattedDate && (
-												<time datetime={new Date(postDate).toISOString()} class="post-date">
-													{formattedDate}
-												</time>
+									<article 
+										class="post-card border border-slate-200 rounded-2xl bg-white overflow-hidden shadow-sm hover:shadow-xl hover:border-slate-300 hover:-translate-y-1 transition-all duration-300 flex flex-col group"
+										data-category={category}
+									>
+										<a href={href} class="block relative overflow-hidden aspect-[16/10] bg-[#1e2137]">
+											{image ? (
+												<div class="w-full h-full article-thumb" {...post.edit?.featured_image}>
+													<Image image={image} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+												</div>
+											) : (
+												<div class="w-full h-full bg-gradient-to-br from-[#1c1f36] via-[#242742] to-[#3a2838] relative flex items-center justify-center p-6 select-none overflow-hidden">
+													<div class="absolute inset-0 opacity-10 bg-[radial-gradient(#e6463a_1px,transparent_1px)] [background-size:16px_16px]" />
+													<div class="absolute -right-8 -bottom-8 w-32 h-32 rounded-full bg-[#e6463a]/15 blur-2xl" />
+													<div class="z-10 flex flex-col items-center text-center">
+														<div class="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 flex items-center justify-center mb-2.5 shadow-inner group-hover:scale-110 group-hover:bg-[#e6463a]/25 group-hover:border-[#e6463a]/40 transition-all duration-300">
+															{category === "Financial Crime" ? (
+																<ShieldAlert className="w-6 h-6 text-red-400" />
+															) : category === "Case Readiness" ? (
+																<Scale className="w-6 h-6 text-amber-400" />
+															) : category === "Asset Recovery" ? (
+																<TrendingUp className="w-6 h-6 text-emerald-400" />
+															) : category === "Institutional Capital" ? (
+																<Building className="w-6 h-6 text-blue-400" />
+															) : (
+																<BookOpen className="w-6 h-6 text-[#ff8d84]" />
+															)}
+														</div>
+														<span class="text-[11px] font-mono uppercase tracking-widest text-slate-300 font-semibold">
+															ALTIX Research
+														</span>
+													</div>
+												</div>
 											)}
-											<h2 class="post-title" {...post.edit?.title}>
-												<a href={`/insights/${slug}`}>{post.data.title}</a>
-											</h2>
-											{post.data.excerpt && (
-												<p class="post-excerpt" {...post.edit?.excerpt}>
-													{post.data.excerpt}
+											<span class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase bg-white/95 text-slate-800 shadow-sm backdrop-blur-md border border-white/40">
+												{category}
+											</span>
+											<span class="absolute top-4 right-4 z-10 px-2.5 py-1 rounded-full text-[11px] font-medium tracking-wide bg-slate-950/70 text-slate-200 backdrop-blur-md flex items-center gap-1">
+												<Clock className="w-3 h-3 text-slate-400" />
+												{readTime}
+											</span>
+										</a>
+
+										<div class="p-6 sm:p-7 flex flex-col flex-grow">
+											<div class="flex items-center gap-2 text-xs font-medium text-slate-400 mb-3">
+												<span class="flex items-center gap-1">
+													<Calendar className="w-3.5 h-3.5" />
+													<time datetime={rawDate ? new Date(rawDate).toISOString() : undefined}>
+														{formattedDate}
+													</time>
+												</span>
+												<span>·</span>
+												<span>ALTIX Editorial</span>
+											</div>
+
+											<h3 class="font-serif text-xl sm:text-2xl font-bold text-slate-900 leading-snug mb-3 !mt-0 group-hover:text-[#e6463a] transition-colors" {...post.edit?.title}>
+												<a href={href} class="no-underline text-inherit">
+													{title}
+												</a>
+											</h3>
+
+											{excerpt && (
+												<p class="text-slate-600 text-sm leading-relaxed line-clamp-3 mb-6 flex-grow" {...post.edit?.excerpt}>
+													{excerpt}
 												</p>
 											)}
-											<a href={`/insights/${slug}`} class="text-link read-more">
-												Read article &rarr;
-											</a>
+
+											<div class="pt-4 border-t border-slate-100 flex items-center justify-between mt-auto">
+												<a class="inline-flex items-center gap-1.5 text-sm font-bold text-[#e6463a] group-hover:gap-2.5 transition-all" href={href}>
+													<span>Read article</span>
+													<ArrowRight className="w-4 h-4" />
+												</a>
+											</div>
 										</div>
 									</article>
 								);
@@ -95,158 +310,74 @@ const sortedPosts = publishedPosts.toSorted((a, b) => {
 				}
 			</div>
 		</section>
+
+		{/* CTA Band */}
+		<section class="cta-band bg-[#24263f] text-white py-16 border-t border-slate-800">
+			<div class="container flex flex-col md:flex-row items-center justify-between gap-8">
+				<div class="max-w-2xl">
+					<span class="eyebrow eyebrow--light block mb-2">Engage With ALTIX</span>
+					<h2 class="text-3xl sm:text-4xl font-serif font-bold text-white mb-3">
+						Do you have a commercial claim or recovery opportunity?
+					</h2>
+					<p class="text-slate-300 text-base leading-relaxed">
+						We help claimants and counsel structure funder-ready dossiers and coordinate access to qualified institutional litigation capital.
+					</p>
+				</div>
+				<div class="flex flex-wrap gap-4 shrink-0">
+					<a href="https://platform.altix.exchange/" target="_blank" rel="noopener noreferrer" class="button">
+						<span>Submit a Case</span>
+						<ArrowRight className="w-4 h-4" />
+					</a>
+					<a href="/contact" class="button button--secondary">
+						<span>Contact Team</span>
+					</a>
+				</div>
+			</div>
+		</section>
 	</div>
 </Base>
 
+<script>
+	// Client-side category filtering
+	const filterButtons = document.querySelectorAll<HTMLButtonElement>(".category-tab");
+	const postCards = document.querySelectorAll<HTMLElement>(".post-card");
+
+	filterButtons.forEach((btn) => {
+		btn.addEventListener("click", () => {
+			const selectedCategory = btn.getAttribute("data-category");
+
+			// Update active tab styles
+			filterButtons.forEach((b) => {
+				b.classList.remove("bg-slate-900", "text-white", "border-slate-900", "active-tab", "shadow-sm");
+				b.classList.add("bg-white", "text-slate-600", "border-slate-200");
+			});
+			btn.classList.remove("bg-white", "text-slate-600", "border-slate-200");
+			btn.classList.add("bg-slate-900", "text-white", "border-slate-900", "active-tab", "shadow-sm");
+
+			// Filter cards
+			postCards.forEach((card) => {
+				const cardCategory = card.getAttribute("data-category");
+				if (selectedCategory === "All" || cardCategory === selectedCategory) {
+					card.style.display = "flex";
+				} else {
+					card.style.display = "none";
+				}
+			});
+		});
+	});
+</script>
+
 <style>
-	.hero-section {
-		padding-top: 4rem;
-		padding-bottom: 4rem;
-		border-bottom: 1px solid var(--line);
-	}
-
-	.page-title {
-		font-family: var(--font-serif);
-		font-size: clamp(2.25rem, 4vw, 3.25rem);
-		font-weight: 700;
-		color: var(--navy);
-		line-height: 1.2;
-		margin-bottom: 1rem;
-	}
-
-	.lead-text {
-		font-size: 1.25rem;
-		line-height: 1.6;
-		color: var(--muted);
-		margin-bottom: 0;
-		max-width: 75ch;
-	}
-
-	.content-section {
-		padding-top: 4rem;
-		padding-bottom: 5rem;
-	}
-
-	.empty-state {
-		text-align: center;
-		padding: 4rem 2rem;
-		background: #ffffff;
-		border: 1px solid var(--line);
-		border-radius: 12px;
-		max-width: 600px;
-		margin: 0 auto;
-	}
-
-	.empty-state h3 {
-		font-size: 1.5rem;
-		color: var(--navy);
-		margin-bottom: 0.5rem;
-	}
-
-	.empty-state p {
-		color: var(--muted);
-		margin: 0;
-	}
-
-	.posts-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-		gap: 2rem;
-	}
-
-	.post-card {
-		background: #ffffff;
-		border: 1px solid var(--line);
-		border-radius: 12px;
-		overflow: hidden;
-		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-		transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
-		display: flex;
-		flex-direction: column;
-	}
-
-	.post-card:hover {
-		transform: translateY(-4px);
-		box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-		border-color: rgba(230, 70, 58, 0.3);
-	}
-
-	.post-image-wrapper {
-		width: 100%;
-		aspect-ratio: 16 / 9;
-		overflow: hidden;
-		background: var(--soft);
-	}
-
-	.post-image-wrapper :global(img) {
+	.featured-thumb :global(img),
+	.article-thumb :global(img) {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
-		transition: transform 0.3s ease;
+		transition: transform 0.5s ease;
 	}
 
-	.post-card:hover .post-image-wrapper :global(img) {
-		transform: scale(1.03);
-	}
-
-	.post-card-content {
-		padding: 1.75rem;
-		display: flex;
-		flex-direction: column;
-		flex-grow: 1;
-	}
-
-	.post-date {
-		font-size: 0.85rem;
-		font-weight: 600;
-		color: var(--muted);
-		margin-bottom: 0.5rem;
-		text-transform: uppercase;
-		letter-spacing: 0.04em;
-	}
-
-	.post-title {
-		font-family: var(--font-serif);
-		font-size: 1.35rem;
-		font-weight: 700;
-		color: var(--navy);
-		line-height: 1.3;
-		margin-bottom: 0.75rem;
-	}
-
-	.post-title a {
-		text-decoration: none;
-		color: inherit;
-		transition: color 0.2s ease;
-	}
-
-	.post-title a:hover {
-		color: var(--red);
-	}
-
-	.post-excerpt {
-		color: var(--muted);
-		font-size: 0.975rem;
-		line-height: 1.6;
-		margin-bottom: 1.5rem;
-		flex-grow: 1;
-	}
-
-	.read-more {
-		margin-top: auto;
-	}
-
-	@media (max-width: 768px) {
-		.posts-grid {
-			grid-template-columns: 1fr;
-		}
-
-		.page-title {
-			font-size: 2rem;
-		}
-
-		.lead-text {
-			font-size: 1.1rem;
-		}
+	.group:hover .featured-thumb :global(img),
+	.group:hover .article-thumb :global(img) {
+		transform: scale(1.04);
 	}
 </style>

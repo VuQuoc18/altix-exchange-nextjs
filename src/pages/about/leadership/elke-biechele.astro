@@ -23,7 +23,16 @@ const bio = pageData.bio || pageData.body || "ALTIX was founded by Elke Biechele
 const trackRecord = pageData.trackRecord || "Specializing in cross-border asset recovery, complex financial dispute intelligence, and litigation capital structuring. Leading global initiatives to bring institutional diligence standards and transparent governance to legal finance.";
 const background = pageData.background || "Over two decades leading risk management, financial crime intelligence, and litigation finance initiatives across global financial centers.";
 
-const cmsSections = pageData.sections && Array.isArray(pageData.sections) ? pageData.sections : [];
+// "Additional information" cards: edited as Card grid blocks in Page content.
+// Falls back to the legacy JSON `sections` field for unmigrated content.
+const contentCards = Array.isArray(pageData.content)
+  ? pageData.content
+      .filter((b: any) => b?._type === "altix.cardGrid" && !b.hidden)
+      .flatMap((b: any) => (Array.isArray(b.cards) ? b.cards : []))
+  : [];
+const cmsSections = contentCards.length > 0
+  ? contentCards
+  : pageData.sections && Array.isArray(pageData.sections) ? pageData.sections : [];
 ---
 
 <Base title={title} description={lead} image={photoUrl}>

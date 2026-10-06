@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* ALTIX is a light-only site. Only apply Tailwind `dark:` utilities under an
+   explicit .dark class, never from the OS colour-scheme preference -- otherwise
+   media blocks render white text on the white page for dark-mode visitors. */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --navy: #24263f;
   --navy2: #343650;
@@ -701,8 +706,15 @@ img {
   .roadmap,
   .process,
   .leadership-feature,
-  .footer-grid {
+  .footer-grid,
+  .check-grid,
+  .form-grid,
+  .split {
     grid-template-columns: 1fr;
+  }
+
+  .form .full {
+    grid-column: auto;
   }
 
   .cta-band > .container,
@@ -719,3 +731,256 @@ img {
     top: 68px;
   }
 }
+
+/* Check Grid */
+.check-grid {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.check-grid li {
+  padding: 18px 18px 18px 46px;
+  border: 1px solid var(--line);
+  background: #fff;
+  position: relative;
+  border-radius: 6px;
+}
+.check-grid li:before {
+  content: '✓';
+  position: absolute;
+  left: 18px;
+  color: var(--red);
+  font-weight: 900;
+}
+
+/* Process Detail */
+.process--detail {
+  grid-template-columns: 1fr;
+}
+.process--detail li {
+  min-height: auto;
+  align-items: flex-start;
+}
+.process--detail h3 {
+  margin: 0 0 6px;
+  font-size: 1.15rem;
+}
+.process--detail p {
+  font-weight: 400;
+  color: var(--muted);
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+/* Forms & Paper Section */
+.section--paper {
+  background: var(--paper) !important;
+}
+.split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+}
+.form {
+  background: #fff;
+  border: 1px solid var(--line);
+  padding: 34px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-bottom: 24px;
+}
+.form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  font-weight: 700;
+  gap: 6px;
+  color: var(--navy);
+}
+.form .full {
+  grid-column: 1 / -1;
+}
+.form input,
+.form select,
+.form textarea {
+  width: 100%;
+  border: 1px solid #cfd2dc;
+  padding: 12px;
+  border-radius: 6px;
+  font: inherit;
+  background: #fff;
+  color: var(--text);
+  transition: border-color 0.2s ease;
+}
+.form input:focus,
+.form select:focus,
+.form textarea:focus {
+  outline: none;
+  border-color: var(--red);
+}
+.form .check {
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  align-items: start;
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+.form .check input {
+  width: auto;
+  margin-top: 4px;
+}
+.form-note {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 14px;
+}
+
+/* FAQ Details */
+.faq details {
+  border-top: 1px solid var(--line);
+  padding: 20px 0;
+}
+.faq details:last-child {
+  border-bottom: 1px solid var(--line);
+}
+.faq summary {
+  font-weight: 800;
+  font-size: 18px;
+  cursor: pointer;
+  color: var(--navy);
+  list-style-position: inside;
+}
+.faq summary:hover {
+  color: var(--red);
+}
+.faq p {
+  color: var(--muted);
+  margin-top: 12px;
+  line-height: 1.6;
+}
+
+/* Legal Copy & Callouts */
+.legal-copy h3 {
+  margin-top: 34px;
+  margin-bottom: 12px;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+.legal-copy p {
+  color: #4e5260;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+}
+.legal-copy a {
+  color: var(--red);
+  text-decoration: underline;
+}
+.callout {
+  background: #fff3f1;
+  border-left: 4px solid var(--red);
+  padding: 18px;
+  border-radius: 0 6px 6px 0;
+  margin: 24px 0;
+}
+
+/* Core EmDash Image / Gallery blocks (inserted in the editor via /image, /gallery) */
+.legal-copy figure.emdash-image {
+  margin: 32px 0;
+}
+.legal-copy figure.emdash-image img,
+.legal-copy figure.emdash-gallery-item img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 18px 40px -24px rgba(15, 23, 42, 0.35);
+}
+.legal-copy figure.emdash-image--align-center img,
+.legal-copy figure.emdash-image--align-left img,
+.legal-copy figure.emdash-image--align-right img {
+  width: auto;
+  max-width: 100%;
+}
+.legal-copy.legal-copy figure.emdash-image figcaption,
+.legal-copy.legal-copy figure.emdash-gallery-item figcaption {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: var(--muted);
+  text-align: left;
+}
+.legal-copy.legal-copy div.emdash-gallery {
+  gap: 16px;
+  margin: 32px 0;
+}
+
+/* Empty State */
+.empty-state {
+  padding: 40px;
+  border: 1px dashed #b9bdc9;
+  border-radius: 8px;
+  text-align: center;
+  background: #fafafa;
+}
+.empty-state h2 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 8px;
+}
+.empty-state p {
+  color: var(--muted);
+  margin: 0;
+}
+
+/* Article Page Elements */
+.article-hero {
+  background: var(--navy);
+  color: #fff;
+  padding: 90px 0;
+}
+.article-hero h1 {
+  font-size: clamp(36px, 5vw, 58px);
+  margin: 12px 0;
+}
+.article-meta {
+  font-size: 13px;
+  color: #c9cad4;
+  margin-top: 16px;
+}
+.article-body {
+  max-width: 800px;
+  padding: 70px 0;
+}
+.article-body h2 {
+  font-family: var(--font-serif);
+  font-size: 30px;
+  margin-top: 42px;
+  margin-bottom: 16px;
+  color: var(--navy);
+}
+.article-body p {
+  font-size: 18px;
+  color: #444957;
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+.article-disclaimer {
+  margin-top: 54px;
+  padding: 22px;
+  background: var(--paper);
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+

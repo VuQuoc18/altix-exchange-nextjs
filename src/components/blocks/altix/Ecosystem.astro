@@ -1,0 +1,39 @@
+---
+import Ecosystem from "../../sections/Ecosystem.astro";
+
+interface Item {
+	title?: string;
+	description?: string;
+	linkText?: string;
+	points?: string | string[];
+}
+
+interface Props {
+	node: {
+		eyebrow?: string;
+		title?: string;
+		body?: string;
+		items?: Item[];
+	};
+}
+
+function splitLines(value?: string | string[]): string[] | undefined {
+	if (Array.isArray(value)) return value;
+	if (typeof value !== "string" || !value.trim()) return undefined;
+	return value
+		.split("\n")
+		.map((line) => line.trim())
+		.filter(Boolean);
+}
+
+const { node } = Astro.props;
+const data = {
+	...node,
+	items: node.items?.map((item) => ({
+		...item,
+		points: splitLines(item.points),
+	})),
+};
+---
+
+<Ecosystem data={data} />

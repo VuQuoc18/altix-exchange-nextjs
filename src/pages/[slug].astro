@@ -3,43 +3,34 @@ import { getEmDashEntry } from "emdash";
 import Base from "../layouts/Base.astro";
 import CtaBand from "../components/sections/CtaBand.astro";
 import MarketingBlocks from "../components/MarketingBlocks.astro";
+import LegacySections from "../components/LegacySections.astro";
+import { toBool } from "../lib/blocks";
+import { ArrowRight } from "lucide-react";
 
-const ALLOWLIST = new Set([
-	"what-we-do",
-	"how-it-works",
-	"who-we-work-with",
-	"expert-network",
-	"about",
-	"case-readiness",
-	"litigation-funding",
-	"case-administration",
-	"claimants-and-businesses",
-	"law-firms",
-	"funding-participants",
-	"forensic-experts",
-	"company-facts",
-	"privacy",
-	"terms",
-	"cookies",
-	"disclosures",
-	"security",
-	"complaints",
-]);
+/**
+ * Any published page in the "Pages" collection is served at /{slug}, so pages
+ * editors create in the admin work without a code change.
+ *
+ * Slugs that have their own dedicated route are redirected there instead of
+ * being rendered twice.
+ */
+const DEDICATED_ROUTES: Record<string, string> = {
+	home: "/",
+	"about-leadership": "/about/leadership/elke-biechele",
+};
 
-const LEGAL_SLUGS = new Set([
-	"privacy",
-	"terms",
-	"cookies",
-	"disclosures",
-	"security",
-	"complaints",
-]);
+/** Pages that historically had no bottom CTA band (used until `show_cta_band` is set). */
+const NO_CTA_BAND = new Set(["thank-you", "contact", "submit-a-matter", "request-institutional-access"]);
 
 const { slug } = Astro.params;
 
-if (!slug || !ALLOWLIST.has(slug)) {
+if (!slug) {
 	Astro.response.status = 404;
 	return Astro.rewrite("/404");
+}
+
+if (DEDICATED_ROUTES[slug]) {
+	return Astro.redirect(DEDICATED_ROUTES[slug], 301);
 }
 
 const { entry: page, cacheHint } = await getEmDashEntry("pages", slug);
@@ -54,186 +45,76 @@ if (!page) {
 }
 
 const pageData = (page.data || {}) as Record<string, any>;
-const isLegal = LEGAL_SLUGS.has(slug);
 const title = pageData.title || slug;
 const eyebrow = pageData.eyebrow;
 const lead = pageData.lead;
-const notice = pageData.notice || "This page is a temporary scaffold. Contact info@altix.exchange.";
-const contactEmail = pageData.contact || "info@altix.exchange";
-const content = pageData.content;
-const sections = pageData.sections;
+const heroCtaLabel = pageData.hero_cta_label;
+const heroCtaUrl = pageData.hero_cta_url;
+const microcopy = pageData.microcopy;
+const content = Array.isArray(pageData.content) && pageData.content.length > 0 ? pageData.content : null;
+const legacySections = Array.isArray(pageData.sections) ? pageData.sections : [];
+
+// Hero layout: narrow, no artwork, for pages that are mostly a message.
+const narrowHero = slug === "thank-you" || slug === "newsroom";
+
+// Bottom CTA band — editors control it with the "Show call-to-action band" toggle.
+// Pages not yet migrated (toggle never saved) keep their historical behaviour.
+const showCtaBand = toBool(pageData.show_cta_band) ?? !NO_CTA_BAND.has(slug);
+const ctaBandData = showCtaBand
+	? pageData.cta_band || {
+			eyebrow: "Start here",
+			title: "Start with a structured initial review.",
+			body: "Do not send privileged or highly sensitive evidence through the initial contact form. ALTIX will provide secure upload instructions if further materials are required.",
+			button: "Submit a case",
+		}
+	: null;
 ---
 
 <Base title={title} description={lead}>
-	{
-		isLegal ? (
-			<div class="legal-page section">
-				<div class="container narrow">
-					<h1 class="page-title">{title}</h1>
-					<div class="scaffold-notice-banner" role="alert">
-						<p>{notice}</p>
-					</div>
-					{lead && <p class="lead-text">{lead}</p>}
-					{content && <MarketingBlocks value={content} />}
-					<div class="contact-action">
-						<a href={`mailto:${contactEmail}`} class="button">
-							Contact {contactEmail}
-						</a>
-					</div>
-				</div>
-			</div>
-		) : (
-			<div class="inner-page">
-				<section class="hero-section section bg-[#f8fafc]">
-					<div class="container">
-						{eyebrow && (
-							<div class="eyebrow mb-3">
-								<span>{eyebrow}</span>
-							</div>
-						)}
-						<h1 class="page-title">{title}</h1>
-						{lead && <p class="lead-text">{lead}</p>}
-					</div>
-				</section>
-
-				{content && <MarketingBlocks value={content} />}
-
-				{sections && Array.isArray(sections) && sections.length > 0 && (
-					<section class="content-sections section">
-						<div class="container">
-							<div class="sections-grid">
-								{sections.map((sec: any) => (
-									<div class="section-card">
-										{sec.title && <h3>{sec.title}</h3>}
-										{(sec.body || sec.description) && (
-											<p>{sec.body || sec.description}</p>
-										)}
-									</div>
-								))}
-							</div>
+	<div class="inner-page">
+		<!-- Dynamic Production Navy Hero -->
+		<section class="hero">
+			<div class:list={["container", narrowHero ? "narrow" : "hero-grid"]}>
+				<div>
+					{eyebrow && <span class="eyebrow eyebrow--light">{eyebrow}</span>}
+					<h1>{title}</h1>
+					{lead && <p class="hero-lead">{lead}</p>}
+					{heroCtaLabel && (
+						<div class="button-row">
+							<a class="button inline-flex items-center gap-2 whitespace-nowrap" href={heroCtaUrl || "/submit-a-matter"}>
+								{heroCtaLabel}
+								<ArrowRight className="w-4 h-4" />
+							</a>
 						</div>
-					</section>
+					)}
+					{slug === "thank-you" && !heroCtaLabel && (
+						<div class="button-row">
+							<a class="button" href="/">Return home</a>
+						</div>
+					)}
+					{microcopy && <p class="microcopy">{microcopy}</p>}
+				</div>
+
+				{!narrowHero && (
+					<div class="hero-art" aria-hidden="true">
+						<div class="orbit o1" />
+						<div class="orbit o2" />
+						<div class="hero-panel">
+							<small>ALTIX CONTROLLED WORKFLOW</small>
+							<strong>Case → diligence → structure → capital → reporting</strong>
+							<span>Professional access • permission-based data • case-specific review</span>
+						</div>
+					</div>
 				)}
-
-				<CtaBand data={pageData.cta_band} />
 			</div>
-		)
-	}
+		</section>
+
+		{content ? (
+			<MarketingBlocks value={content} />
+		) : (
+			legacySections.length > 0 && <LegacySections sections={legacySections} slug={slug} />
+		)}
+
+		{ctaBandData && <CtaBand data={ctaBandData} />}
+	</div>
 </Base>
-
-<style>
-	.page-title {
-		font-family: var(--font-serif);
-		font-size: var(--font-size-3xl, 2.5rem);
-		font-weight: 700;
-		color: var(--navy);
-		line-height: 1.2;
-		margin-bottom: 1rem;
-	}
-
-	.lead-text {
-		font-size: 1.25rem;
-		line-height: 1.6;
-		color: var(--muted);
-		margin-bottom: 2rem;
-		max-width: 75ch;
-	}
-
-	/* Legal Page Styles */
-	.legal-page {
-		padding-top: 4rem;
-		padding-bottom: 5rem;
-	}
-
-	.scaffold-notice-banner {
-		background-color: #fef2f2;
-		border: 1px solid #fecaca;
-		border-left: 4px solid var(--red);
-		border-radius: 6px;
-		padding: 1rem 1.25rem;
-		margin-bottom: 2rem;
-		color: #991b1b;
-		font-weight: 500;
-	}
-
-	.scaffold-notice-banner p {
-		margin: 0;
-		font-size: 0.95rem;
-		line-height: 1.5;
-	}
-
-	.contact-action {
-		margin-top: 2.5rem;
-	}
-
-	/* Inner Page Styles */
-	.hero-section {
-		padding-top: 4rem;
-		padding-bottom: 4rem;
-		border-bottom: 1px solid var(--line);
-	}
-
-	.eyebrow {
-		display: inline-flex;
-		align-items: center;
-		gap: 0.5rem;
-		font-size: 0.875rem;
-		font-weight: 700;
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-		color: var(--red);
-	}
-
-	.content-sections {
-		padding-top: 4rem;
-		padding-bottom: 5rem;
-	}
-
-	.sections-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-		gap: 2rem;
-	}
-
-	.section-card {
-		background: #ffffff;
-		border: 1px solid var(--line);
-		border-radius: 12px;
-		padding: 2rem;
-		box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-		transition: border-color 0.2s ease, box-shadow 0.2s ease;
-	}
-
-	.section-card:hover {
-		border-color: rgba(230, 70, 58, 0.3);
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-	}
-
-	.section-card h3 {
-		font-size: 1.35rem;
-		font-weight: 700;
-		color: var(--navy);
-		margin-bottom: 0.75rem;
-	}
-
-	.section-card p {
-		color: var(--muted);
-		font-size: 1rem;
-		line-height: 1.6;
-		margin: 0;
-	}
-
-	@media (max-width: 768px) {
-		.page-title {
-			font-size: 2rem;
-		}
-
-		.lead-text {
-			font-size: 1.1rem;
-		}
-
-		.sections-grid {
-			grid-template-columns: 1fr;
-		}
-	}
-</style>

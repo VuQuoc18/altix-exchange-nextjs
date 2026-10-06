@@ -16,9 +16,14 @@ interface ProcessData {
 
 interface Props {
   data?: ProcessData;
+  fields?: {
+    eyebrow?: Record<string, unknown>;
+    title?: Record<string, unknown>;
+    body?: Record<string, unknown>;
+  };
 }
 
-const { data } = Astro.props;
+const { data, fields } = Astro.props;
 
 const eyebrow = data?.eyebrow ?? "How it works";
 const title = data?.title ?? "A controlled process from case to capital.";
@@ -51,13 +56,13 @@ const steps = defaultSteps.map((step, index) => {
     {/* Eyebrow */}
     <div class="eyebrow mb-2">
       <GitCommit className="w-4 h-4 text-[#e6463a]" />
-      <span>{eyebrow}</span>
+      <span {...fields?.eyebrow}>{eyebrow}</span>
     </div>
 
     {/* Section Head */}
     <div class="section-head">
-      <h2>{title}</h2>
-      <p>{body}</p>
+      <h2 {...fields?.title}>{title}</h2>
+      <p {...fields?.body}>{body}</p>
     </div>
 
     {/* Static Process Grid */}

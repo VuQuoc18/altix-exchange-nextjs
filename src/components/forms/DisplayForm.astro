@@ -1,0 +1,120 @@
+---
+import { getDisplayForm, type DisplayField } from "../../lib/display-forms";
+import type { FormSlug } from "../../lib/inner-routes";
+
+interface Props {
+  slug: FormSlug;
+}
+
+const { slug } = Astro.props;
+const form = getDisplayForm(slug);
+
+function inputType(field: DisplayField): string {
+  if (field.kind === "email" || field.kind === "url" || field.kind === "date" || field.kind === "tel") {
+    return field.kind;
+  }
+  return "text";
+}
+---
+
+<section class="display-form section">
+  <div class="container narrow">
+    <p class="form-warning">{form.warning}</p>
+    <form
+      class="form-card"
+      name={form.formName}
+      onsubmit="event.preventDefault(); return false;"
+    >
+      {form.fields.map((field) => {
+        if (field.kind === "hidden") {
+          return <input type="hidden" name={field.name} value={field.value} />;
+        }
+        if (field.kind === "honeypot") {
+          return (
+            <label class="hp">
+              {field.label}
+              <input type="text" name={field.name} tabindex="-1" autocomplete="off" />
+            </label>
+          );
+        }
+        if (field.kind === "textarea") {
+          return (
+            <label class="field">
+              {field.label}
+              <textarea name={field.name} required={field.required} rows="5" />
+            </label>
+          );
+        }
+        if (field.kind === "select") {
+          return (
+            <label class="field">
+              {field.label}
+              <select name={field.name} required={field.required}>
+                {field.options.map((opt) => (
+                  <option value={opt === "Select" ? "" : opt}>{opt}</option>
+                ))}
+              </select>
+            </label>
+          );
+        }
+        if (field.kind === "checkbox") {
+          return (
+            <label class="check">
+              <input type="checkbox" name={field.name} required={field.required} />
+              <span>{field.label}</span>
+            </label>
+          );
+        }
+        return (
+          <label class="field">
+            {field.label}
+            <input type={inputType(field)} name={field.name} required={field.required} />
+          </label>
+        );
+      })}
+      <button class="button" type="submit">{form.submitLabel}</button>
+    </form>
+  </div>
+</section>
+
+<style>
+  .hp {
+    position: absolute;
+    left: -9999px;
+  }
+  .form-warning {
+    color: var(--muted);
+    margin-bottom: 1.25rem;
+    max-width: 70ch;
+  }
+  .form-card {
+    display: grid;
+    gap: 14px;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+  .field,
+  .check {
+    display: grid;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .check {
+    grid-template-columns: auto 1fr;
+    align-items: start;
+    font-weight: 500;
+  }
+  .field input,
+  .field textarea,
+  .field select {
+    font: inherit;
+    font-weight: 400;
+    padding: 10px 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+  }
+</style>

@@ -1,7 +1,21 @@
 ---
-import { getEmDashEntry } from "emdash";
+import { getEmDashEntry, getEmDashCollection } from "emdash";
 import { Image, PortableText } from "emdash/ui";
+import { 
+	Calendar, 
+	Clock, 
+	ArrowLeft, 
+	ArrowRight, 
+	Share2, 
+	CheckCircle2, 
+	BookOpen,
+	ShieldAlert,
+	Scale,
+	TrendingUp,
+	Building
+} from "lucide-react";
 import Base from "../../layouts/Base.astro";
+import { getPostCategory, estimateReadTime, formatPostDate, sanitizePortableText } from "../../lib/blog-helpers";
 
 const { slug } = Astro.params;
 
@@ -11,12 +25,23 @@ if (!slug) {
 }
 
 const { entry: post, cacheHint } = await getEmDashEntry("posts", slug);
+const { entries: allPosts, cacheHint: allHint } = await getEmDashCollection("posts", {
+	status: "published",
+	limit: 10,
+	orderBy: { published_at: "desc" },
+});
 
-if (Astro.cache?.enabled && cacheHint) {
-	Astro.cache.set(cacheHint);
+if (Astro.cache?.enabled) {
+	const tags = [
+		...new Set([
+			...(((cacheHint as { tags?: string[] } | undefined)?.tags) ?? []),
+			...(((allHint as { tags?: string[] } | undefined)?.tags) ?? []),
+		]),
+	];
+	Astro.cache.set(tags.length ? { tags } : (cacheHint ?? allHint));
 }
 
-const postStatus = post?.data?.status || (post as any)?.status;
+const postStatus = post?.data?.status || (post as any)?.status || "published";
 
 if (!post || postStatus !== "published") {
 	Astro.response.status = 404;
@@ -25,52 +50,95 @@ if (!post || postStatus !== "published") {
 
 const postData = post.data || {};
 const title = postData.title || slug;
-const postDate = postData.publishedAt || postData.createdAt;
-const formattedDate = postDate
-	? new Date(postDate).toLocaleDateString("en-US", {
-			year: "numeric",
-			month: "long",
-			day: "numeric",
-		})
-	: null;
+const rawDate = postData.published_at || postData.publishedAt || postData.created_at || postData.createdAt;
+const formattedDate = formatPostDate(rawDate);
 
 const featuredImage = postData.featured_image;
-const content = postData.content;
+const rawContent = postData.content;
+const content = Array.isArray(rawContent) ? sanitizePortableText(rawContent) : rawContent;
 const excerpt = postData.excerpt;
+const readTime = estimateReadTime(rawContent, excerpt);
+const category = getPostCategory(slug, title);
+const disclaimer = postData.disclaimer || "This article is general educational information and does not constitute legal, tax or investment advice. Funding suitability and legal rights depend on the facts, jurisdiction and professional assessment.";
+
+// Related posts (excluding current)
+const relatedPosts = (allPosts || [])
+	.filter((p) => {
+		const pSlug = p.data?.slug || p.id;
+		return pSlug !== slug && (p.data?.status || (p as any)?.status || "published") === "published";
+	})
+	.slice(0, 3);
 ---
 
-<Base title={`${title} | Insights | ALTIX Exchange`} description={excerpt}>
-	<article class="post-detail-page section">
-		<div class="container narrow">
-			<nav class="back-nav mb-6">
-				<a href="/insights" class="text-link">
-					&larr; Back to Insights
-				</a>
-			</nav>
+<Base 
+	title={`${title} | ALTIX Insights & Blog`} 
+	description={excerpt || `Educational analysis on ${category} from ALTIX Exchange.`}
+>
+	<article class="article bg-white">
+		{/* Hero Header */}
+		<header class="article-hero bg-[#24263f] text-white py-16 sm:py-20 border-b border-slate-800">
+			<div class="container narrow">
+				{/* Breadcrumb */}
+				<nav class="flex items-center gap-2 text-xs font-mono tracking-wide text-slate-400 mb-6 uppercase">
+					<a href="/" class="hover:text-white transition-colors">Home</a>
+					<span>/</span>
+					<a href="/insights" class="hover:text-white transition-colors">Insights</a>
+					<span>/</span>
+					<span class="text-[#ff8d84] font-bold">{category}</span>
+				</nav>
 
-			<header class="post-header mb-8">
-				<div class="eyebrow mb-2">
-					<span>Insight Article</span>
+				<div class="inline-block px-3.5 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white/10 text-slate-200 border border-white/20 mb-4">
+					{category}
 				</div>
-				<h1 class="post-title" {...post.edit?.title}>{title}</h1>
-				{
-					formattedDate && (
-						<time datetime={new Date(postDate).toISOString()} class="post-date">
-							{formattedDate}
-						</time>
-					)
-				}
-			</header>
 
+				<h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold leading-[1.15] mb-6 text-white" {...post.edit?.title}>
+					{title}
+				</h1>
+
+				{excerpt && (
+					<p class="hero-lead text-lg sm:text-xl text-slate-300 leading-relaxed mb-8" {...post.edit?.excerpt}>
+						{excerpt}
+					</p>
+				)}
+
+				<div class="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-slate-300 pt-6 border-t border-slate-700/60">
+					<div class="flex items-center gap-2">
+						<div class="w-8 h-8 rounded-full bg-[#e6463a] flex items-center justify-center font-bold text-white text-xs">
+							AX
+						</div>
+						<div>
+							<div class="font-bold text-white flex items-center gap-1">
+								ALTIX Editorial Team
+								<CheckCircle2 class="w-3.5 h-3.5 text-emerald-400" />
+							</div>
+							<div class="text-[11px] text-slate-400 font-mono">Forensic & Legal Intelligence</div>
+						</div>
+					</div>
+					<span class="text-slate-500">|</span>
+					<time datetime={rawDate ? new Date(rawDate).toISOString() : undefined} class="flex items-center gap-1.5 text-slate-300">
+						<Calendar class="w-4 h-4 text-slate-400" />
+						{formattedDate}
+					</time>
+					<span class="text-slate-500">|</span>
+					<span class="flex items-center gap-1.5 text-slate-300">
+						<Clock class="w-4 h-4 text-slate-400" />
+						{readTime}
+					</span>
+				</div>
+			</div>
+		</header>
+
+		{/* Article Body */}
+		<div class="container article-body py-12">
 			{
 				featuredImage && (
-					<div class="featured-image-wrapper mb-10" {...post.edit?.featured_image}>
-						<Image image={featuredImage} />
+					<div class="featured-image-wrapper mb-12 rounded-2xl overflow-hidden shadow-lg border border-slate-200" {...post.edit?.featured_image}>
+						<Image image={featuredImage} class="w-full h-auto object-cover max-h-[520px]" />
 					</div>
 				)
 			}
 
-			<div class="post-content">
+			<div class="post-content prose prose-lg prose-slate max-w-none">
 				{
 					content && (
 						<div {...post.edit?.content}>
@@ -80,127 +148,222 @@ const excerpt = postData.excerpt;
 				}
 			</div>
 
-			<footer class="post-footer mt-12 pt-6 border-t border-[var(--line)]">
-				<a href="/insights" class="button button--secondary">
-					&larr; Back to Insights
+			{/* Article Disclaimer */}
+			{
+				disclaimer && (
+					<div class="article-disclaimer mt-12 p-6 rounded-xl bg-slate-50 border-l-4 border-[#e6463a] text-sm text-slate-700 leading-relaxed shadow-sm">
+						<strong class="font-bold text-slate-900 block mb-1">Important Notice:</strong>
+						<span>{disclaimer}</span>
+					</div>
+				)
+			}
+
+			{/* Article Navigation & Share */}
+			<div class="mt-12 pt-8 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+				<a href="/insights" class="button button--secondary inline-flex items-center gap-2">
+					<ArrowLeft class="w-4 h-4" />
+					<span>Back to all Insights</span>
 				</a>
-			</footer>
+				<button 
+					type="button" 
+					id="share-button"
+					class="px-4 py-2.5 rounded-lg border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-sm font-bold flex items-center gap-2 cursor-pointer transition-colors"
+				>
+					<Share2 class="w-4 h-4 text-slate-500" />
+					<span>Share Article</span>
+				</button>
+			</div>
 		</div>
+
+		{/* Related Insights Section */}
+		{relatedPosts.length > 0 && (
+			<section class="border-t border-slate-200 bg-slate-50/70 py-16">
+				<div class="container">
+					<div class="flex items-center justify-between mb-8">
+						<div>
+							<span class="eyebrow block mb-1">More from the Blog</span>
+							<h3 class="font-serif text-2xl sm:text-3xl font-bold text-slate-900">
+								Related analysis & case guides.
+							</h3>
+						</div>
+						<a href="/insights" class="text-link inline-flex items-center gap-1.5 font-bold text-[#e6463a]">
+							<span>View all</span>
+							<ArrowRight class="w-4 h-4" />
+						</a>
+					</div>
+
+					<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+						{relatedPosts.map((rPost) => {
+							const rSlug = rPost.data?.slug || rPost.id;
+							const rHref = `/insights/${rSlug}`;
+							const rTitle = rPost.data?.title || rSlug;
+							const rExcerpt = rPost.data?.excerpt || "";
+							const rRawDate = rPost.data?.published_at || rPost.data?.publishedAt || rPost.data?.created_at || rPost.data?.createdAt;
+							const rDate = formatPostDate(rRawDate);
+							const rCategory = getPostCategory(rSlug, rTitle);
+							const rRead = estimateReadTime(rPost.data?.content, rExcerpt);
+							const rImg = rPost.data?.featured_image;
+
+							return (
+								<article class="border border-slate-200 rounded-2xl bg-white overflow-hidden shadow-sm hover:shadow-md hover:border-slate-300 transition-all flex flex-col group">
+									<a href={rHref} class="block relative overflow-hidden aspect-[16/10] bg-[#1e2137]">
+										{rImg ? (
+											<div class="w-full h-full article-thumb">
+												<Image image={rImg} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+											</div>
+										) : (
+											<div class="w-full h-full bg-gradient-to-br from-[#1c1f36] via-[#242742] to-[#3a2838] relative flex items-center justify-center p-6 select-none overflow-hidden">
+												<div class="absolute inset-0 opacity-10 bg-[radial-gradient(#e6463a_1px,transparent_1px)] [background-size:16px_16px]" />
+												<div class="z-10 flex flex-col items-center text-center">
+													<div class="w-10 h-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 flex items-center justify-center mb-2 shadow-inner">
+														{rCategory === "Financial Crime" ? (
+															<ShieldAlert class="w-5 h-5 text-red-400" />
+														) : rCategory === "Case Readiness" ? (
+															<Scale class="w-5 h-5 text-amber-400" />
+														) : rCategory === "Asset Recovery" ? (
+															<TrendingUp class="w-5 h-5 text-emerald-400" />
+														) : rCategory === "Institutional Capital" ? (
+															<Building class="w-5 h-5 text-blue-400" />
+														) : (
+															<BookOpen class="w-5 h-5 text-[#ff8d84]" />
+														)}
+													</div>
+													<span class="text-[10px] font-mono uppercase tracking-widest text-slate-300 font-semibold">
+														ALTIX
+													</span>
+												</div>
+											</div>
+										)}
+										<span class="absolute top-3 left-3 z-10 px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wider uppercase bg-white/95 text-slate-800 shadow-sm backdrop-blur-md">
+											{rCategory}
+										</span>
+									</a>
+
+									<div class="p-5 flex flex-col flex-grow">
+										<div class="flex items-center gap-2 text-xs font-medium text-slate-400 mb-2">
+											<time datetime={rRawDate ? new Date(rRawDate).toISOString() : undefined}>
+												{rDate}
+											</time>
+											<span>·</span>
+											<span>{rRead}</span>
+										</div>
+
+										<h4 class="font-serif text-lg font-bold text-slate-900 leading-snug mb-2 group-hover:text-[#e6463a] transition-colors line-clamp-2">
+											<a href={rHref} class="no-underline text-inherit">
+												{rTitle}
+											</a>
+										</h4>
+
+										{rExcerpt && (
+											<p class="text-slate-600 text-xs leading-relaxed line-clamp-2 mb-4 flex-grow">
+												{rExcerpt}
+											</p>
+										)}
+
+										<a class="inline-flex items-center gap-1 text-xs font-bold text-[#e6463a] mt-auto" href={rHref}>
+											<span>Read post</span>
+											<ArrowRight class="w-3.5 h-3.5" />
+										</a>
+									</div>
+								</article>
+							);
+						})}
+					</div>
+				</div>
+			</section>
+		)}
 	</article>
 </Base>
 
+<script>
+	const shareBtn = document.getElementById("share-button");
+	if (shareBtn) {
+		shareBtn.addEventListener("click", async () => {
+			if (navigator.share) {
+				try {
+					await navigator.share({
+						title: document.title,
+						url: window.location.href,
+					});
+				} catch (err) {}
+			} else {
+				try {
+					await navigator.clipboard.writeText(window.location.href);
+					const originalHTML = shareBtn.innerHTML;
+					shareBtn.innerHTML = `<span>Link Copied!</span>`;
+					setTimeout(() => {
+						shareBtn.innerHTML = originalHTML;
+					}, 2000);
+				} catch (err) {}
+			}
+		});
+	}
+</script>
+
 <style>
-	.post-detail-page {
-		padding-top: 3rem;
-		padding-bottom: 5rem;
-	}
-
-	.back-nav {
-		margin-bottom: 1.5rem;
-	}
-
-	.post-header {
-		margin-bottom: 2rem;
-	}
-
-	.post-title {
-		font-family: var(--font-serif);
-		font-size: clamp(2.25rem, 4vw, 3rem);
-		font-weight: 700;
-		color: var(--navy);
-		line-height: 1.2;
-		margin-top: 0.5rem;
-		margin-bottom: 1rem;
-	}
-
-	.post-date {
-		display: inline-block;
-		font-size: 0.9rem;
-		font-weight: 600;
-		color: var(--muted);
-		text-transform: uppercase;
-		letter-spacing: 0.05em;
-	}
-
-	.featured-image-wrapper {
+	.article-thumb :global(img) {
 		width: 100%;
-		border-radius: 12px;
-		overflow: hidden;
-		box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
-		background: var(--soft);
-		margin-bottom: 2.5rem;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 0.5s ease;
 	}
 
-	.featured-image-wrapper :global(img) {
-		width: 100%;
-		height: auto;
-		display: block;
+	.group:hover .article-thumb :global(img) {
+		transform: scale(1.04);
 	}
 
-	.post-content {
-		font-size: 1.125rem;
-		line-height: 1.75;
-		color: var(--text);
-	}
-
+	/* Post content typography */
 	.post-content :global(h2) {
-		font-family: var(--font-serif);
-		font-size: 1.75rem;
+		font-family: Georgia, serif;
+		font-size: 1.85rem;
 		font-weight: 700;
-		color: var(--navy);
+		color: #111827;
 		margin-top: 2.5rem;
 		margin-bottom: 1rem;
-		line-height: 1.3;
+		line-height: 1.25;
 	}
 
 	.post-content :global(h3) {
-		font-family: var(--font-serif);
+		font-family: Georgia, serif;
 		font-size: 1.4rem;
 		font-weight: 700;
-		color: var(--navy);
+		color: #1f2937;
 		margin-top: 2rem;
 		margin-bottom: 0.75rem;
 		line-height: 1.3;
 	}
 
 	.post-content :global(p) {
+		font-size: 1.125rem;
+		line-height: 1.75;
+		color: #374151;
 		margin-bottom: 1.5rem;
 	}
 
 	.post-content :global(ul),
 	.post-content :global(ol) {
+		margin-top: 1rem;
 		margin-bottom: 1.5rem;
 		padding-left: 1.5rem;
 	}
 
 	.post-content :global(li) {
+		font-size: 1.125rem;
+		line-height: 1.75;
+		color: #374151;
 		margin-bottom: 0.5rem;
 	}
 
+	.post-content :global(strong) {
+		color: #111827;
+		font-weight: 700;
+	}
+
 	.post-content :global(blockquote) {
-		border-left: 4px solid var(--red);
+		border-left: 4px solid #e6463a;
 		padding-left: 1.25rem;
-		margin-left: 0;
-		margin-right: 0;
-		margin-bottom: 1.5rem;
+		margin: 1.75rem 0;
 		font-style: italic;
-		color: var(--navy);
-	}
-
-	.post-footer {
-		margin-top: 3rem;
-		padding-top: 1.5rem;
-		border-top: 1px solid var(--line);
-	}
-
-	@media (max-width: 768px) {
-		.post-title {
-			font-size: 1.85rem;
-		}
-
-		.post-content {
-			font-size: 1rem;
-			line-height: 1.65;
-		}
+		color: #4b5563;
 	}
 </style>

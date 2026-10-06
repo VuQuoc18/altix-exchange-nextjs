@@ -18,5 +18,5 @@ Branch: `feat/emdash-marketing`
 - [x] Task 3.5: sitemap.xml + robots.txt (complete, review clean)
 - [x] Task 4.1: Tag `pre-emdash-next` (complete, review clean)
 - [x] Task 4.2: D1 + R2 wrangler configuration (complete, review clean)
-- [ ] Task 4.3: Promote scaffold to repo root; remove Next.js marketing tree
-- [ ] Task 4.4: Production verification & domain cutover check
+- [x] Task 4.3: Promote scaffold to repo root; remove Next.js marketing tree (complete, review clean)
+- [x] Task 4.4: Production verification & domain cutover check (complete, review clean)

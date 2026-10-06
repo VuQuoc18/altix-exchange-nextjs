@@ -1,0 +1,14 @@
+---
+import SectionHead from "./SectionHead.astro";
+
+interface Props {
+	node: { eyebrow?: string; title?: string; subtitle?: string };
+}
+const { node } = Astro.props;
+---
+
+<section class="section">
+	<div class="container">
+		<SectionHead eyebrow={node.eyebrow} title={node.title} subtitle={node.subtitle} />
+	</div>
+</section>

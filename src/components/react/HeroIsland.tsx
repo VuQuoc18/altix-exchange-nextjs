@@ -3,6 +3,8 @@ import { motion } from 'framer-motion';
 import InteractiveCaseStage from './InteractiveCaseStage';
 import { ArrowRight, ShieldCheck, Scale, FileCheck, Lock } from 'lucide-react';
 
+type EditAttrs = Record<string, unknown>;
+
 export interface HeroIslandProps {
   eyebrow?: string;
   headlineBefore?: string;
@@ -15,6 +17,19 @@ export interface HeroIslandProps {
   badge2?: string;
   badge3?: string;
   disclaimer?: string;
+  fields?: {
+    eyebrow?: EditAttrs;
+    headlineBefore?: EditAttrs;
+    headlineAccent?: EditAttrs;
+    leadStrong?: EditAttrs;
+    leadRest?: EditAttrs;
+    primaryCta?: EditAttrs;
+    secondaryCta?: EditAttrs;
+    badge1?: EditAttrs;
+    badge2?: EditAttrs;
+    badge3?: EditAttrs;
+    disclaimer?: EditAttrs;
+  };
 }
 
 export default function HeroIsland({
@@ -29,6 +44,7 @@ export default function HeroIsland({
   badge2 = 'Jurisdiction Assessment',
   badge3 = 'Encrypted Data Rooms',
   disclaimer = 'Submission does not guarantee acceptance, funding, recovery, liquidity or any particular outcome.',
+  fields,
 }: HeroIslandProps) {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [isHovered, setIsHovered] = useState(false);
@@ -101,7 +117,7 @@ export default function HeroIsland({
               className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-red-500/15 border border-red-500/30 text-red-300 text-xs font-mono font-semibold tracking-wider uppercase"
             >
               <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
-              <span>{eyebrow}</span>
+              <span {...fields?.eyebrow}>{eyebrow}</span>
             </motion.div>
 
             {/* Headline */}
@@ -111,8 +127,11 @@ export default function HeroIsland({
               transition={{ duration: 0.5, delay: 0.1 }}
               className="font-serif font-black text-4xl sm:text-5xl lg:text-6xl text-white tracking-tight leading-[1.08]"
             >
-              {headlineBefore}{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-rose-300 to-amber-300">
+              <span {...fields?.headlineBefore}>{headlineBefore}</span>{' '}
+              <span
+                className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-rose-300 to-amber-300"
+                {...fields?.headlineAccent}
+              >
                 {headlineAccent}
               </span>
             </motion.h1>
@@ -124,8 +143,8 @@ export default function HeroIsland({
               transition={{ duration: 0.5, delay: 0.2 }}
               className="text-base sm:text-lg text-slate-300 leading-relaxed font-normal"
             >
-              <strong className="text-white font-semibold">{leadStrong}</strong>
-              {leadRest}
+              <strong className="text-white font-semibold" {...fields?.leadStrong}>{leadStrong}</strong>
+              <span {...fields?.leadRest}>{leadRest}</span>
             </motion.p>
 
             {/* CTA Buttons */}
@@ -141,7 +160,7 @@ export default function HeroIsland({
                 rel="noopener noreferrer"
                 className="px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#e6463a] to-[#d1372b] hover:from-[#f38d84] hover:to-[#e6463a] text-white font-bold text-sm tracking-wide transition-all shadow-lg shadow-red-500/25 hover:shadow-red-500/40 hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2"
               >
-                <span>{primaryCta}</span>
+                <span {...fields?.primaryCta}>{primaryCta}</span>
                 <ArrowRight className="w-4 h-4" />
               </a>
 
@@ -151,7 +170,7 @@ export default function HeroIsland({
                 className="px-6 py-3.5 rounded-xl bg-white/5 hover:bg-white/10 text-white border border-white/15 hover:border-sky-400/40 font-semibold text-sm tracking-wide transition-all hover:-translate-y-0.5 active:translate-y-0 flex items-center gap-2"
               >
                 <Lock className="w-4 h-4 text-sky-400" />
-                <span>{secondaryCta}</span>
+                <span {...fields?.secondaryCta}>{secondaryCta}</span>
               </button>
             </motion.div>
 
@@ -164,20 +183,20 @@ export default function HeroIsland({
             >
               <div className="flex items-center gap-2">
                 <ShieldCheck className="w-4 h-4 text-sky-400 flex-shrink-0" />
-                <span>{badge1}</span>
+                <span {...fields?.badge1}>{badge1}</span>
               </div>
               <div className="flex items-center gap-2">
                 <Scale className="w-4 h-4 text-red-400 flex-shrink-0" />
-                <span>{badge2}</span>
+                <span {...fields?.badge2}>{badge2}</span>
               </div>
               <div className="flex items-center gap-2">
                 <FileCheck className="w-4 h-4 text-amber-400 flex-shrink-0" />
-                <span>{badge3}</span>
+                <span {...fields?.badge3}>{badge3}</span>
               </div>
             </motion.div>
 
             <p className="text-xs text-slate-400 italic pt-1">
-              <span>{disclaimer}</span>
+              <span {...fields?.disclaimer}>{disclaimer}</span>
             </p>
           </div>
 

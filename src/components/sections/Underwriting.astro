@@ -16,9 +16,14 @@ interface UnderwritingData {
 
 interface Props {
   data?: UnderwritingData;
+  fields?: {
+    eyebrow?: Record<string, unknown>;
+    title?: Record<string, unknown>;
+    body?: Record<string, unknown>;
+  };
 }
 
-const { data } = Astro.props;
+const { data, fields } = Astro.props;
 
 const eyebrow = data?.eyebrow ?? "Underwriting";
 const title = data?.title ?? "What we assess.";
@@ -97,13 +102,13 @@ const items = defaultItems.map((item, index) => {
     {/* Eyebrow */}
     <div class="eyebrow mb-2">
       <Scale className="w-4 h-4 text-[#e6463a]" />
-      <span>{eyebrow}</span>
+      <span {...fields?.eyebrow}>{eyebrow}</span>
     </div>
 
     {/* Section Head */}
     <div class="section-head">
-      <h2>{title}</h2>
-      <p>{body}</p>
+      <h2 {...fields?.title}>{title}</h2>
+      <p {...fields?.body}>{body}</p>
     </div>
 
     {/* Assessment Grid */}

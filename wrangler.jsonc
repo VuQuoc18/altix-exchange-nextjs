@@ -2,28 +2,25 @@
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"name": "altix-marketing",
 	"main": "./src/worker.ts",
+	"workers_dev": true,
+	"preview_urls": true,
 	"compatibility_date": "2026-02-24",
 	"compatibility_flags": ["nodejs_compat"],
 	"d1_databases": [
 		{
 			"binding": "DB",
 			"database_name": "altix-marketing",
-		},
+			"database_id": "bd76f0c4-c14f-4671-8f93-503acaaec60f"
+		}
 	],
-	"r2_buckets": [
+	"kv_namespaces": [
 		{
-			"binding": "MEDIA",
-			"bucket_name": "altix-marketing-media",
-		},
-	],
-	// Worker Loader for plugin sandboxing
-	"worker_loaders": [
-		{
-			"binding": "LOADER",
-		},
+			"binding": "SESSION",
+			"id": "2a0115d41f204b17b3014c9dc7fb574b"
+		}
 	],
 	// General maintenance plus the bounded Media Usage lane (see src/worker.ts)
 	"triggers": {
-		"crons": ["* * * * *", "*/2 * * * *"],
-	},
+		"crons": ["* * * * *", "*/2 * * * *"]
+	}
 }

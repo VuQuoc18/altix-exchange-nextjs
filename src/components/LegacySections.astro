@@ -1,0 +1,195 @@
+---
+/**
+ * LEGACY renderer for the old JSON `sections` field.
+ *
+ * Pages are being migrated to block-based `content` (scripts/migrate-to-blocks.ts).
+ * [slug].astro only uses this when a page has no `content` yet. Delete this file
+ * and the `sections` field once every page has been migrated (plan Phase 6).
+ */
+import FormRenderer from "./forms/FormRenderer.astro";
+
+interface Props {
+	sections: any[];
+	slug: string;
+}
+const { sections, slug } = Astro.props;
+---
+
+{sections && Array.isArray(sections) && sections.length > 0 && sections.map((sec: any) => {
+	if (sec.type === "cards" && sec.cards) {
+		return (
+			<section class="section">
+				<div class="container">
+					{sec.eyebrow && <span class="eyebrow">{sec.eyebrow}</span>}
+					{(sec.title || sec.subtitle) && (
+						<div class="section-head">
+							{sec.title && <h2>{sec.title}</h2>}
+							{sec.subtitle && <p>{sec.subtitle}</p>}
+						</div>
+					)}
+					<div class="card-grid">
+						{sec.cards.map((card: any) => (
+							<article class="card">
+								{card.no && <span class="card-no">{card.no}</span>}
+								{card.title && <h3>{card.title}</h3>}
+								{card.description && <p>{card.description}</p>}
+								{card.linkText && card.linkUrl && (
+									<a class="text-link" href={card.linkUrl}>{card.linkText}</a>
+								)}
+							</article>
+						))}
+					</div>
+				</div>
+			</section>
+		);
+	}
+
+	if (sec.type === "check_grid" && sec.checkItems) {
+		return (
+			<section class="section">
+				<div class="container">
+					{sec.eyebrow && <span class="eyebrow">{sec.eyebrow}</span>}
+					{(sec.title || sec.subtitle) && (
+						<div class="section-head">
+							{sec.title && <h2>{sec.title}</h2>}
+							{sec.subtitle && <p>{sec.subtitle}</p>}
+						</div>
+					)}
+					<ul class="check-grid">
+						{sec.checkItems.map((item: string) => (
+							<li>{item}</li>
+						))}
+					</ul>
+				</div>
+			</section>
+		);
+	}
+
+	if (sec.type === "process" && sec.processSteps) {
+		return (
+			<section class="section">
+				<div class="container">
+					{sec.eyebrow && <span class="eyebrow">{sec.eyebrow}</span>}
+					{(sec.title || sec.subtitle) && (
+						<div class="section-head">
+							{sec.title && <h2>{sec.title}</h2>}
+							{sec.subtitle && <p>{sec.subtitle}</p>}
+						</div>
+					)}
+					<ol class="process process--detail">
+						{sec.processSteps.map((step: any) => (
+							<li>
+								{step.no && <span>{step.no}</span>}
+								<div>
+									{step.title && <h3>{step.title}</h3>}
+									{step.desc && <p>{step.desc}</p>}
+								</div>
+							</li>
+						))}
+					</ol>
+				</div>
+			</section>
+		);
+	}
+
+	if (sec.type === "faq" && sec.faqItems) {
+		return (
+			<section class="section">
+				<div class="container narrow">
+					{(sec.title || sec.subtitle) && (
+						<div class="section-head">
+							{sec.title && <h2>{sec.title}</h2>}
+							{sec.subtitle && <p>{sec.subtitle}</p>}
+						</div>
+					)}
+					<div class="faq">
+						{sec.faqItems.map((faq: any, idx: number) => (
+							<details open={idx === 0}>
+								<summary>{faq.question}</summary>
+								<p>{faq.answer}</p>
+							</details>
+						))}
+					</div>
+				</div>
+			</section>
+		);
+	}
+
+	if (sec.type === "legal" && sec.legalItems) {
+		return (
+			<section class="section">
+				<div class="container">
+					{sec.title && (
+						<div class="section-head">
+							<h2>{sec.title}</h2>
+							{sec.subtitle && <p>{sec.subtitle}</p>}
+						</div>
+					)}
+					<div class="legal-copy">
+						{sec.legalItems.map((item: any) => (
+							<div>
+								{item.heading && <h3>{item.heading}</h3>}
+								<div set:html={item.body} />
+							</div>
+						))}
+						{sec.callout && (
+							<p class="callout" set:html={sec.callout} />
+						)}
+					</div>
+				</div>
+			</section>
+		);
+	}
+
+	if (sec.type === "form") {
+		return (
+			<section class="section section--paper" id={slug === "expert-network" ? "apply" : undefined}>
+				<div class="container narrow">
+					{sec.eyebrow && <span class="eyebrow">{sec.eyebrow}</span>}
+					{sec.title && <h2>{sec.title}</h2>}
+					<FormRenderer formType={sec.formType} formNote={sec.formNote} />
+				</div>
+			</section>
+		);
+	}
+
+	if (sec.type === "leadership" && sec.leadership) {
+		return (
+			<section class="section">
+				<div class="container">
+					{sec.eyebrow && <span class="eyebrow">{sec.eyebrow}</span>}
+					{(sec.title || sec.subtitle) && (
+						<div class="section-head">
+							{sec.title && <h2>{sec.title}</h2>}
+							{sec.subtitle && <p>{sec.subtitle}</p>}
+						</div>
+					)}
+					<div class="leadership-feature">
+						<img src="/assets/img/elke-biechele.webp" alt="Elke Biechele" width="280" height="280" />
+						<div>
+							<h3>{sec.leadership.title}</h3>
+							<p>{sec.leadership.description}</p>
+							<p><a class="text-link" href={sec.leadership.linkUrl}>View profile →</a></p>
+						</div>
+					</div>
+				</div>
+			</section>
+		);
+	}
+
+	if (sec.type === "empty_state" && sec.emptyState) {
+		return (
+			<section class="section">
+				<div class="container narrow">
+					<div class="empty-state">
+						<h2>{sec.emptyState.title}</h2>
+						<p>{sec.emptyState.description}</p>
+					</div>
+				</div>
+			</section>
+		);
+	}
+
+	return null;
+})}
+

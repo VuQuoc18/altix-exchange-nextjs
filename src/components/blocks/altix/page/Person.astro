@@ -1,0 +1,34 @@
+---
+import SectionHead from "./SectionHead.astro";
+
+interface Props {
+	node: {
+		eyebrow?: string;
+		title?: string;
+		subtitle?: string;
+		photo?: string;
+		name?: string;
+		role?: string;
+		linkText?: string;
+		linkUrl?: string;
+	};
+}
+const { node } = Astro.props;
+const photo = node.photo || "/assets/img/elke-biechele.webp";
+---
+
+<section class="section">
+	<div class="container">
+		<SectionHead eyebrow={node.eyebrow} title={node.title} subtitle={node.subtitle} />
+		<div class="leadership-feature">
+			<img src={photo} alt={node.name || ""} width="280" height="280" />
+			<div>
+				{node.name && <h3>{node.name}</h3>}
+				{node.role && <p>{node.role}</p>}
+				{node.linkUrl && (
+					<p><a class="text-link" href={node.linkUrl}>{node.linkText || "View profile →"}</a></p>
+				)}
+			</div>
+		</div>
+	</div>
+</section>

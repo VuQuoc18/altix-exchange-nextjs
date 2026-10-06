@@ -3,6 +3,7 @@ node_modules/
 
 # Build output
 dist/
+build-output/
 
 # Astro
 .astro/
@@ -13,6 +14,9 @@ data.db
 data.db-shm
 data.db-wal
 uploads/
+*.sql
+backup_r2/
+backups/
 
 # Environment
 .env

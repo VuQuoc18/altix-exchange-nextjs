@@ -1,0 +1,29 @@
+---
+import SectionHead from "./SectionHead.astro";
+
+interface Props {
+	node: {
+		eyebrow?: string;
+		title?: string;
+		subtitle?: string;
+		openFirst?: boolean;
+		items?: Array<{ question?: string; answer?: string }>;
+	};
+}
+const { node } = Astro.props;
+const items = Array.isArray(node.items) ? node.items : [];
+---
+
+<section class="section">
+	<div class="container narrow">
+		<SectionHead eyebrow={node.eyebrow} title={node.title} subtitle={node.subtitle} />
+		<div class="faq">
+			{items.map((faq, idx) => (
+				<details open={node.openFirst && idx === 0}>
+					<summary>{faq.question}</summary>
+					<p>{faq.answer}</p>
+				</details>
+			))}
+		</div>
+	</div>
+</section>

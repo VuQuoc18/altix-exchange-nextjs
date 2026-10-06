@@ -18,9 +18,22 @@ interface LeadershipData {
 
 interface Props {
   data?: LeadershipData;
+  fields?: {
+    eyebrow?: Record<string, unknown>;
+    title?: Record<string, unknown>;
+    body?: Record<string, unknown>;
+    kicker?: Record<string, unknown>;
+    name?: Record<string, unknown>;
+    role?: Record<string, unknown>;
+    stat1Title?: Record<string, unknown>;
+    stat1Body?: Record<string, unknown>;
+    stat2Title?: Record<string, unknown>;
+    stat2Body?: Record<string, unknown>;
+    cta?: Record<string, unknown>;
+  };
 }
 
-const { data } = Astro.props;
+const { data, fields } = Astro.props;
 
 const eyebrow = data?.eyebrow ?? "Leadership";
 const title = data?.title ?? "Experience across banking risk, financial crime and technology.";
@@ -41,13 +54,13 @@ const photoUrl = data?.photoUrl ?? "/assets/img/elke-biechele.webp";
     {/* Eyebrow */}
     <div class="eyebrow mb-2">
       <User className="w-4 h-4 text-[#e6463a]" />
-      <span>{eyebrow}</span>
+      <span {...fields?.eyebrow}>{eyebrow}</span>
     </div>
 
     {/* Section Head */}
     <div class="section-head">
-      <h2>{title}</h2>
-      <p>{body}</p>
+      <h2 {...fields?.title}>{title}</h2>
+      <p {...fields?.body}>{body}</p>
     </div>
 
     {/* Leadership Feature Card */}
@@ -70,34 +83,34 @@ const photoUrl = data?.photoUrl ?? "/assets/img/elke-biechele.webp";
 
       <div class="md:col-span-8 space-y-5">
         <div>
-          <span class="text-xs font-mono font-bold tracking-widest text-[#e6463a] uppercase">
+          <span class="text-xs font-mono font-bold tracking-widest text-[#e6463a] uppercase" {...fields?.kicker}>
             {kicker}
           </span>
-          <h3 class="text-3xl font-bold text-slate-900 mt-1">{name}</h3>
-          <p class="text-slate-600 font-medium text-sm">{role}</p>
+          <h3 class="text-3xl font-bold text-slate-900 mt-1" {...fields?.name}>{name}</h3>
+          <p class="text-slate-600 font-medium text-sm" {...fields?.role}>{role}</p>
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
           <div class="p-3.5 rounded-xl bg-white border border-slate-200 flex items-start gap-3">
             <Award className="w-5 h-5 text-[#e6463a] flex-shrink-0 mt-0.5" />
             <div>
-              <h4 class="text-xs font-bold text-slate-900 uppercase">{stat1Title}</h4>
-              <p class="text-xs text-slate-500">{stat1Body}</p>
+              <h4 class="text-xs font-bold text-slate-900 uppercase" {...fields?.stat1Title}>{stat1Title}</h4>
+              <p class="text-xs text-slate-500" {...fields?.stat1Body}>{stat1Body}</p>
             </div>
           </div>
 
           <div class="p-3.5 rounded-xl bg-white border border-slate-200 flex items-start gap-3">
             <ShieldCheck className="w-5 h-5 text-sky-500 flex-shrink-0 mt-0.5" />
             <div>
-              <h4 class="text-xs font-bold text-slate-900 uppercase">{stat2Title}</h4>
-              <p class="text-xs text-slate-500">{stat2Body}</p>
+              <h4 class="text-xs font-bold text-slate-900 uppercase" {...fields?.stat2Title}>{stat2Title}</h4>
+              <p class="text-xs text-slate-500" {...fields?.stat2Body}>{stat2Body}</p>
             </div>
           </div>
         </div>
 
         <div class="pt-2">
           <a class="button button--secondary" href="/about/leadership/elke-biechele">
-            <span>{cta}</span>
+            <span {...fields?.cta}>{cta}</span>
             <ArrowRight className="w-4 h-4" />
           </a>
         </div>

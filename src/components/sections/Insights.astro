@@ -1,0 +1,189 @@
+---
+import { Newspaper, ArrowRight, Calendar, Clock, BookOpen, ShieldAlert, Scale, Building, TrendingUp } from "lucide-react";
+import { Image } from "emdash/ui";
+import { getPostCategory, estimateReadTime, formatPostDate } from "../../lib/blog-helpers";
+
+interface PostEntry {
+	id: string;
+	data?: {
+		slug?: string;
+		title?: string;
+		excerpt?: string;
+		status?: string;
+		published_at?: Date | string | null;
+		publishedAt?: Date | string | null;
+		created_at?: Date | string | null;
+		createdAt?: Date | string | null;
+		content?: any;
+		featured_image?: {
+			id?: string;
+			src?: string;
+			alt?: string;
+			width?: number;
+			height?: number;
+		};
+	};
+	edit?: {
+		title?: Record<string, unknown>;
+		excerpt?: Record<string, unknown>;
+		featured_image?: Record<string, unknown>;
+	};
+}
+
+interface Props {
+	posts?: PostEntry[];
+}
+
+const { posts = [] } = Astro.props;
+
+function postTime(post: PostEntry): number {
+	const raw = post.data?.published_at || post.data?.publishedAt || post.data?.created_at || post.data?.createdAt || 0;
+	return new Date(raw).getTime();
+}
+
+const published = [...posts]
+	.filter((post) => (post.data?.status || (post as any)?.status || "published") === "published")
+	.sort((a, b) => postTime(b) - postTime(a));
+
+const latest = published.slice(0, 3);
+---
+
+<section class="section bg-white border-t border-slate-200 py-20" aria-labelledby="insights-heading">
+	<div class="container">
+		<div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between mb-12">
+			<div class="section-head mb-0 max-w-2xl">
+				<div class="eyebrow mb-2 flex items-center gap-2">
+					<Newspaper className="w-4 h-4 text-[#e6463a]" />
+					<span>Insights & Perspectives</span>
+				</div>
+				<h2 id="insights-heading" class="text-3xl sm:text-4xl font-serif font-bold text-slate-900 tracking-tight">
+					Latest analysis and market intelligence.
+				</h2>
+				<p class="text-slate-600 text-lg mt-3 leading-relaxed">
+					Educational frameworks, case readiness guides, and forensic perspectives from the ALTIX Exchange network.
+				</p>
+			</div>
+			<a class="text-link mt-0 shrink-0 inline-flex items-center gap-2 font-bold text-[#e6463a] hover:gap-3 transition-all" href="/insights">
+				<span>View all Insights</span>
+				<ArrowRight className="w-4 h-4" />
+			</a>
+		</div>
+
+		{
+			latest.length === 0 ? (
+				<div class="border border-slate-200 rounded-2xl bg-slate-50 p-12 text-center">
+					<BookOpen className="w-10 h-10 text-slate-400 mx-auto mb-3" />
+					<h3 class="text-xl font-bold text-slate-800 mb-2">No insights published yet</h3>
+					<p class="text-slate-600 m-0 max-w-md mx-auto mb-4">
+						Market analysis and case studies are being published regularly by the ALTIX editorial team.
+					</p>
+					<a class="button button--secondary inline-flex items-center gap-2" href="/insights">
+						<span>Explore Insights archive</span>
+					</a>
+				</div>
+			) : (
+				<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+					{latest.map((post) => {
+						const slug = post.data?.slug || post.id;
+						const href = `/insights/${slug}`;
+						const title = post.data?.title || slug;
+						const excerpt = post.data?.excerpt || "";
+						const rawDate = post.data?.published_at || post.data?.publishedAt || post.data?.created_at || post.data?.createdAt;
+						const formattedDate = formatPostDate(rawDate);
+						const category = getPostCategory(slug, title);
+						const readTime = estimateReadTime(post.data?.content, excerpt);
+						const image = post.data?.featured_image;
+
+						return (
+							<article class="border border-slate-200 rounded-2xl bg-white overflow-hidden shadow-sm hover:shadow-xl hover:border-slate-300 hover:-translate-y-1 transition-all duration-300 flex flex-col group">
+								<a href={href} class="block relative overflow-hidden aspect-[16/10] bg-[#1e2137]">
+									{image ? (
+										<div class="w-full h-full insights-thumb" {...post.edit?.featured_image}>
+											<Image image={image} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+										</div>
+									) : (
+										<div class="w-full h-full bg-gradient-to-br from-[#1c1f36] via-[#242742] to-[#3a2838] relative flex items-center justify-center p-6 select-none overflow-hidden">
+											<div class="absolute inset-0 opacity-10 bg-[radial-gradient(#e6463a_1px,transparent_1px)] [background-size:16px_16px]" />
+											<div class="absolute -right-8 -bottom-8 w-32 h-32 rounded-full bg-[#e6463a]/15 blur-2xl" />
+											<div class="absolute -left-8 -top-8 w-28 h-28 rounded-full bg-indigo-500/10 blur-xl" />
+											<div class="z-10 flex flex-col items-center text-center">
+												<div class="w-12 h-12 rounded-xl bg-white/10 backdrop-blur-md border border-white/15 flex items-center justify-center mb-2.5 shadow-inner group-hover:scale-110 group-hover:bg-[#e6463a]/25 group-hover:border-[#e6463a]/40 transition-all duration-300">
+													{category === "Financial Crime" ? (
+														<ShieldAlert className="w-6 h-6 text-red-400" />
+													) : category === "Case Readiness" ? (
+														<Scale className="w-6 h-6 text-amber-400" />
+													) : category === "Asset Recovery" ? (
+														<TrendingUp className="w-6 h-6 text-emerald-400" />
+													) : category === "Institutional Capital" ? (
+														<Building className="w-6 h-6 text-blue-400" />
+													) : (
+														<BookOpen className="w-6 h-6 text-[#ff8d84]" />
+													)}
+												</div>
+												<span class="text-[11px] font-mono uppercase tracking-widest text-slate-300 font-semibold">
+													ALTIX Research
+												</span>
+											</div>
+										</div>
+									)}
+									<span class="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-[11px] font-bold tracking-wider uppercase bg-white/95 text-slate-800 shadow-sm backdrop-blur-md border border-white/40">
+										{category}
+									</span>
+									<span class="absolute top-4 right-4 z-10 px-2.5 py-1 rounded-full text-[11px] font-medium tracking-wide bg-slate-950/70 text-slate-200 backdrop-blur-md flex items-center gap-1">
+										<Clock className="w-3 h-3 text-slate-400" />
+										{readTime}
+									</span>
+								</a>
+
+								<div class="p-6 sm:p-7 flex flex-col flex-grow">
+									<div class="flex items-center gap-2 text-xs font-medium text-slate-400 mb-3">
+										<span class="flex items-center gap-1">
+											<Calendar className="w-3.5 h-3.5" />
+											<time datetime={rawDate ? new Date(rawDate).toISOString() : undefined}>
+												{formattedDate}
+											</time>
+										</span>
+										<span>·</span>
+										<span>ALTIX Editorial</span>
+									</div>
+
+									<h3 class="font-serif text-xl sm:text-2xl font-bold text-slate-900 leading-snug mb-3 !mt-0 group-hover:text-[#e6463a] transition-colors" {...post.edit?.title}>
+										<a href={href} class="no-underline text-inherit">
+											{title}
+										</a>
+									</h3>
+
+									{excerpt && (
+										<p class="text-slate-600 text-sm leading-relaxed line-clamp-3 mb-6 flex-grow" {...post.edit?.excerpt}>
+											{excerpt}
+										</p>
+									)}
+
+									<div class="pt-4 border-t border-slate-100 flex items-center justify-between mt-auto">
+										<a class="inline-flex items-center gap-1.5 text-sm font-bold text-[#e6463a] group-hover:gap-2.5 transition-all" href={href}>
+											<span>Read article</span>
+											<ArrowRight className="w-4 h-4" />
+										</a>
+									</div>
+								</div>
+							</article>
+						);
+					})}
+				</div>
+			)
+		}
+	</div>
+</section>
+
+<style>
+	.insights-thumb :global(img) {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		transition: transform 0.5s ease;
+	}
+
+	.group:hover .insights-thumb :global(img) {
+		transform: scale(1.04);
+	}
+</style>

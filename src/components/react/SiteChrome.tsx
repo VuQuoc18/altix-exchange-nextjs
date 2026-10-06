@@ -31,11 +31,11 @@ export default function SiteChrome() {
     <>
       <header className={`site-header ${scrolled ? 'shadow-md border-slate-200' : ''}`}>
         <div className="container header-inner">
-          <a className="flex items-center gap-2" href="/" aria-label="ALTIX Exchange home">
+          <a className="flex items-center shrink-0" href="/" aria-label="ALTIX home">
             <img
               src="/assets/img/logo.png"
-              alt="ALTIX Exchange"
-              className="h-10 sm:h-12 w-auto object-contain"
+              alt="ALTIX"
+              className="h-9 sm:h-10 w-auto max-w-[190px] object-contain object-left"
             />
           </a>
 

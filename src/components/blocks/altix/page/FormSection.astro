@@ -1,0 +1,17 @@
+---
+import FormRenderer from "../../../forms/FormRenderer.astro";
+
+interface Props {
+	node: { eyebrow?: string; title?: string; formType?: string; formNote?: string; anchor?: string };
+}
+const { node } = Astro.props;
+const anchor = node.anchor?.trim().replace(/^#/, "") || undefined;
+---
+
+<section class="section section--paper" id={anchor}>
+	<div class="container narrow">
+		{node.eyebrow && <span class="eyebrow">{node.eyebrow}</span>}
+		{node.title && <h2>{node.title}</h2>}
+		<FormRenderer formType={node.formType || "general-contact"} formNote={node.formNote} />
+	</div>
+</section>

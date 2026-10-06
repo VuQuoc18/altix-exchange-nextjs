@@ -1,0 +1,16 @@
+---
+import Roadmap from "../../sections/Roadmap.astro";
+
+interface Props {
+	node: {
+		eyebrow?: string;
+		title?: string;
+		body?: string;
+		items?: Array<{ status?: string; title?: string; description?: string }>;
+	};
+}
+
+const { node } = Astro.props;
+---
+
+<Roadmap data={node} />

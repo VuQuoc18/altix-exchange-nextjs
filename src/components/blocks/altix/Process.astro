@@ -1,0 +1,17 @@
+---
+import Process from "../../sections/Process.astro";
+
+interface Props {
+	node: {
+		eyebrow?: string;
+		title?: string;
+		body?: string;
+		milestoneLabel?: string;
+		steps?: Array<{ title?: string; desc?: string }>;
+	};
+}
+
+const { node } = Astro.props;
+---
+
+<Process data={node} />
