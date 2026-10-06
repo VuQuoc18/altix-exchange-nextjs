@@ -1,0 +1,209 @@
+---
+interface ImageItem {
+	url: string;
+	alt?: string;
+	caption?: string;
+	linkUrl?: string;
+}
+
+interface Props {
+	node: {
+		eyebrow?: string;
+		headline?: string;
+		subheadline?: string;
+		autoPlay?: boolean;
+		images?: ImageItem[];
+	};
+}
+
+const { node } = Astro.props;
+const { eyebrow, headline, subheadline, autoPlay, images = [] } = node;
+const carouselId = "carousel-" + Math.random().toString(36).substring(2, 9);
+---
+
+<section class="section py-16 md:py-24 overflow-hidden">
+	<div class="container mx-auto px-4 max-w-7xl">
+		{(eyebrow || headline || subheadline) && (
+			<div class="section-head text-center max-w-3xl mx-auto mb-12">
+				{eyebrow && <span class="eyebrow inline-block text-xs font-semibold tracking-wider uppercase text-altix-red dark:text-altix-red-light mb-2">{eyebrow}</span>}
+				{headline && <h2 class="text-3xl md:text-4xl font-bold tracking-tight text-navy dark:text-white mb-4">{headline}</h2>}
+				{subheadline && <p class="text-base md:text-lg text-gray-600 dark:text-gray-300 leading-relaxed">{subheadline}</p>}
+			</div>
+		)}
+
+		{images && images.length > 0 ? (
+			<div class="relative group" id={carouselId} data-autoplay={autoPlay ? "true" : "false"}>
+				<!-- Slider Track Container -->
+				<div 
+					class="carousel-track flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-6 cursor-grab active:cursor-grabbing no-scrollbar"
+					style="scrollbar-width: none; -ms-overflow-style: none;"
+				>
+					{images.map((img, idx) => (
+						<div class="carousel-slide flex-none w-[85%] sm:w-[55%] md:w-[40%] lg:w-[32%] snap-center">
+							<div class="relative rounded-2xl overflow-hidden bg-gray-100 dark:bg-gray-800 border border-gray-200/80 dark:border-gray-700/80 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1">
+								{img.linkUrl ? (
+									<a href={img.linkUrl} class="block aspect-[16/10] overflow-hidden group/img">
+										<img 
+											src={img.url} 
+											alt={img.alt || img.caption || `Slide ${idx + 1}`} 
+											class="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105 pointer-events-none"
+											loading="lazy"
+										/>
+									</a>
+								) : (
+									<div class="aspect-[16/10] overflow-hidden">
+										<img 
+											src={img.url} 
+											alt={img.alt || img.caption || `Slide ${idx + 1}`} 
+											class="w-full h-full object-cover transition-transform duration-500 hover:scale-105 pointer-events-none"
+											loading="lazy"
+										/>
+									</div>
+								)}
+
+								{img.caption && (
+									<div class="p-4 bg-white dark:bg-gray-800/90 border-t border-gray-100 dark:border-gray-700/50">
+										<p class="text-sm font-medium text-gray-800 dark:text-gray-200 line-clamp-2">{img.caption}</p>
+									</div>
+								)}
+							</div>
+						</div>
+					))}
+				</div>
+
+				<!-- Navigation Buttons -->
+				<div class="flex items-center justify-between mt-4">
+					<!-- Dots Indicator -->
+					<div class="carousel-dots flex gap-2">
+						{images.map((_, idx) => (
+							<button 
+								type="button" 
+								class={`dot w-2.5 h-2.5 rounded-full transition-all duration-300 ${idx === 0 ? "bg-altix-red w-6" : "bg-gray-300 dark:bg-gray-600"}`}
+								data-index={idx}
+								aria-label={`Go to slide ${idx + 1}`}
+							/>
+						))}
+					</div>
+
+					<!-- Arrow Buttons -->
+					<div class="flex gap-2">
+						<button 
+							type="button" 
+							class="carousel-prev p-2.5 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors shadow-sm disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+							aria-label="Previous slide"
+						>
+							<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<path d="m15 18-6-6 6-6"/>
+							</svg>
+						</button>
+						<button 
+							type="button" 
+							class="carousel-next p-2.5 rounded-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-750 transition-colors shadow-sm disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+							aria-label="Next slide"
+						>
+							<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+								<path d="m9 18 6-6-6-6"/>
+							</svg>
+						</button>
+					</div>
+				</div>
+			</div>
+		) : (
+			<div class="text-center py-12 border-2 border-dashed border-gray-300 dark:border-gray-700 rounded-2xl">
+				<p class="text-gray-500 dark:text-gray-400">No images added to this carousel yet.</p>
+			</div>
+		)}
+	</div>
+</section>
+
+<script define:vars={{ carouselId }}>
+	const root = document.getElementById(carouselId);
+	if (root) {
+		const track = root.querySelector(".carousel-track");
+		const prevBtn = root.querySelector(".carousel-prev");
+		const nextBtn = root.querySelector(".carousel-next");
+		const dots = root.querySelectorAll(".dot");
+		const slides = root.querySelectorAll(".carousel-slide");
+
+		if (track && slides.length > 0) {
+			const updateDots = () => {
+				const scrollLeft = track.scrollLeft;
+				const slideWidth = slides[0].getBoundingClientRect().width + 24; // + gap
+				const activeIndex = Math.round(scrollLeft / slideWidth);
+
+				dots.forEach((dot, idx) => {
+					if (idx === activeIndex) {
+						dot.classList.add("bg-altix-red", "w-6");
+						dot.classList.remove("bg-gray-300", "dark:bg-gray-600", "w-2.5");
+					} else {
+						dot.classList.remove("bg-altix-red", "w-6");
+						dot.classList.add("bg-gray-300", "dark:bg-gray-600", "w-2.5");
+					}
+				});
+			};
+
+			track.addEventListener("scroll", updateDots, { passive: true });
+
+			const scrollSlide = (direction) => {
+				const slideWidth = slides[0].getBoundingClientRect().width + 24;
+				track.scrollBy({ left: direction * slideWidth, behavior: "smooth" });
+			};
+
+			if (prevBtn) prevBtn.addEventListener("click", () => scrollSlide(-1));
+			if (nextBtn) nextBtn.addEventListener("click", () => scrollSlide(1));
+
+			dots.forEach((dot, idx) => {
+				dot.addEventListener("click", () => {
+					const slideWidth = slides[0].getBoundingClientRect().width + 24;
+					track.scrollTo({ left: idx * slideWidth, behavior: "smooth" });
+				});
+			});
+
+			// Mouse drag scrolling support
+			let isDown = false;
+			let startX = 0;
+			let scrollLeftVal = 0;
+
+			track.addEventListener("mousedown", (e) => {
+				isDown = true;
+				startX = e.pageX - track.offsetLeft;
+				scrollLeftVal = track.scrollLeft;
+			});
+
+			window.addEventListener("mouseup", () => {
+				isDown = false;
+			});
+
+			track.addEventListener("mousemove", (e) => {
+				if (!isDown) return;
+				e.preventDefault();
+				const x = e.pageX - track.offsetLeft;
+				const walk = (x - startX) * 1.5; // scroll speed multiplier
+				track.scrollLeft = scrollLeftVal - walk;
+			});
+
+			// Auto play
+			if (root.dataset.autoplay === "true") {
+				let timer = setInterval(() => {
+					if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
+						track.scrollTo({ left: 0, behavior: "smooth" });
+					} else {
+						scrollSlide(1);
+					}
+				}, 4000);
+
+				root.addEventListener("mouseenter", () => clearInterval(timer));
+				root.addEventListener("mouseleave", () => {
+					clearInterval(timer);
+					timer = setInterval(() => {
+						if (track.scrollLeft + track.clientWidth >= track.scrollWidth - 10) {
+							track.scrollTo({ left: 0, behavior: "smooth" });
+						} else {
+							scrollSlide(1);
+						}
+					}, 4000);
+				});
+			}
+		}
+	}
+</script>

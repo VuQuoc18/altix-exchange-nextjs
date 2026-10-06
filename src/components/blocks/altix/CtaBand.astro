@@ -1,0 +1,16 @@
+---
+import CtaBand from "../../sections/CtaBand.astro";
+
+interface Props {
+	node: {
+		eyebrow?: string;
+		title?: string;
+		body?: string;
+		button?: string;
+	};
+}
+
+const { node } = Astro.props;
+---
+
+<CtaBand data={node} />

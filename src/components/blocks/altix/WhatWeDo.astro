@@ -1,0 +1,21 @@
+---
+import WhatWeDo from "../../sections/WhatWeDo.astro";
+
+interface Props {
+	node: {
+		eyebrow?: string;
+		title?: string;
+		body?: string;
+		cards?: Array<{
+			title?: string;
+			description?: string;
+			linkText?: string;
+			badge?: string;
+		}>;
+	};
+}
+
+const { node } = Astro.props;
+---
+
+<WhatWeDo data={node} />

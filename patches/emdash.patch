@@ -1,0 +1,238 @@
+diff --git a/dist/astro/middleware.mjs b/dist/astro/middleware.mjs
+index 3ff692677dfae16802e3e3b36e4281f2ea6367af..a5e5e679e3e71e227fc18280a863a7402b4cd406 100644
+--- a/dist/astro/middleware.mjs
++++ b/dist/astro/middleware.mjs
+@@ -3481,18 +3481,26 @@ var EmDashRuntime = class EmDashRuntime {
+ 		const liveContentChanged = usesDraftRevisions ? liveMetaTouched : Boolean(processedData || bodyWithoutRev.slug !== void 0 || liveMetaTouched);
+ 		const hydrated = await this.hydrateDraftData(result);
+ 		if (hydrated.success && hydrated.data) {
+-			const contentIdsToRefresh = [resolvedId];
+-			if (!usesDraftRevisions && processedData) try {
+-				contentIdsToRefresh.push(...await findNonTranslatableSiblingContentIds(this.db, collection, resolvedId, hydrated.data.item.translationGroup, processedData));
+-			} catch (error) {
+-				console.error(`[media-usage] Failed to discover synced i18n siblings for ${collection}/${resolvedId}:`, error);
++			if (usesDraftRevisions && !liveContentChanged) {
+ 				try {
+-					await markContentMediaUsageCollectionStale(this.db, collection, "CONTENT_USAGE_REFRESH_ERROR");
+-				} catch (staleError) {
+-					console.error(`[media-usage] Failed to mark ${collection} stale:`, staleError);
++					await markContentMediaUsageCollectionStale(this.db, collection, "CONTENT_USAGE_STALE");
++				} catch (error) {
++					console.error(`[media-usage] Failed to mark ${collection} stale:`, error);
++				}
++			} else {
++				const contentIdsToRefresh = [resolvedId];
++				if (!usesDraftRevisions && processedData) try {
++					contentIdsToRefresh.push(...await findNonTranslatableSiblingContentIds(this.db, collection, resolvedId, hydrated.data.item.translationGroup, processedData));
++				} catch (error) {
++					console.error(`[media-usage] Failed to discover synced i18n siblings for ${collection}/${resolvedId}:`, error);
++					try {
++						await markContentMediaUsageCollectionStale(this.db, collection, "CONTENT_USAGE_REFRESH_ERROR");
++					} catch (staleError) {
++						console.error(`[media-usage] Failed to mark ${collection} stale:`, staleError);
++					}
+ 				}
++				after(() => this.refreshContentUsageAfterSuccessfulWrite(collection, contentIdsToRefresh));
+ 			}
+-			await this.refreshContentUsageAfterSuccessfulWrite(collection, contentIdsToRefresh);
+ 		} else if (draftStorageChanged) try {
+ 			await markContentMediaUsageCollectionStale(this.db, collection, "CONTENT_USAGE_STALE");
+ 		} catch (error) {
+diff --git a/dist/registry-Cqa2I749.mjs b/dist/registry-Cqa2I749.mjs
+index 2d5994b2f7169b69c5b47e107a084f931f108e20..d326ca7e60bdcc6df0448f6e12d637a8e9cb36db 100644
+--- a/dist/registry-Cqa2I749.mjs
++++ b/dist/registry-Cqa2I749.mjs
+@@ -310,13 +310,22 @@ var SchemaRegistry = class {
+ 	* Get a collection with all its fields
+ 	*/
+ 	async getCollectionWithFields(slug) {
++		if (typeof globalThis !== "undefined") {
++			if (!globalThis._emdash_coll_cache) globalThis._emdash_coll_cache = new Map();
++			const cached = globalThis._emdash_coll_cache.get(slug);
++			if (cached && cached.exp > Date.now()) return cached.data;
++		}
+ 		const collection = await this.getCollection(slug);
+ 		if (!collection) return null;
+ 		const fields = await this.listFields(collection.id);
+-		return {
++		const result = {
+ 			...collection,
+ 			fields
+ 		};
++		if (typeof globalThis !== "undefined") {
++			globalThis._emdash_coll_cache.set(slug, { data: result, exp: Date.now() + 30_000 });
++		}
++		return result;
+ 	}
+ 	/**
+ 	* List every collection together with its fields in O(1) query shapes
+diff --git a/dist/validation-npvENUCB.mjs b/dist/validation-npvENUCB.mjs
+index bef46a2ef0daa7034c659451215807244e8a8bcc..39a4e91b9730f9ccdcc56725f4dcd93950ee7ffa 100644
+--- a/dist/validation-npvENUCB.mjs
++++ b/dist/validation-npvENUCB.mjs
+@@ -65,6 +65,8 @@ function formatIssuePath(path) {
+ * fields the caller didn't touch. Required fields that ARE present in
+ * partial-mode data still get the empty-string check below.
+ */
++const zodSchemaCache = new Map();
++
+ async function validateContentData(db, collection, data, options = {}) {
+ 	const collectionWithFields = await new SchemaRegistry(db).getCollectionWithFields(collection);
+ 	if (!collectionWithFields) return {
+@@ -80,8 +82,13 @@ async function validateContentData(db, collection, data, options = {}) {
+ 		if (key.startsWith("_")) continue;
+ 		if (!knownFields.has(key)) issues.push(`${key}: unknown field on collection '${collection}'`);
+ 	}
+-	const baseSchema = generateZodSchema(collectionWithFields);
+-	const parsed = (options.partial ? baseSchema.partial() : baseSchema).safeParse(data);
++	let cached = zodSchemaCache.get(collection);
++	if (!cached) {
++		const base = generateZodSchema(collectionWithFields);
++		cached = { schema: base, partial: base.partial() };
++		zodSchemaCache.set(collection, cached);
++	}
++	const parsed = (options.partial ? cached.partial : cached.schema).safeParse(data);
+ 	if (!parsed.success) for (const issue of parsed.error.issues) issues.push(`${formatIssuePath(issue.path)}: ${issue.message}`);
+ 	for (const field of collectionWithFields.fields) {
+ 		if (!field.required) continue;
+diff --git a/src/api/handlers/validation.ts b/src/api/handlers/validation.ts
+index 5d8fabea802f03e3fb84e008bf0344c28e5412ef..5b29ed47b512a0720fbabaea8518252e0686908f 100644
+--- a/src/api/handlers/validation.ts
++++ b/src/api/handlers/validation.ts
+@@ -68,6 +68,8 @@ function formatIssuePath(path: ReadonlyArray<PropertyKey>): string {
+  * fields the caller didn't touch. Required fields that ARE present in
+  * partial-mode data still get the empty-string check below.
+  */
++const zodSchemaCache = new Map<string, { schema: any; partialSchema: any }>();
++
+ export async function validateContentData(
+ 	db: Kysely<Database>,
+ 	collection: string,
+@@ -103,8 +105,13 @@ export async function validateContentData(
+ 	// Zod handles type, enum, length and missing-required (in non-partial
+ 	// mode) checks. Empty-string handling for required string fields is
+ 	// done as a separate pass below since Zod's `z.string()` accepts "".
+-	const baseSchema = generateZodSchema(collectionWithFields);
+-	const schema = options.partial ? baseSchema.partial() : baseSchema;
++	let cached = zodSchemaCache.get(collection);
++	if (!cached) {
++		const baseSchema = generateZodSchema(collectionWithFields);
++		cached = { schema: baseSchema, partialSchema: baseSchema.partial() };
++		zodSchemaCache.set(collection, cached);
++	}
++	const schema = options.partial ? cached.partialSchema : cached.schema;
+ 	const parsed = schema.safeParse(data);
+ 	if (!parsed.success) {
+ 		for (const issue of parsed.error.issues) {
+diff --git a/src/emdash-runtime.ts b/src/emdash-runtime.ts
+index 8490cc7004d849566d15952cf7182a8523a5cbb7..cf7194f55fb352a2078a8614e52c46d0a496e33b 100644
+--- a/src/emdash-runtime.ts
++++ b/src/emdash-runtime.ts
+@@ -3222,35 +3222,51 @@ export class EmDashRuntime {
+ 		// columns.
+ 		const hydrated = await this.hydrateDraftData(result);
+ 		if (hydrated.success && hydrated.data) {
+-			const contentIdsToRefresh = [resolvedId];
+-			if (!usesDraftRevisions && processedData) {
++			if (usesDraftRevisions && !liveContentChanged) {
++				// Draft-only update (e.g. autosaves): do not block request or exceed CPU limit
++				// indexing media synchronously. Mark stale for background cron sweep.
+ 				try {
+-					contentIdsToRefresh.push(
+-						...(await findNonTranslatableSiblingContentIds(
+-							this.db,
+-							collection,
+-							resolvedId,
+-							hydrated.data.item.translationGroup,
+-							processedData,
+-						)),
+-					);
++					await markContentMediaUsageCollectionStale(this.db, collection, "CONTENT_USAGE_STALE");
+ 				} catch (error) {
+-					console.error(
+-						`[media-usage] Failed to discover synced i18n siblings for ${collection}/${resolvedId}:`,
+-						error,
+-					);
++					console.error(`[media-usage] Failed to mark ${collection} stale:`, error);
++				}
++			} else {
++				const contentIdsToRefresh = [resolvedId];
++				if (!usesDraftRevisions && processedData) {
+ 					try {
+-						await markContentMediaUsageCollectionStale(
+-							this.db,
+-							collection,
+-							"CONTENT_USAGE_REFRESH_ERROR",
++						contentIdsToRefresh.push(
++							...(await findNonTranslatableSiblingContentIds(
++								this.db,
++								collection,
++								resolvedId,
++								hydrated.data.item.translationGroup,
++								processedData,
++							)),
++						);
++					} catch (error) {
++						console.error(
++							`[media-usage] Failed to discover synced i18n siblings for ${collection}/${resolvedId}:`,
++							error,
+ 						);
+-					} catch (staleError) {
+-						console.error(`[media-usage] Failed to mark ${collection} stale:`, staleError);
++						try {
++							await markContentMediaUsageCollectionStale(
++								this.db,
++								collection,
++								"CONTENT_USAGE_REFRESH_ERROR",
++							);
++						} catch (staleError) {
++							console.error(`[media-usage] Failed to mark ${collection} stale:`, staleError);
++						}
+ 					}
+ 				}
++				after(async () => {
++					try {
++						await this.refreshContentUsageAfterSuccessfulWrite(collection, contentIdsToRefresh);
++					} catch (error) {
++						console.error(`[media-usage] Background refresh failed:`, error);
++					}
++				});
+ 			}
+-			await this.refreshContentUsageAfterSuccessfulWrite(collection, contentIdsToRefresh);
+ 		} else if (draftStorageChanged) {
+ 			try {
+ 				await markContentMediaUsageCollectionStale(this.db, collection, "CONTENT_USAGE_STALE");
+diff --git a/src/schema/registry.ts b/src/schema/registry.ts
+index 12010d12b42b749308e9c7663ce04bd03a66528e..ca934dca58309bddc8301c7f81cec327719522f3 100644
+--- a/src/schema/registry.ts
++++ b/src/schema/registry.ts
+@@ -58,6 +58,8 @@ const UNDERSCORE_PATTERN = /_/g;
+ const WORD_BOUNDARY_PATTERN = /\b\w/g;
+ const FIELD_ID_PATTERN = /^[0-9A-Z]{26}$/;
+ 
++const _collectionFieldsCache = new Map<string, { data: CollectionWithFields; expiresAt: number }>();
++
+ /** Valid column types for runtime validation */
+ const COLUMN_TYPES: ReadonlySet<string> = new Set(["TEXT", "REAL", "INTEGER", "JSON"]);
+ const COLUMN_TYPE_TO_DATA_TYPE = {
+@@ -279,12 +281,19 @@ export class SchemaRegistry {
+ 	 * Get a collection with all its fields
+ 	 */
+ 	async getCollectionWithFields(slug: string): Promise<CollectionWithFields | null> {
++		const cached = _collectionFieldsCache.get(slug);
++		if (cached && cached.expiresAt > Date.now()) {
++			return cached.data;
++		}
++
+ 		const collection = await this.getCollection(slug);
+ 		if (!collection) return null;
+ 
+ 		const fields = await this.listFields(collection.id);
++		const result = { ...collection, fields };
++		_collectionFieldsCache.set(slug, { data: result, expiresAt: Date.now() + 30_000 });
+ 
+-		return { ...collection, fields };
++		return result;
+ 	}
+ 
+ 	/**

@@ -1,0 +1,16 @@
+allowBuilds:
+  better-sqlite3: false
+  esbuild: true
+  sharp: false
+  workerd: true
+
+blockExoticSubdeps: true
+
+minimumReleaseAge: 1440
+
+minimumReleaseAgeExclude:
+  - emdash
+  - '@emdash-cms/*'
+
+patchedDependencies:
+  emdash: patches/emdash.patch

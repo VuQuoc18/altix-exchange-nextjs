@@ -1,0 +1,141 @@
+---
+import { ShieldCheck, Scale, TrendingUp, Building2, PieChart, ShieldAlert, CheckCircle2 } from "lucide-react";
+
+interface AssessmentItem {
+  title?: string;
+  description?: string;
+  badge?: string;
+}
+
+interface UnderwritingData {
+  eyebrow?: string;
+  title?: string;
+  body?: string;
+  items?: AssessmentItem[];
+}
+
+interface Props {
+  data?: UnderwritingData;
+  fields?: {
+    eyebrow?: Record<string, unknown>;
+    title?: Record<string, unknown>;
+    body?: Record<string, unknown>;
+  };
+}
+
+const { data, fields } = Astro.props;
+
+const eyebrow = data?.eyebrow ?? "Underwriting";
+const title = data?.title ?? "What we assess.";
+const body = data?.body ?? "A funding decision depends on more than the headline claim value.";
+
+const defaultItems = [
+  {
+    no: '01',
+    icon: ShieldCheck,
+    fallback: {
+      title: 'Authority & Integrity',
+      description: 'Claimant authority, identity, KYC/AML, sanctions, conflicts and credibility.',
+      badge: 'CORE REQUIREMENT',
+    },
+  },
+  {
+    no: '02',
+    icon: Scale,
+    fallback: {
+      title: 'Legal Position',
+      description: 'Cause of action, standing, jurisdiction, limitation, evidence and likely defences.',
+      badge: 'MERIT REVIEW',
+    },
+  },
+  {
+    no: '03',
+    icon: TrendingUp,
+    fallback: {
+      title: 'Economics',
+      description: 'Supported damages, legal and expert budgets, duration, adverse costs and capital requirements.',
+      badge: 'RETURN & RISK',
+    },
+  },
+  {
+    no: '04',
+    icon: Building2,
+    fallback: {
+      title: 'Collectability',
+      description: 'Defendant solvency, insurance, assets, enforcement venues and realistic recovery paths.',
+      badge: 'ENFORCEMENT',
+    },
+  },
+  {
+    no: '05',
+    icon: PieChart,
+    fallback: {
+      title: 'Structure',
+      description: 'Investor eligibility, funding terms, governance, distribution mechanics and legal feasibility.',
+      badge: 'LEGAL FEASIBILITY',
+    },
+  },
+  {
+    no: '06',
+    icon: ShieldAlert,
+    fallback: {
+      title: 'Portfolio Risk',
+      description: 'Concentration, jurisdiction, duration, legal theory and recovery-timetable exposure.',
+      badge: 'RISK BALANCING',
+    },
+  },
+];
+
+const items = defaultItems.map((item, index) => {
+  const itemData = data?.items?.[index];
+  return {
+    ...item,
+    title: itemData?.title ?? item.fallback.title,
+    description: itemData?.description ?? item.fallback.description,
+    badge: itemData?.badge ?? item.fallback.badge,
+  };
+});
+---
+
+<section class="section bg-white border-y border-slate-200">
+  <div class="container">
+    {/* Eyebrow */}
+    <div class="eyebrow mb-2">
+      <Scale className="w-4 h-4 text-[#e6463a]" />
+      <span {...fields?.eyebrow}>{eyebrow}</span>
+    </div>
+
+    {/* Section Head */}
+    <div class="section-head">
+      <h2 {...fields?.title}>{title}</h2>
+      <p {...fields?.body}>{body}</p>
+    </div>
+
+    {/* Assessment Grid */}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {items.map((item) => {
+        const Icon = item.icon;
+        return (
+          <article class="bg-slate-50 border border-slate-200 p-6 rounded-xl hover:bg-white hover:shadow-xl hover:border-[#e6463a]/40 transition-all duration-300 group flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="p-3 rounded-lg bg-white border border-slate-200 text-[#e6463a] group-hover:bg-[#e6463a] group-hover:text-white transition-colors duration-300 shadow-sm">
+                  <Icon className="w-5 h-5" />
+                </div>
+                <span class="text-xs font-mono font-bold text-slate-400">{item.no}</span>
+              </div>
+
+              <h3 class="text-xl font-bold text-slate-900 mb-2">{item.title}</h3>
+              <p class="text-sm text-slate-600 mb-4">{item.description}</p>
+            </div>
+
+            <div class="pt-3 border-t border-slate-200/80 flex items-center justify-between text-xs text-slate-500">
+              <span class="font-mono text-[10px] font-bold text-slate-400">{item.badge}</span>
+              <CheckCircle2 className="w-4 h-4 text-emerald-500" />
+            </div>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>

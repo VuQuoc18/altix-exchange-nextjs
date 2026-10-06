@@ -1,0 +1,2436 @@
+{
+	"$schema": "https://emdashcms.com/seed.schema.json",
+	"version": "1",
+	"meta": {
+		"name": "ALTIX Exchange Marketing Site",
+		"description": "ALTIX Exchange marketing site seed data and content schema",
+		"author": "ALTIX Exchange"
+	},
+	"settings": {
+		"title": "ALTIX Exchange",
+		"tagline": "Preparing qualified legal claims for professional capital"
+	},
+	"collections": [
+		{
+			"slug": "pages",
+			"label": "Pages",
+			"labelSingular": "Page",
+			"supports": [
+				"drafts",
+				"revisions",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "eyebrow",
+					"label": "Eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "lead",
+					"label": "Lead / Subtitle",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				},
+				{
+					"slug": "hero_eyebrow",
+					"label": "Hero — Eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "hero_headline_before",
+					"label": "Hero — Headline before accent",
+					"type": "string"
+				},
+				{
+					"slug": "hero_headline_accent",
+					"label": "Hero — Headline accent",
+					"type": "string"
+				},
+				{
+					"slug": "hero_lead_strong",
+					"label": "Hero — Lead (strong)",
+					"type": "string"
+				},
+				{
+					"slug": "hero_lead_rest",
+					"label": "Hero — Lead (rest)",
+					"type": "string"
+				},
+				{
+					"slug": "hero_primary_cta",
+					"label": "Hero — Primary CTA",
+					"type": "string"
+				},
+				{
+					"slug": "hero_secondary_cta",
+					"label": "Hero — Secondary CTA",
+					"type": "string"
+				},
+				{
+					"slug": "hero_badge_1",
+					"label": "Hero — Badge 1",
+					"type": "string"
+				},
+				{
+					"slug": "hero_badge_2",
+					"label": "Hero — Badge 2",
+					"type": "string"
+				},
+				{
+					"slug": "hero_badge_3",
+					"label": "Hero — Badge 3",
+					"type": "string"
+				},
+				{
+					"slug": "hero_disclaimer",
+					"label": "Hero — Disclaimer",
+					"type": "string"
+				},
+				{
+					"slug": "wwd_eyebrow",
+					"label": "What we do — Eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "wwd_title",
+					"label": "What we do — Title",
+					"type": "string"
+				},
+				{
+					"slug": "wwd_body",
+					"label": "What we do — Body",
+					"type": "string"
+				},
+				{
+					"slug": "eco_eyebrow",
+					"label": "Ecosystem — Eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "eco_title",
+					"label": "Ecosystem — Title",
+					"type": "string"
+				},
+				{
+					"slug": "eco_body",
+					"label": "Ecosystem — Body",
+					"type": "string"
+				},
+				{
+					"slug": "proc_eyebrow",
+					"label": "Process — Eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "proc_title",
+					"label": "Process — Title",
+					"type": "string"
+				},
+				{
+					"slug": "proc_body",
+					"label": "Process — Body",
+					"type": "string"
+				},
+				{
+					"slug": "uw_eyebrow",
+					"label": "Underwriting — Eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "uw_title",
+					"label": "Underwriting — Title",
+					"type": "string"
+				},
+				{
+					"slug": "uw_body",
+					"label": "Underwriting — Body",
+					"type": "string"
+				},
+				{
+					"slug": "rm_eyebrow",
+					"label": "Roadmap — Eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "rm_title",
+					"label": "Roadmap — Title",
+					"type": "string"
+				},
+				{
+					"slug": "rm_body",
+					"label": "Roadmap — Body",
+					"type": "string"
+				},
+				{
+					"slug": "lead_eyebrow",
+					"label": "Leadership — Eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "lead_title",
+					"label": "Leadership — Title",
+					"type": "string"
+				},
+				{
+					"slug": "lead_body",
+					"label": "Leadership — Body",
+					"type": "string"
+				},
+				{
+					"slug": "lead_kicker",
+					"label": "Leadership — Kicker",
+					"type": "string"
+				},
+				{
+					"slug": "lead_name",
+					"label": "Leadership — Name",
+					"type": "string"
+				},
+				{
+					"slug": "lead_role",
+					"label": "Leadership — Role",
+					"type": "string"
+				},
+				{
+					"slug": "lead_stat1_title",
+					"label": "Leadership — Stat 1 title",
+					"type": "string"
+				},
+				{
+					"slug": "lead_stat1_body",
+					"label": "Leadership — Stat 1 body",
+					"type": "string"
+				},
+				{
+					"slug": "lead_stat2_title",
+					"label": "Leadership — Stat 2 title",
+					"type": "string"
+				},
+				{
+					"slug": "lead_stat2_body",
+					"label": "Leadership — Stat 2 body",
+					"type": "string"
+				},
+				{
+					"slug": "lead_cta",
+					"label": "Leadership — CTA",
+					"type": "string"
+				},
+				{
+					"slug": "cta_eyebrow",
+					"label": "CTA — Eyebrow",
+					"type": "string"
+				},
+				{
+					"slug": "cta_title",
+					"label": "CTA — Title",
+					"type": "string"
+				},
+				{
+					"slug": "cta_body",
+					"label": "CTA — Body",
+					"type": "string"
+				},
+				{
+					"slug": "cta_button",
+					"label": "CTA — Button",
+					"type": "string"
+				},
+				{
+					"slug": "hero",
+					"label": "Hero Block",
+					"type": "json"
+				},
+				{
+					"slug": "what_we_do",
+					"label": "What We Do Block",
+					"type": "json"
+				},
+				{
+					"slug": "ecosystem",
+					"label": "Ecosystem Block",
+					"type": "json"
+				},
+				{
+					"slug": "process",
+					"label": "Process Block",
+					"type": "json"
+				},
+				{
+					"slug": "underwriting",
+					"label": "Underwriting Block",
+					"type": "json"
+				},
+				{
+					"slug": "roadmap",
+					"label": "Roadmap Block",
+					"type": "json"
+				},
+				{
+					"slug": "leadership",
+					"label": "Leadership Block",
+					"type": "json"
+				},
+				{
+					"slug": "cta_band",
+					"label": "CTA Band Block",
+					"type": "json"
+				},
+				{
+					"slug": "sections",
+					"label": "Page Sections",
+					"type": "json"
+				},
+				{
+					"slug": "notice",
+					"label": "Notice",
+					"type": "text"
+				},
+				{
+					"slug": "contact",
+					"label": "Contact Email",
+					"type": "string"
+				}
+			]
+		},
+		{
+			"slug": "posts",
+			"label": "Posts",
+			"labelSingular": "Post",
+			"urlPattern": "/insights/{slug}",
+			"supports": [
+				"drafts",
+				"revisions",
+				"search",
+				"seo"
+			],
+			"fields": [
+				{
+					"slug": "title",
+					"label": "Title",
+					"type": "string",
+					"required": true,
+					"searchable": true
+				},
+				{
+					"slug": "excerpt",
+					"label": "Excerpt",
+					"type": "text",
+					"searchable": true
+				},
+				{
+					"slug": "featured_image",
+					"label": "Featured Image",
+					"type": "image"
+				},
+				{
+					"slug": "content",
+					"label": "Content",
+					"type": "portableText",
+					"searchable": true
+				}
+			]
+		}
+	],
+	"menus": [
+		{
+			"name": "primary",
+			"label": "Primary Navigation",
+			"items": [
+				{
+					"type": "custom",
+					"label": "What we do",
+					"url": "/what-we-do"
+				},
+				{
+					"type": "custom",
+					"label": "How it works",
+					"url": "/how-it-works"
+				},
+				{
+					"type": "custom",
+					"label": "Who we work with",
+					"url": "/who-we-work-with"
+				},
+				{
+					"type": "custom",
+					"label": "Professional Network",
+					"url": "/expert-network"
+				},
+				{
+					"type": "custom",
+					"label": "Insights",
+					"url": "/insights"
+				},
+				{
+					"type": "custom",
+					"label": "About",
+					"url": "/about"
+				}
+			]
+		}
+	],
+	"redirects": [
+		{
+			"source": "/en-us",
+			"destination": "/",
+			"status": 301
+		},
+		{
+			"source": "/en-us/",
+			"destination": "/",
+			"status": 301
+		},
+		{
+			"source": "/about-us",
+			"destination": "/about",
+			"status": 301
+		},
+		{
+			"source": "/how-altix-works",
+			"destination": "/how-it-works",
+			"status": 301
+		},
+		{
+			"source": "/how-altix-works-for-claimants",
+			"destination": "/claimants-and-businesses",
+			"status": 301
+		},
+		{
+			"source": "/how-altix-works-for-lawyers",
+			"destination": "/law-firms",
+			"status": 301
+		},
+		{
+			"source": "/how-altix-works-for-investors",
+			"destination": "/funding-participants",
+			"status": 301
+		},
+		{
+			"source": "/become-a-partner",
+			"destination": "/expert-network",
+			"status": 301
+		},
+		{
+			"source": "/expert-panel",
+			"destination": "/expert-network",
+			"status": 301
+		},
+		{
+			"source": "/altixblogs",
+			"destination": "/insights",
+			"status": 301
+		},
+		{
+			"source": "/altixblogs/:slug",
+			"destination": "/insights/:slug",
+			"status": 301
+		},
+		{
+			"source": "/posts",
+			"destination": "/insights",
+			"status": 301
+		},
+		{
+			"source": "/posts/:slug",
+			"destination": "/insights/:slug",
+			"status": 301
+		},
+		{
+			"source": "/privacy-policy",
+			"destination": "/privacy",
+			"status": 301
+		},
+		{
+			"source": "/terms-of-service",
+			"destination": "/terms",
+			"status": 301
+		}
+	],
+	"content": {
+		"pages": [
+			{
+				"id": "home",
+				"slug": "home",
+				"status": "published",
+				"data": {
+					"title": "Home",
+					"eyebrow": "Litigation finance & global asset recovery",
+					"lead": "Preparing qualified legal claims for professional capital.",
+					"content": [
+						{
+							"_type": "altix.hero",
+							"_key": "home-hero",
+							"eyebrow": "Litigation finance & global asset recovery",
+							"headlineBefore": "Preparing qualified legal claims for",
+							"headlineAccent": "professional capital.",
+							"leadStrong": "ALTIX helps claimants and law firms turn complex disputes into funder-ready opportunities.",
+							"leadRest": " We coordinate case screening, evidence organization, financial analysis, financial-crime intelligence, collectability work, investor materials and ongoing administration.",
+							"primaryCta": "Submit a Case for Initial Review",
+							"secondaryCta": "Request Institutional Access",
+							"badge1": "Structured Diligence",
+							"badge2": "Jurisdiction Assessment",
+							"badge3": "Encrypted Data Rooms",
+							"disclaimer": "Submission does not guarantee acceptance, funding, recovery, liquidity or any particular outcome."
+						},
+						{
+							"_type": "altix.whatWeDo",
+							"_key": "home-what-we-do",
+							"eyebrow": "What ALTIX does",
+							"title": "A more structured route from case to capital.",
+							"body": "Legal merit alone is not enough for a funding decision. Professional capital also needs clear evidence, realistic budgets, supported damages, jurisdiction analysis, collectability information, enforcement planning and appropriate terms.",
+							"cards": [
+								{
+									"title": "Case Readiness",
+									"description": "Organize authority, evidence, damages, budget, jurisdiction and collectability into a coherent funding package.",
+									"linkText": "Explore Case Readiness",
+									"badge": "STAGE 1: PREPARATION"
+								},
+								{
+									"title": "Professional Funding Process",
+									"description": "Suitable matters may be presented to eligible funding participants through a permission-based process.",
+									"linkText": "How funding works",
+									"badge": "STAGE 2: CAPITAL ACCESS"
+								},
+								{
+									"title": "Administration & Reporting",
+									"description": "Support agreed budgets, milestones, controlled information access and reporting through the life of a matter.",
+									"linkText": "Case administration",
+									"badge": "STAGE 3: EXECUTION"
+								}
+							]
+						},
+						{
+							"_type": "altix.ecosystem",
+							"_key": "home-ecosystem",
+							"eyebrow": "Who we work with",
+							"title": "Built for the full recovery ecosystem.",
+							"body": "ALTIX coordinates the parties needed to assess, fund and execute selected matters.",
+							"items": [
+								{
+									"title": "Claimants & Businesses",
+									"description": "Individuals, SMEs, companies, insolvency estates and claimant groups with significant legal or recovery rights.",
+									"linkText": "For claimants",
+									"points": "Portfolio dispute assessment\nNon-recourse legal capital\nDamages & budget modeling"
+								},
+								{
+									"title": "Law Firms",
+									"description": "Legal teams seeking a structured route to prepare and present suitable client matters to professional capital.",
+									"linkText": "For law firms",
+									"points": "Streamlined funder intake\nFee budget structure\nWorkload & liability sharing"
+								},
+								{
+									"title": "Funding Participants",
+									"description": "Litigation funders, family offices, special-situations investors, private-credit firms and other eligible professional capital providers.",
+									"linkText": "For funding participants",
+									"points": "Permission-based Data Room\nPre-screened claim merit\nEnforcement collectability review"
+								},
+								{
+									"title": "Forensic Experts",
+									"description": "Investigators, forensic accountants, asset tracers, cyber intelligence professionals and other specialists.",
+									"linkText": "Forensic network",
+									"points": "Cross-border asset tracing\nFinancial-crime intelligence\nSolvency & recovery analytics"
+								}
+							]
+						},
+						{
+							"_type": "altix.process",
+							"_key": "home-process",
+							"eyebrow": "How it works",
+							"title": "A controlled process from case to capital.",
+							"body": "Every matter is case-specific. The workflow below describes the intended coordination model.",
+							"milestoneLabel": "Coordination Milestone",
+							"steps": [
+								{
+									"title": "Submit the opportunity",
+									"desc": "Claimant or counsel submits initial non-confidential claim overview."
+								},
+								{
+									"title": "Verify claimant & authority",
+									"desc": "Identity verification, corporate standing, KYC/AML and conflict screening."
+								},
+								{
+									"title": "Review legal merit & evidence",
+									"desc": "Independent legal review of cause of action, evidence burden and defenses."
+								},
+								{
+									"title": "Assess budget, duration & collectability",
+									"desc": "Damages calculation, litigation cost budget, defendant asset & solvency audit."
+								},
+								{
+									"title": "Prepare investment materials & VDR",
+									"desc": "Structure funder executive summary and populate secure data room."
+								},
+								{
+									"title": "Present to suitable funding participants",
+									"desc": "Controlled, permissioned disclosure to eligible litigation capital providers."
+								},
+								{
+									"title": "Structure and close vehicle",
+									"desc": "Negotiate funding terms, governance rights, adverse cost & security agreements."
+								},
+								{
+									"title": "Monitor budgets & reporting",
+									"desc": "Track case milestones, legal expenditure drawdowns and procedural updates."
+								},
+								{
+									"title": "Support settlement & distributions",
+									"desc": "Enforcement management, recovery collection and waterfall distribution."
+								}
+							]
+						},
+						{
+							"_type": "altix.underwriting",
+							"_key": "home-underwriting",
+							"eyebrow": "Underwriting",
+							"title": "What we assess.",
+							"body": "A funding decision depends on more than the headline claim value.",
+							"items": [
+								{
+									"title": "Authority & Integrity",
+									"description": "Claimant authority, identity, KYC/AML, sanctions, conflicts and credibility.",
+									"badge": "CORE REQUIREMENT"
+								},
+								{
+									"title": "Legal Position",
+									"description": "Cause of action, standing, jurisdiction, limitation, evidence and likely defences.",
+									"badge": "MERIT REVIEW"
+								},
+								{
+									"title": "Economics",
+									"description": "Supported damages, legal and expert budgets, duration, adverse costs and capital requirements.",
+									"badge": "RETURN & RISK"
+								},
+								{
+									"title": "Collectability",
+									"description": "Defendant solvency, insurance, assets, enforcement venues and realistic recovery paths.",
+									"badge": "ENFORCEMENT"
+								},
+								{
+									"title": "Structure",
+									"description": "Investor eligibility, funding terms, governance, distribution mechanics and legal feasibility.",
+									"badge": "LEGAL FEASIBILITY"
+								},
+								{
+									"title": "Portfolio Risk",
+									"description": "Concentration, jurisdiction, duration, legal theory and recovery-timetable exposure.",
+									"badge": "RISK BALANCING"
+								}
+							]
+						},
+						{
+							"_type": "altix.roadmap",
+							"_key": "home-roadmap",
+							"eyebrow": "Product clarity",
+							"title": "Current platform and development roadmap.",
+							"body": "ALTIX distinguishes what management reports as available today from future functions requiring further product, legal and regulatory work.",
+							"items": [
+								{
+									"status": "NOW",
+									"title": "Current platform functions",
+									"description": "Management reports guided claimant intake, case browsing, filters, structured opportunity profiles and separate claimant and investor journeys."
+								},
+								{
+									"status": "NEXT",
+									"title": "Institutional development",
+									"description": "Secure evidence rooms, role-based access, audit trails, case workflow, KYC/AML integration, investor diligence, milestone tracking, digital closing and reporting."
+								},
+								{
+									"status": "FUTURE / SUBJECT TO APPROVAL",
+									"title": "Digital ownership and transfers",
+									"description": "Any future digital ownership records or transfer functionality will require valid legal rights, compliant structures and appropriate regulatory permissions."
+								}
+							]
+						},
+						{
+							"_type": "altix.leadership",
+							"_key": "home-leadership",
+							"eyebrow": "Leadership",
+							"title": "Experience across banking risk, financial crime and technology.",
+							"body": "ALTIX was founded by Elke Biechele, whose management biography describes more than 25 years across financial services, risk, financial crime, technology and entrepreneurship, followed by a focus on international financial-crime investigations and asset recovery.",
+							"kicker": "EXECUTIVE BIOGRAPHY",
+							"name": "Elke Biechele",
+							"role": "Founder & CEO, ALTIX Exchange",
+							"stat1Title": "25+ Years Experience",
+							"stat1Body": "Across financial services, risk, technology & asset recovery.",
+							"stat2Title": "Financial Crime Focus",
+							"stat2Body": "Specializing in cross-border investigations & litigation capital.",
+							"cta": "View Leadership Profile",
+							"photoUrl": "/assets/img/elke-biechele.webp"
+						},
+						{
+							"_type": "altix.ctaBand",
+							"_key": "home-cta",
+							"eyebrow": "Start here",
+							"title": "Start with a structured initial review.",
+							"body": "Do not send privileged or highly sensitive evidence through the initial contact form. ALTIX will provide secure upload instructions if further materials are required.",
+							"button": "Submit a case"
+						}
+					],
+					"hero": {
+						"eyebrow": "Litigation finance & global asset recovery",
+						"headlineBefore": "Preparing qualified legal claims for",
+						"headlineAccent": "professional capital.",
+						"leadStrong": "ALTIX helps claimants and law firms turn complex disputes into funder-ready opportunities.",
+						"leadRest": " We coordinate case screening, evidence organization, financial analysis, financial-crime intelligence, collectability work, investor materials and ongoing administration.",
+						"primaryCta": "Submit a Case for Initial Review",
+						"secondaryCta": "Request Institutional Access",
+						"badge1": "Structured Diligence",
+						"badge2": "Jurisdiction Assessment",
+						"badge3": "Encrypted Data Rooms",
+						"disclaimer": "Submission does not guarantee acceptance, funding, recovery, liquidity or any particular outcome."
+					},
+					"what_we_do": {
+						"eyebrow": "What ALTIX does",
+						"title": "A more structured route from case to capital.",
+						"body": "Legal merit alone is not enough for a funding decision. Professional capital also needs clear evidence, realistic budgets, supported damages, jurisdiction analysis, collectability information, enforcement planning and appropriate terms.",
+						"cards": [
+							{
+								"title": "Case Readiness",
+								"description": "Organize authority, evidence, damages, budget, jurisdiction and collectability into a coherent funding package.",
+								"linkText": "Explore Case Readiness",
+								"badge": "STAGE 1: PREPARATION"
+							},
+							{
+								"title": "Professional Funding Process",
+								"description": "Suitable matters may be presented to eligible funding participants through a permission-based process.",
+								"linkText": "How funding works",
+								"badge": "STAGE 2: CAPITAL ACCESS"
+							},
+							{
+								"title": "Administration & Reporting",
+								"description": "Support agreed budgets, milestones, controlled information access and reporting through the life of a matter.",
+								"linkText": "Case administration",
+								"badge": "STAGE 3: EXECUTION"
+							}
+						]
+					},
+					"ecosystem": {
+						"eyebrow": "Who we work with",
+						"title": "Built for the full recovery ecosystem.",
+						"body": "ALTIX coordinates the parties needed to assess, fund and execute selected matters.",
+						"items": [
+							{
+								"title": "Claimants & Businesses",
+								"description": "Individuals, SMEs, companies, insolvency estates and claimant groups with significant legal or recovery rights.",
+								"linkText": "For claimants",
+								"points": [
+									"Portfolio dispute assessment",
+									"Non-recourse legal capital",
+									"Damages & budget modeling"
+								]
+							},
+							{
+								"title": "Law Firms",
+								"description": "Legal teams seeking a structured route to prepare and present suitable client matters to professional capital.",
+								"linkText": "For law firms",
+								"points": [
+									"Streamlined funder intake",
+									"Fee budget structure",
+									"Workload & liability sharing"
+								]
+							},
+							{
+								"title": "Funding Participants",
+								"description": "Litigation funders, family offices, special-situations investors, private-credit firms and other eligible professional capital providers.",
+								"linkText": "For funding participants",
+								"points": [
+									"Permission-based Data Room",
+									"Pre-screened claim merit",
+									"Enforcement collectability review"
+								]
+							},
+							{
+								"title": "Forensic Experts",
+								"description": "Investigators, forensic accountants, asset tracers, cyber intelligence professionals and other specialists.",
+								"linkText": "Forensic network",
+								"points": [
+									"Cross-border asset tracing",
+									"Financial-crime intelligence",
+									"Solvency & recovery analytics"
+								]
+							}
+						]
+					},
+					"process": {
+						"eyebrow": "How it works",
+						"title": "A controlled process from case to capital.",
+						"body": "Every matter is case-specific. The workflow below describes the intended coordination model.",
+						"milestoneLabel": "Coordination Milestone",
+						"steps": [
+							{
+								"title": "Submit the opportunity",
+								"desc": "Claimant or counsel submits initial non-confidential claim overview."
+							},
+							{
+								"title": "Verify claimant & authority",
+								"desc": "Identity verification, corporate standing, KYC/AML and conflict screening."
+							},
+							{
+								"title": "Review legal merit & evidence",
+								"desc": "Independent legal review of cause of action, evidence burden and defenses."
+							},
+							{
+								"title": "Assess budget, duration & collectability",
+								"desc": "Damages calculation, litigation cost budget, defendant asset & solvency audit."
+							},
+							{
+								"title": "Prepare investment materials & VDR",
+								"desc": "Structure funder executive summary and populate secure data room."
+							},
+							{
+								"title": "Present to suitable funding participants",
+								"desc": "Controlled, permissioned disclosure to eligible litigation capital providers."
+							},
+							{
+								"title": "Structure and close vehicle",
+								"desc": "Negotiate funding terms, governance rights, adverse cost & security agreements."
+							},
+							{
+								"title": "Monitor budgets & reporting",
+								"desc": "Track case milestones, legal expenditure drawdowns and procedural updates."
+							},
+							{
+								"title": "Support settlement & distributions",
+								"desc": "Enforcement management, recovery collection and waterfall distribution."
+							}
+						]
+					},
+					"underwriting": {
+						"eyebrow": "Underwriting",
+						"title": "What we assess.",
+						"body": "A funding decision depends on more than the headline claim value.",
+						"items": [
+							{
+								"title": "Authority & Integrity",
+								"description": "Claimant authority, identity, KYC/AML, sanctions, conflicts and credibility.",
+								"badge": "CORE REQUIREMENT"
+							},
+							{
+								"title": "Legal Position",
+								"description": "Cause of action, standing, jurisdiction, limitation, evidence and likely defences.",
+								"badge": "MERIT REVIEW"
+							},
+							{
+								"title": "Economics",
+								"description": "Supported damages, legal and expert budgets, duration, adverse costs and capital requirements.",
+								"badge": "RETURN & RISK"
+							},
+							{
+								"title": "Collectability",
+								"description": "Defendant solvency, insurance, assets, enforcement venues and realistic recovery paths.",
+								"badge": "ENFORCEMENT"
+							},
+							{
+								"title": "Structure",
+								"description": "Investor eligibility, funding terms, governance, distribution mechanics and legal feasibility.",
+								"badge": "LEGAL FEASIBILITY"
+							},
+							{
+								"title": "Portfolio Risk",
+								"description": "Concentration, jurisdiction, duration, legal theory and recovery-timetable exposure.",
+								"badge": "RISK BALANCING"
+							}
+						]
+					},
+					"roadmap": {
+						"eyebrow": "Product clarity",
+						"title": "Current platform and development roadmap.",
+						"body": "ALTIX distinguishes what management reports as available today from future functions requiring further product, legal and regulatory work.",
+						"items": [
+							{
+								"status": "NOW",
+								"title": "Current platform functions",
+								"description": "Management reports guided claimant intake, case browsing, filters, structured opportunity profiles and separate claimant and investor journeys."
+							},
+							{
+								"status": "NEXT",
+								"title": "Institutional development",
+								"description": "Secure evidence rooms, role-based access, audit trails, case workflow, KYC/AML integration, investor diligence, milestone tracking, digital closing and reporting."
+							},
+							{
+								"status": "FUTURE / SUBJECT TO APPROVAL",
+								"title": "Digital ownership and transfers",
+								"description": "Any future digital ownership records or transfer functionality will require valid legal rights, compliant structures and appropriate regulatory permissions."
+							}
+						]
+					},
+					"leadership": {
+						"eyebrow": "Leadership",
+						"title": "Experience across banking risk, financial crime and technology.",
+						"body": "ALTIX was founded by Elke Biechele, whose management biography describes more than 25 years across financial services, risk, financial crime, technology and entrepreneurship, followed by a focus on international financial-crime investigations and asset recovery.",
+						"kicker": "EXECUTIVE BIOGRAPHY",
+						"name": "Elke Biechele",
+						"role": "Founder & CEO, ALTIX Exchange",
+						"stat1Title": "25+ Years Experience",
+						"stat1Body": "Across financial services, risk, technology & asset recovery.",
+						"stat2Title": "Financial Crime Focus",
+						"stat2Body": "Specializing in cross-border investigations & litigation capital.",
+						"cta": "View Leadership Profile",
+						"photoUrl": "/assets/img/elke-biechele.webp"
+					},
+					"cta_band": {
+						"eyebrow": "Start here",
+						"title": "Start with a structured initial review.",
+						"body": "Do not send privileged or highly sensitive evidence through the initial contact form. ALTIX will provide secure upload instructions if further materials are required.",
+						"button": "Submit a case"
+					},
+					"hero_eyebrow": "Litigation finance & global asset recovery",
+					"hero_headline_before": "Preparing qualified legal claims for",
+					"hero_headline_accent": "professional capital.",
+					"hero_lead_strong": "ALTIX helps claimants and law firms turn complex disputes into funder-ready opportunities.",
+					"hero_lead_rest": " We coordinate case screening, evidence organization, financial analysis, financial-crime intelligence, collectability work, investor materials and ongoing administration.",
+					"hero_primary_cta": "Submit a Case for Initial Review",
+					"hero_secondary_cta": "Request Institutional Access",
+					"hero_badge_1": "Structured Diligence",
+					"hero_badge_2": "Jurisdiction Assessment",
+					"hero_badge_3": "Encrypted Data Rooms",
+					"hero_disclaimer": "Submission does not guarantee acceptance, funding, recovery, liquidity or any particular outcome.",
+					"wwd_eyebrow": "What ALTIX does",
+					"wwd_title": "A more structured route from case to capital.",
+					"wwd_body": "Legal merit alone is not enough for a funding decision. Professional capital also needs clear evidence, realistic budgets, supported damages, jurisdiction analysis, collectability information, enforcement planning and appropriate terms.",
+					"eco_eyebrow": "Who we work with",
+					"eco_title": "Built for the full recovery ecosystem.",
+					"eco_body": "ALTIX coordinates the parties needed to assess, fund and execute selected matters.",
+					"proc_eyebrow": "How it works",
+					"proc_title": "A controlled process from case to capital.",
+					"proc_body": "Every matter is case-specific. The workflow below describes the intended coordination model.",
+					"uw_eyebrow": "Underwriting",
+					"uw_title": "What we assess.",
+					"uw_body": "A funding decision depends on more than the headline claim value.",
+					"rm_eyebrow": "Product clarity",
+					"rm_title": "Current platform and development roadmap.",
+					"rm_body": "ALTIX distinguishes what management reports as available today from future functions requiring further product, legal and regulatory work.",
+					"lead_eyebrow": "Leadership",
+					"lead_title": "Experience across banking risk, financial crime and technology.",
+					"lead_body": "ALTIX was founded by Elke Biechele, whose management biography describes more than 25 years across financial services, risk, financial crime, technology and entrepreneurship, followed by a focus on international financial-crime investigations and asset recovery.",
+					"lead_kicker": "EXECUTIVE BIOGRAPHY",
+					"lead_name": "Elke Biechele",
+					"lead_role": "Founder & CEO, ALTIX Exchange",
+					"lead_stat1_title": "25+ Years Experience",
+					"lead_stat1_body": "Across financial services, risk, technology & asset recovery.",
+					"lead_stat2_title": "Financial Crime Focus",
+					"lead_stat2_body": "Specializing in cross-border investigations & litigation capital.",
+					"lead_cta": "View Leadership Profile",
+					"cta_eyebrow": "Start here",
+					"cta_title": "Start with a structured initial review.",
+					"cta_body": "Do not send privileged or highly sensitive evidence through the initial contact form. ALTIX will provide secure upload instructions if further materials are required.",
+					"cta_button": "Submit a case"
+				}
+			},
+			{
+				"id": "what-we-do",
+				"slug": "what-we-do",
+				"status": "published",
+				"data": {
+					"title": "What ALTIX Does",
+					"eyebrow": "What ALTIX does",
+					"lead": "ALTIX combines case preparation, professional capital access, forensic intelligence, collectability work and administration in one coordinated process.",
+					"hero_cta_label": "Submit a Matter",
+					"hero_cta_url": "/submit-a-matter",
+					"sections": [
+						{
+							"type": "cards",
+							"eyebrow": "Services",
+							"title": "Core services.",
+							"subtitle": "Explore each service area.",
+							"cards": [
+								{
+									"no": "01",
+									"title": "Case Readiness",
+									"description": "Prepare legal, financial and recovery information for professional funding review.",
+									"linkText": "Explore →",
+									"linkUrl": "/case-readiness"
+								},
+								{
+									"no": "02",
+									"title": "Litigation Funding Process",
+									"description": "Coordinate suitable matters with eligible professional capital.",
+									"linkText": "Explore →",
+									"linkUrl": "/litigation-funding"
+								},
+								{
+									"no": "03",
+									"title": "Global Asset Recovery",
+									"description": "Coordinate legal, forensic and capital workstreams for selected recovery matters.",
+									"linkText": "Explore →",
+									"linkUrl": "/global-asset-recovery"
+								},
+								{
+									"no": "04",
+									"title": "Forensic Intelligence",
+									"description": "Support diligence, transaction tracing, asset analysis and evidence development.",
+									"linkText": "Explore →",
+									"linkUrl": "/forensic-intelligence"
+								},
+								{
+									"no": "05",
+									"title": "Case & Portfolio Administration",
+									"description": "Support structured budgets, milestones, permissions and reporting after closing.",
+									"linkText": "Explore →",
+									"linkUrl": "/case-administration"
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "how-it-works",
+				"slug": "how-it-works",
+				"status": "published",
+				"data": {
+					"title": "How ALTIX Works",
+					"eyebrow": "Litigation funding process",
+					"lead": "ALTIX uses a consistent process to assess whether a legal or recovery matter may be suitable for professional funding. Every stage is subject to information quality, independent legal input, eligibility, collectability and jurisdiction.",
+					"hero_cta_label": "Submit a matter",
+					"hero_cta_url": "/submit-a-matter",
+					"microcopy": "Not every matter will proceed through every stage.",
+					"sections": [
+						{
+							"type": "process",
+							"eyebrow": "Process",
+							"title": "Nine stages. One controlled process.",
+							"subtitle": "ALTIX may decline a matter at any point where information, legal merit, economics, integrity, collectability, eligibility or structure does not meet the required standard.",
+							"processSteps": [
+								{
+									"no": "01",
+									"title": "Submit the opportunity",
+									"desc": "Provide basic information about the parties, claim, jurisdiction, procedural stage, funding requirement and expected recovery."
+								},
+								{
+									"no": "02",
+									"title": "Verify the claimant and authority",
+									"desc": "Verify identity, authority, conflicts and basic economic eligibility before requesting detailed information."
+								},
+								{
+									"no": "03",
+									"title": "Review legal merit and evidence",
+									"desc": "Independent legal input considers cause of action, standing, jurisdiction, limitation, evidence and likely defences."
+								},
+								{
+									"no": "04",
+									"title": "Assess budget, duration and collectability",
+									"desc": "Assess supported damages, budgets, duration, adverse costs, defendant quality, insurance, assets and enforcement routes."
+								},
+								{
+									"no": "05",
+									"title": "Prepare investment materials and secure data room",
+									"desc": "Organize chronology, evidence, damages, budget, risk analysis, investment memorandum and secure data room."
+								},
+								{
+									"no": "06",
+									"title": "Present to suitable funding participants",
+									"desc": "Identify funding participants whose mandate and eligibility may align; access is permission-based."
+								},
+								{
+									"no": "07",
+									"title": "Structure and close the case or portfolio vehicle",
+									"desc": "Establish relevant funding documents, vehicle, governance, budget, drawdown process and distribution terms."
+								},
+								{
+									"no": "08",
+									"title": "Monitor budgets, milestones and reporting",
+									"desc": "Monitor capital deployment and matter progress against agreed milestones and reporting requirements."
+								},
+								{
+									"no": "09",
+									"title": "Support settlement, enforcement and distributions",
+									"desc": "Continue through settlement, judgment, enforcement, closure and distributions required by governing documents."
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "who-we-work-with",
+				"slug": "who-we-work-with",
+				"status": "published",
+				"data": {
+					"title": "Who ALTIX Works With",
+					"eyebrow": "Who we work with",
+					"lead": "ALTIX brings claimants, counsel, specialist experts and professional capital into a more consistent workflow while preserving each participant’s independent responsibilities.",
+					"hero_cta_label": "Explore the Process",
+					"hero_cta_url": "/how-it-works",
+					"sections": [
+						{
+							"type": "cards",
+							"eyebrow": "Audience pathways",
+							"title": "Four core audiences.",
+							"subtitle": "Choose the path relevant to you.",
+							"cards": [
+								{
+									"no": "01",
+									"title": "Claimants & Businesses",
+									"description": "Prepare significant legal and recovery matters for professional funding review.",
+									"linkText": "Explore →",
+									"linkUrl": "/claimants-and-businesses"
+								},
+								{
+									"no": "02",
+									"title": "Law Firms",
+									"description": "Turn suitable client matters into structured, funder-ready applications.",
+									"linkText": "Explore →",
+									"linkUrl": "/law-firms"
+								},
+								{
+									"no": "03",
+									"title": "Funding Participants",
+									"description": "Request controlled access to selected legal and recovery opportunities.",
+									"linkText": "Explore →",
+									"linkUrl": "/funding-participants"
+								},
+								{
+									"no": "04",
+									"title": "Forensic Experts",
+									"description": "Apply specialist investigation, evidence and asset-recovery capability.",
+									"linkText": "Explore →",
+									"linkUrl": "/forensic-experts"
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "expert-network",
+				"slug": "expert-network",
+				"status": "published",
+				"data": {
+					"title": "ALTIX Professional Network",
+					"eyebrow": "ALTIX Professional Network",
+					"lead": "ALTIX is developing a reviewed network of legal experts, forensic experts and funding participants whose experience may be relevant to selected litigation and recovery matters.",
+					"hero_cta_label": "Apply to Be Considered",
+					"hero_cta_url": "#apply",
+					"microcopy": "No membership fee. No guaranteed case allocation. No referral-fee arrangement is created by application.",
+					"sections": [
+						{
+							"type": "cards",
+							"eyebrow": "Categories",
+							"title": "Professional Network categories.",
+							"subtitle": "Select the category that best matches your role.",
+							"cards": [
+								{
+									"no": "01",
+									"title": "Legal Experts",
+									"description": "Law firms, partners, senior lawyers and specialists in disputes, asset recovery, arbitration, insolvency, enforcement and fraud-related matters.",
+									"linkText": "",
+									"linkUrl": ""
+								},
+								{
+									"no": "02",
+									"title": "Forensic Experts",
+									"description": "Forensic accountants, investigators, asset tracers, blockchain analysts, cyber intelligence professionals and expert witnesses.",
+									"linkText": "",
+									"linkUrl": ""
+								},
+								{
+									"no": "03",
+									"title": "Funding Participants",
+									"description": "Specialist litigation funders, family offices, institutional investors, special-situations capital providers and other eligible professional organizations.",
+									"linkText": "",
+									"linkUrl": ""
+								}
+							]
+						},
+						{
+							"type": "form",
+							"eyebrow": "Application",
+							"title": "Apply to be considered.",
+							"subtitle": "",
+							"formType": "professional-network"
+						}
+					]
+				}
+			},
+			{
+				"id": "about",
+				"slug": "about",
+				"status": "published",
+				"data": {
+					"title": "About ALTIX Exchange",
+					"eyebrow": "About ALTIX",
+					"lead": "ALTIX Exchange is a Singapore-based technology and services company serving the litigation-finance and global asset-recovery markets. We prepare selected legal and recovery matters for professional funding through structured case assessment, evidence organization, financial analysis, collectability work, investor materials and ongoing administration.",
+					"hero_cta_label": "Company Facts",
+					"hero_cta_url": "/company-facts",
+					"sections": [
+						{
+							"type": "standard",
+							"eyebrow": "Company",
+							"title": "Our mission.",
+							"subtitle": "To make suitable legal and recovery matters easier for professional capital to understand, assess, structure and monitor."
+						},
+						{
+							"type": "leadership",
+							"eyebrow": "Founder",
+							"title": "Leadership.",
+							"subtitle": "Founder & CEO",
+							"leadership": {
+								"title": "Elke Biechele",
+								"description": "Founder & CEO",
+								"linkUrl": "/about/leadership/elke-biechele"
+							}
+						}
+					]
+				}
+			},
+			{
+				"id": "case-readiness",
+				"slug": "case-readiness",
+				"status": "published",
+				"data": {
+					"title": "Case Readiness for Litigation Funding",
+					"eyebrow": "Case Readiness",
+					"lead": "A strong claim can still fail to attract capital when the evidence, budget, damages, collection route or investor materials are incomplete. ALTIX Case Readiness organizes those elements before a matter is presented to funding participants.",
+					"hero_cta_label": "Request an Initial Case Review",
+					"hero_cta_url": "/submit-a-matter",
+					"microcopy": "Case Readiness does not constitute legal advice and does not guarantee funding.",
+					"sections": [
+						{
+							"type": "check_grid",
+							"eyebrow": "Preparation",
+							"title": "What Case Readiness may include.",
+							"subtitle": "The scope is matter-specific and agreed before work begins.",
+							"checkItems": [
+								"Verified identity and claimant authority",
+								"Chronology and evidence index",
+								"Legal-issues summary prepared with independent counsel",
+								"Loss and damages schedule",
+								"Litigation and expert budget",
+								"Jurisdiction and limitation analysis",
+								"Defendant, insurance and collectability profile",
+								"Asset and enforcement map where relevant",
+								"Risk factors and downside scenarios",
+								"Investment memorandum",
+								"Secure data room"
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "litigation-funding",
+				"slug": "litigation-funding",
+				"status": "published",
+				"data": {
+					"title": "Litigation Funding",
+					"eyebrow": "Professional capital access",
+					"lead": "ALTIX prepares suitable matters for review by professional funding participants. The process combines case preparation, legal and expert input, economic analysis, collectability work and controlled information access.",
+					"hero_cta_label": "Submit a Matter",
+					"hero_cta_url": "/submit-a-matter",
+					"microcopy": "Funding is subject to eligibility, diligence, legal structure and jurisdiction. No outcome is guaranteed.",
+					"sections": [
+						{
+							"type": "cards",
+							"eyebrow": "Funding process",
+							"title": "How funding review differs from simple case listing.",
+							"subtitle": "ALTIX is not designed as an unrestricted public bulletin board.",
+							"cards": [
+								{
+									"no": "01",
+									"title": "Preparation first",
+									"description": "A matter is organized before investor presentation, reducing avoidable information gaps.",
+									"linkText": "",
+									"linkUrl": ""
+								},
+								{
+									"no": "02",
+									"title": "Permission-based access",
+									"description": "Case materials are shared only after appropriate eligibility, confidentiality and access checks.",
+									"linkText": "",
+									"linkUrl": ""
+								},
+								{
+									"no": "03",
+									"title": "Case-specific decisions",
+									"description": "Each funding participant applies its own mandate, diligence standards and investment judgment.",
+									"linkText": "",
+									"linkUrl": ""
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "case-administration",
+				"slug": "case-administration",
+				"status": "published",
+				"data": {
+					"title": "Case and Portfolio Administration",
+					"eyebrow": "Case administration",
+					"lead": "Where agreed, ALTIX supports administration and reporting around case budgets, milestones, investor communications, access controls and material developments.",
+					"hero_cta_label": "Contact ALTIX",
+					"hero_cta_url": "/contact",
+					"sections": [
+						{
+							"type": "cards",
+							"eyebrow": "Post-close support",
+							"title": "Administration disciplines.",
+							"subtitle": "The exact role depends on the governing documents and jurisdiction.",
+							"cards": [
+								{
+									"no": "01",
+									"title": "Budget governance",
+									"description": "Track approved budgets, drawdowns and changes against agreed controls.",
+									"linkText": "",
+									"linkUrl": ""
+								},
+								{
+									"no": "02",
+									"title": "Milestone reporting",
+									"description": "Organize legal, expert and recovery updates into consistent reporting.",
+									"linkText": "",
+									"linkUrl": ""
+								},
+								{
+									"no": "03",
+									"title": "Controlled access",
+									"description": "Maintain permission-based access to relevant documents and updates.",
+									"linkText": "",
+									"linkUrl": ""
+								},
+								{
+									"no": "04",
+									"title": "Vehicle coordination",
+									"description": "Support service-provider, SPV or portfolio administration where agreed and legally appropriate.",
+									"linkText": "",
+									"linkUrl": ""
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "claimants-and-businesses",
+				"slug": "claimants-and-businesses",
+				"status": "published",
+				"data": {
+					"title": "Litigation Funding for Claimants and Businesses",
+					"eyebrow": "For claimants and businesses",
+					"lead": "ALTIX helps individuals, businesses, insolvency estates and claimant groups organize suitable legal and recovery matters for professional capital. The process considers legal merit, evidence, economics, collectability and enforcement—not simply headline claim value.",
+					"hero_cta_label": "Submit a Matter for Initial Review",
+					"hero_cta_url": "/submit-a-matter",
+					"microcopy": "Do not submit privileged or highly sensitive evidence through the initial form.",
+					"sections": [
+						{
+							"type": "check_grid",
+							"eyebrow": "Case types",
+							"title": "Matters ALTIX generally prioritizes.",
+							"subtitle": "Eligibility is case-specific. Smaller individual claims may be more suitable where they can form part of a portfolio, group or class structure.",
+							"checkItems": [
+								"Significant commercial disputes",
+								"Fraud and investment-loss matters",
+								"Enforcement and post-judgment matters",
+								"Insolvency and recovery claims",
+								"Group and class-type matters",
+								"Cross-border asset-recovery opportunities"
+							]
+						},
+						{
+							"type": "check_grid",
+							"eyebrow": "Initial information",
+							"title": "What we need for an initial review.",
+							"subtitle": "",
+							"checkItems": [
+								"Your legal relationship to the matter",
+								"Claimant and defendant jurisdictions",
+								"Nature of the claim",
+								"Current procedural stage",
+								"Approximate supported loss or damages",
+								"Approximate funding requirement",
+								"Current legal counsel",
+								"Limitation or filing deadlines",
+								"Available evidence",
+								"Defendant assets, solvency or insurance",
+								"Prior funding applications"
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "law-firms",
+				"slug": "law-firms",
+				"status": "published",
+				"data": {
+					"title": "Litigation Funding Support for Law Firms",
+					"eyebrow": "For law firms",
+					"lead": "ALTIX helps legal teams prepare and present suitable matters to professional funding participants through one structured process. Counsel remains responsible for legal advice, strategy and professional judgment. ALTIX supports preparation, capital access and administration.",
+					"hero_cta_label": "Submit a Client Matter",
+					"hero_cta_url": "/submit-a-matter",
+					"microcopy": "ALTIX does not direct counsel’s professional judgment or guarantee funding.",
+					"sections": [
+						{
+							"type": "cards",
+							"eyebrow": "Law-firm workflow",
+							"title": "Support for legal teams.",
+							"subtitle": "Designed to reduce repeated preliminary work while preserving counsel independence.",
+							"cards": [
+								{
+									"no": "01",
+									"title": "Consistent Funding Applications",
+									"description": "Organize evidence, budgets, damages, risk factors and collectability information before approaching capital providers.",
+									"linkText": "",
+									"linkUrl": ""
+								},
+								{
+									"no": "02",
+									"title": "One Controlled Process",
+									"description": "Reduce repeated preliminary applications using inconsistent forms and data rooms.",
+									"linkText": "",
+									"linkUrl": ""
+								},
+								{
+									"no": "03",
+									"title": "Professional Capital Access",
+									"description": "Suitable matters may be introduced to funding participants whose mandate and jurisdiction align.",
+									"linkText": "",
+									"linkUrl": ""
+								},
+								{
+									"no": "04",
+									"title": "Reporting Support",
+									"description": "Support investor updates and agreed reporting without diverting legal teams from case strategy.",
+									"linkText": "",
+									"linkUrl": ""
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "funding-participants",
+				"slug": "funding-participants",
+				"status": "published",
+				"data": {
+					"title": "Funding Participants",
+					"eyebrow": "For funding participants",
+					"lead": "ALTIX works with litigation funders, family offices, special-situations investors, private-credit firms, institutional alternatives teams and other eligible professional capital providers.",
+					"hero_cta_label": "Request Institutional Access",
+					"hero_cta_url": "/request-institutional-access",
+					"microcopy": "Litigation and recovery investments are illiquid, uncertain and capable of partial or total loss.",
+					"sections": [
+						{
+							"type": "cards",
+							"eyebrow": "Institutional workflow",
+							"title": "What the process is designed to provide.",
+							"subtitle": "Access remains subject to eligibility, KYC/AML, product structure, jurisdiction and applicable law.",
+							"cards": [
+								{
+									"no": "01",
+									"title": "Selected Opportunities",
+									"description": "Review selected rather than unfiltered matters, subject to admission and case-specific diligence.",
+									"linkText": "",
+									"linkUrl": ""
+								},
+								{
+									"no": "02",
+									"title": "Consistent Information",
+									"description": "Compare matters using structured legal, financial, evidence, budget, duration and collectability fields.",
+									"linkText": "",
+									"linkUrl": ""
+								},
+								{
+									"no": "03",
+									"title": "Permission-Based Access",
+									"description": "Request access to controlled data-room materials subject to eligibility, confidentiality and conflict requirements.",
+									"linkText": "",
+									"linkUrl": ""
+								},
+								{
+									"no": "04",
+									"title": "Legal & Expert Input",
+									"description": "Review legal, forensic, financial-crime and enforcement considerations relevant to the opportunity.",
+									"linkText": "",
+									"linkUrl": ""
+								},
+								{
+									"no": "05",
+									"title": "Milestone-Based Monitoring",
+									"description": "Receive reporting against agreed case budgets, milestones and material developments where ALTIX provides administration.",
+									"linkText": "",
+									"linkUrl": ""
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "forensic-experts",
+				"slug": "forensic-experts",
+				"status": "published",
+				"data": {
+					"title": "Forensic Experts",
+					"eyebrow": "For forensic experts",
+					"lead": "ALTIX is developing a reviewed network of forensic accountants, investigators, asset tracers, blockchain analysts, cyber intelligence professionals and expert witnesses.",
+					"hero_cta_label": "Apply to the Network",
+					"hero_cta_url": "/expert-network#apply",
+					"microcopy": "Application does not guarantee assignment or create a membership or referral arrangement.",
+					"sections": [
+						{
+							"type": "check_grid",
+							"eyebrow": "Expertise",
+							"title": "Relevant capabilities.",
+							"subtitle": "Participation is reviewed against qualifications, jurisdiction, experience, references, insurance and security capability.",
+							"checkItems": [
+								"Forensic accounting",
+								"Asset tracing",
+								"Blockchain analysis",
+								"Cyber intelligence",
+								"OSINT and corporate intelligence",
+								"Digital evidence support",
+								"Fraud and scam investigation",
+								"Expert witness capability",
+								"Cross-border recovery support"
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "global-asset-recovery",
+				"slug": "global-asset-recovery",
+				"status": "published",
+				"data": {
+					"title": "Global Asset Recovery and Recovery Finance",
+					"eyebrow": "Global asset recovery",
+					"lead": "Cross-border fraud and recovery matters can require transaction tracing, beneficial-ownership analysis, multiple jurisdictions, freezing or disclosure strategies, insolvency options, asset identification, enforcement and claimant administration.",
+					"hero_cta_label": "Discuss a Recovery Matter",
+					"hero_cta_url": "/submit-a-matter",
+					"microcopy": "ALTIX does not guarantee the location, freezing, return or enforceability of assets.",
+					"sections": [
+						{
+							"type": "check_grid",
+							"eyebrow": "Capabilities",
+							"title": "Recovery workstreams.",
+							"subtitle": "Every recovery strategy depends on the facts, evidence, legal rights, jurisdictions and counterparties.",
+							"checkItems": [
+								"Matter and claimant assessment",
+								"Transaction and payment analysis",
+								"Ownership and control mapping",
+								"Legal-jurisdiction coordination",
+								"Asset and collectability analysis",
+								"Recovery budget development",
+								"Professional funding preparation",
+								"Specialist-team coordination",
+								"Reporting and administration"
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "forensic-intelligence",
+				"slug": "forensic-intelligence",
+				"status": "published",
+				"data": {
+					"title": "Forensic Intelligence and Asset Tracing",
+					"eyebrow": "Forensic intelligence",
+					"lead": "Forensic work can help identify information gaps, transaction patterns, ownership relationships, recoverable assets and enforcement risks before significant capital is committed.",
+					"hero_cta_label": "Discuss a Matter",
+					"hero_cta_url": "/contact",
+					"sections": [
+						{
+							"type": "cards",
+							"eyebrow": "Forensic services",
+							"title": "Selected forensic capabilities.",
+							"subtitle": "Scopes are defined matter by matter and may be delivered with external specialists.",
+							"cards": [
+								{
+									"no": "01",
+									"title": "Claimant & Counterparty Due Diligence",
+									"description": "Identity, background, credibility, adverse media, sanctions, litigation history and conflict indicators.",
+									"linkText": "",
+									"linkUrl": ""
+								},
+								{
+									"no": "02",
+									"title": "Asset Tracing",
+									"description": "Identification and mapping of relevant assets, entities, ownership relationships and enforcement considerations.",
+									"linkText": "",
+									"linkUrl": ""
+								},
+								{
+									"no": "03",
+									"title": "Financial-Crime Intelligence",
+									"description": "Review of transaction patterns, banking controls, fraud indicators and possible movement of funds.",
+									"linkText": "",
+									"linkUrl": ""
+								},
+								{
+									"no": "04",
+									"title": "Background & Corporate Intelligence",
+									"description": "Directors, beneficial ownership, corporate history, litigation records and connected entities.",
+									"linkText": "",
+									"linkUrl": ""
+								},
+								{
+									"no": "05",
+									"title": "Pre-Funding Investigation",
+									"description": "Defined investigation scopes intended to reduce avoidable diligence and collectability risk.",
+									"linkText": "",
+									"linkUrl": ""
+								},
+								{
+									"no": "06",
+									"title": "Ongoing Monitoring",
+									"description": "Matter-specific monitoring and reporting against an agreed scope, budget and legal framework.",
+									"linkText": "",
+									"linkUrl": ""
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "company-facts",
+				"slug": "company-facts",
+				"status": "published",
+				"data": {
+					"title": "Company Facts",
+					"eyebrow": "Company facts",
+					"lead": "A concise source-of-truth page for clients, partners, search engines and AI systems.",
+					"microcopy": "Last updated: 26 August 2026",
+					"sections": [
+						{
+							"type": "faq",
+							"eyebrow": "",
+							"title": "",
+							"subtitle": "",
+							"faqItems": [
+								{
+									"question": "What is ALTIX Exchange?",
+									"answer": "ALTIX Exchange is a Singapore-based technology and services company serving litigation finance and global asset recovery. It prepares selected legal and recovery matters for professional funding through structured assessment, evidence organization, financial analysis, collectability work, investor materials and administration."
+								},
+								{
+									"question": "What services does ALTIX provide?",
+									"answer": "ALTIX provides case screening, Case Readiness, evidence organization, financial and collectability analysis, investment-material preparation, controlled access to suitable funding participants and post-closing administration where agreed."
+								},
+								{
+									"question": "Is ALTIX a law firm?",
+									"answer": "ALTIX is described in its current business plan as a technology and services company. Independent legal professionals remain responsible for legal advice, legal strategy and professional judgment. Confirm this final wording with Singapore counsel before production launch."
+								},
+								{
+									"question": "Does ALTIX fund every case directly?",
+									"answer": "No. Depending on the matter, funding may be considered by specialist funders, professional investors, case-specific vehicles or other eligible capital providers. Submission does not guarantee acceptance or funding."
+								},
+								{
+									"question": "Who can access funding opportunities?",
+									"answer": "Access is restricted according to investor eligibility, product structure, jurisdiction, KYC/AML requirements and applicable law. ALTIX’s current business plan contemplates an initial private model for professional, institutional and eligible investors rather than unrestricted public access."
+								},
+								{
+									"question": "Is public token trading live on ALTIX?",
+									"answer": "No. ALTIX’s current business plan treats public token trading and an open secondary market as future products rather than current base-launch services. Any future transfer functionality will require legal, regulatory, tax and product review."
+								},
+								{
+									"question": "Does ALTIX guarantee returns or recoveries?",
+									"answer": "No. Legal and recovery outcomes are uncertain. Matters can lose, take longer than expected, recover less than anticipated or result in total investment loss."
+								},
+								{
+									"question": "How does ALTIX assess matters?",
+									"answer": "ALTIX considers claimant authority, legal merit, evidence, damages, limitation, budget, duration, adverse costs, defendant quality, collectability, enforcement, integrity, investor terms and legal structure. Independent legal advice remains necessary."
+								},
+								{
+									"question": "Where is ALTIX based?",
+									"answer": "ALTIX is described in its current business plan as Singapore-based. Add the verified legal entity name, UEN and registered office here after checking the current company record."
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "newsroom",
+				"slug": "newsroom",
+				"status": "published",
+				"data": {
+					"title": "ALTIX Newsroom",
+					"eyebrow": "Newsroom",
+					"lead": "Only sourced ALTIX announcements and media references should be published here. Founder or RisikoTek coverage must be identified separately rather than presented as ALTIX coverage.",
+					"sections": [
+						{
+							"type": "empty_state",
+							"eyebrow": "",
+							"title": "No public newsroom entries have been added to this production build.",
+							"subtitle": "",
+							"emptyState": {
+								"title": "No public newsroom entries have been added to this production build.",
+								"description": "Add an item only when you have the original source, date, exact context and any required permission."
+							}
+						}
+					]
+				}
+			},
+			{
+				"id": "contact",
+				"slug": "contact",
+				"status": "published",
+				"data": {
+					"title": "Contact ALTIX Exchange",
+					"eyebrow": "Contact",
+					"lead": "Select the route that best matches your enquiry so it can be directed to the appropriate team.",
+					"sections": [
+						{
+							"type": "cards",
+							"eyebrow": "Contact pathways",
+							"title": "Choose your route.",
+							"subtitle": "For claimants, businesses and law firms seeking an initial eligibility and Case Readiness review.",
+							"cards": [
+								{
+									"no": "01",
+									"title": "Submit a Matter",
+									"description": "For claimants, businesses and law firms seeking an initial eligibility and Case Readiness review.",
+									"linkText": "Submit →",
+									"linkUrl": "/submit-a-matter"
+								},
+								{
+									"no": "02",
+									"title": "Institutional Access",
+									"description": "For litigation funders, family offices, institutional investors and other eligible capital providers.",
+									"linkText": "Request access →",
+									"linkUrl": "/request-institutional-access"
+								},
+								{
+									"no": "03",
+									"title": "Professional Network",
+									"description": "For legal and forensic professionals applying to be considered for relevant work.",
+									"linkText": "Apply →",
+									"linkUrl": "/expert-network#apply"
+								},
+								{
+									"no": "04",
+									"title": "General & Media",
+									"description": "For company, media, speaking, research and general enquiries.",
+									"linkText": "",
+									"linkUrl": ""
+								}
+							]
+						},
+						{
+							"type": "form",
+							"eyebrow": "",
+							"title": "",
+							"subtitle": "",
+							"formType": "general-contact",
+							"formNote": "Do not submit privileged, confidential or highly sensitive case material through this general form."
+						}
+					]
+				}
+			},
+			{
+				"id": "submit-a-matter",
+				"slug": "submit-a-matter",
+				"status": "published",
+				"data": {
+					"title": "Submit a Matter",
+					"eyebrow": "Initial case review",
+					"lead": "Provide only enough non-confidential information for ALTIX to assess basic authority, eligibility, economic scale and next steps.",
+					"microcopy": "Do not submit privileged, highly sensitive or original evidence through this form.",
+					"sections": [
+						{
+							"type": "form",
+							"eyebrow": "",
+							"title": "",
+							"subtitle": "",
+							"formType": "matter-submission"
+						}
+					]
+				}
+			},
+			{
+				"id": "request-institutional-access",
+				"slug": "request-institutional-access",
+				"status": "published",
+				"data": {
+					"title": "Request Institutional Access",
+					"eyebrow": "Institutional access",
+					"lead": "For litigation funders, family offices, special-situations investors, private-credit firms, institutional alternatives teams and other eligible professional capital providers.",
+					"microcopy": "Access is subject to investor eligibility, KYC/AML, product structure, jurisdiction and applicable law.",
+					"sections": [
+						{
+							"type": "form",
+							"eyebrow": "",
+							"title": "",
+							"subtitle": "",
+							"formType": "institutional-access"
+						}
+					]
+				}
+			},
+			{
+				"id": "thank-you",
+				"slug": "thank-you",
+				"status": "published",
+				"data": {
+					"title": "Thank You",
+					"eyebrow": "Submission received",
+					"lead": "Your submission has been received. ALTIX may contact you if further information is required. Submission does not create a professional relationship or guarantee acceptance, funding, assignment or access.",
+					"hero_cta_label": "Return home",
+					"hero_cta_url": "/index",
+					"sections": []
+				}
+			},
+			{
+				"id": "privacy",
+				"slug": "privacy",
+				"status": "published",
+				"data": {
+					"title": "Privacy Notice",
+					"eyebrow": "Legal & governance",
+					"lead": "This is a production-ready structure but not a substitute for a data-flow-specific legal review. Before launch, identify the exact legal data controller, hosting provider, CRM, form processor, analytics tools, KYC provider, data-room provider, retention periods and cross-border transfer mechanisms.",
+					"sections": [
+						{
+							"type": "legal",
+							"eyebrow": "",
+							"title": "Privacy Notice",
+							"subtitle": "We may collect contact information, professional information, matter-submission information, technical website data and communications you choose to provide.",
+							"legalItems": [
+								{
+									"heading": "Information we collect",
+									"body": "<p>We may collect contact information, professional information, matter-submission information, technical website data and communications you choose to provide.</p>"
+								},
+								{
+									"heading": "Why we use it",
+									"body": "<p>Purposes may include responding to enquiries, assessing submissions, managing professional relationships, complying with legal obligations, preventing fraud and improving website security.</p>"
+								},
+								{
+									"heading": "Sensitive case information",
+									"body": "<p>Do not submit privileged, highly sensitive or original evidence through public forms. ALTIX may provide a secure upload process after initial review.</p>"
+								},
+								{
+									"heading": "Your rights",
+									"body": "<p>Your rights depend on applicable law and may include access, correction, deletion, restriction or objection. Contact <a href=\"mailto:info@altix.exchange\">info@altix.exchange</a> for privacy enquiries.</p>"
+								}
+							],
+							"callout": "<strong>Pre-launch legal task:</strong> replace any provisional wording with counsel-approved text that matches the deployed technology and contracting entity."
+						}
+					]
+				}
+			},
+			{
+				"id": "terms",
+				"slug": "terms",
+				"status": "published",
+				"data": {
+					"title": "Website Terms of Use",
+					"eyebrow": "Legal & governance",
+					"lead": "These terms govern the public information website only. Separate platform, claimant, expert, NDA, KYC and investment terms should be issued for relevant services.",
+					"sections": [
+						{
+							"type": "legal",
+							"eyebrow": "",
+							"title": "Website Terms of Use",
+							"subtitle": "Website content is general information only and does not create legal, advisory, fiduciary, investment or professional relationships.",
+							"legalItems": [
+								{
+									"heading": "Informational website",
+									"body": "<p>Website content is general information only and does not create legal, advisory, fiduciary, investment or professional relationships.</p>"
+								},
+								{
+									"heading": "No reliance",
+									"body": "<p>Users must obtain appropriate independent legal, tax, accounting, regulatory and investment advice before acting on information presented here.</p>"
+								},
+								{
+									"heading": "Acceptable use",
+									"body": "<p>Users must not attempt unauthorized access, disrupt the service, upload malicious code, scrape protected case information or misrepresent their identity or authority.</p>"
+								},
+								{
+									"heading": "Intellectual property",
+									"body": "<p>Unless otherwise stated, ALTIX owns or licenses the website content and branding. Third-party rights remain with their owners.</p>"
+								}
+							],
+							"callout": "<strong>Pre-launch legal task:</strong> replace any provisional wording with counsel-approved text that matches the deployed technology and contracting entity."
+						}
+					]
+				}
+			},
+			{
+				"id": "cookies",
+				"slug": "cookies",
+				"status": "published",
+				"data": {
+					"title": "Cookie Notice",
+					"eyebrow": "Legal & governance",
+					"lead": "Configure the final notice after deciding which analytics, marketing and consent-management tools will actually be deployed.",
+					"sections": [
+						{
+							"type": "legal",
+							"eyebrow": "",
+							"title": "Cookie Notice",
+							"subtitle": "These support security, form handling and basic site operation.",
+							"legalItems": [
+								{
+									"heading": "Essential cookies",
+									"body": "<p>These support security, form handling and basic site operation.</p>"
+								},
+								{
+									"heading": "Analytics cookies",
+									"body": "<p>Only enable non-essential analytics after the required consent mechanism is implemented for relevant jurisdictions.</p>"
+								},
+								{
+									"heading": "Managing preferences",
+									"body": "<p>Your production site should provide a clear cookie-preference control whenever non-essential cookies are used.</p>"
+								}
+							],
+							"callout": "<strong>Pre-launch legal task:</strong> replace any provisional wording with counsel-approved text that matches the deployed technology and contracting entity."
+						}
+					]
+				}
+			},
+			{
+				"id": "disclosures",
+				"slug": "disclosures",
+				"status": "published",
+				"data": {
+					"title": "Legal, Investment and Website Disclosures",
+					"eyebrow": "Disclosures",
+					"lead": "Read these disclosures before submitting a matter or requesting funding access.",
+					"sections": [
+						{
+							"type": "legal",
+							"eyebrow": "",
+							"title": "Important information.",
+							"subtitle": "ALTIX Exchange provides technology and services relating to case preparation, professional capital access, specialist coordination and administration. Independent lawyers remain responsible for legal advice, legal strategy and professional judgment.",
+							"legalItems": [
+								{
+									"heading": "Company role",
+									"body": "<p>ALTIX Exchange provides technology and services relating to case preparation, professional capital access, specialist coordination and administration. Independent lawyers remain responsible for legal advice, legal strategy and professional judgment.</p>"
+								},
+								{
+									"heading": "No offer or advice",
+									"body": "<p>Information on this website is provided for general informational purposes. It is not legal, tax, accounting or investment advice and does not constitute an offer, invitation, solicitation or recommendation to acquire any security, investment interest or financial product.</p>"
+								},
+								{
+									"heading": "Case outcomes",
+									"body": "<p>Submission, assessment or presentation of a matter does not guarantee acceptance, funding, settlement, judgment, enforcement or recovery.</p>"
+								},
+								{
+									"heading": "Investment risk",
+									"body": "<p>Litigation and recovery investments may be illiquid, long-dated and capable of partial or total loss. Past outcomes, illustrative examples, target figures and projected scenarios are not reliable indicators of future performance.</p>"
+								},
+								{
+									"heading": "Investor eligibility",
+									"body": "<p>Access to funding opportunities is subject to investor eligibility, KYC/AML, product structure, jurisdiction, applicable law and approval by the relevant contracting or regulated parties.</p>"
+								},
+								{
+									"heading": "Regulated services",
+									"body": "<p>Certain investment, fund-management, placement, custody, market, transfer or administration activities may require regulatory authorization. Where required, those activities will be performed by or through appropriately licensed or authorized entities identified in the relevant documentation.</p>"
+								},
+								{
+									"heading": "No public trading representation",
+									"body": "<p>ALTIX does not represent that a public token market, open secondary market or unrestricted trading facility is currently available.</p>"
+								},
+								{
+									"heading": "Conflicts and fees",
+									"body": "<p>ALTIX may receive fees for preparation, structuring, closing, administration or agreed participation in selected matters. Applicable fees, conflicts, contractual roles and distribution arrangements will be disclosed in relevant documentation.</p>"
+								},
+								{
+									"heading": "Confidentiality",
+									"body": "<p>Initial website submission does not create a lawyer-client relationship or guarantee legal privilege. Users should not submit privileged or highly sensitive evidence until an appropriate secure process and confidentiality framework are confirmed.</p>"
+								}
+							],
+							"callout": "<strong>Legal review required before launch:</strong> have Singapore regulatory counsel approve the production version of this page and confirm the exact contracting entity."
+						}
+					]
+				}
+			},
+			{
+				"id": "security",
+				"slug": "security",
+				"status": "published",
+				"data": {
+					"title": "Security",
+					"eyebrow": "Legal & governance",
+					"lead": "ALTIX handles potentially sensitive legal and financial information. The public website should collect only limited initial information and route detailed evidence into a controlled environment.",
+					"sections": [
+						{
+							"type": "legal",
+							"eyebrow": "",
+							"title": "Security",
+							"subtitle": "Do not upload privileged, highly sensitive or original evidence using ordinary website forms.",
+							"legalItems": [
+								{
+									"heading": "Public forms",
+									"body": "<p>Do not upload privileged, highly sensitive or original evidence using ordinary website forms.</p>"
+								},
+								{
+									"heading": "Secure evidence handling",
+									"body": "<p>Detailed case materials should move to a secure, access-controlled data room only after authority and conflict checks.</p>"
+								},
+								{
+									"heading": "Report a security concern",
+									"body": "<p>Send security reports to <a href=\"mailto:info@altix.exchange\">info@altix.exchange</a> until a dedicated security address is established.</p>"
+								}
+							],
+							"callout": "<strong>Pre-launch legal task:</strong> replace any provisional wording with counsel-approved text that matches the deployed technology and contracting entity."
+						}
+					]
+				}
+			},
+			{
+				"id": "complaints",
+				"slug": "complaints",
+				"status": "published",
+				"data": {
+					"title": "Complaints",
+					"eyebrow": "Legal & governance",
+					"lead": "ALTIX should maintain a documented complaints procedure, responsible owner, response targets and escalation path before launch.",
+					"sections": [
+						{
+							"type": "legal",
+							"eyebrow": "",
+							"title": "Complaints",
+							"subtitle": "Email <a href=\"mailto:info@altix.exchange\">info@altix.exchange</a> with “Complaint” in the subject line, your name, organization, contact details, the service involved and a clear description of the issue.",
+							"legalItems": [
+								{
+									"heading": "How to complain",
+									"body": "<p>Email <a href=\"mailto:info@altix.exchange\">info@altix.exchange</a> with “Complaint” in the subject line, your name, organization, contact details, the service involved and a clear description of the issue.</p>"
+								},
+								{
+									"heading": "What happens next",
+									"body": "<p>ALTIX should acknowledge complaints promptly, investigate them fairly and keep a written record of the response and any corrective action.</p>"
+								}
+							],
+							"callout": "<strong>Pre-launch legal task:</strong> replace any provisional wording with counsel-approved text that matches the deployed technology and contracting entity."
+						}
+					]
+				}
+			},
+			{
+				"id": "editorial-policy",
+				"slug": "editorial-policy",
+				"status": "published",
+				"data": {
+					"title": "Editorial Policy",
+					"eyebrow": "Editorial policy",
+					"lead": "ALTIX Insights distinguishes confirmed facts, third-party reporting, legal analysis, management statements and ALTIX commentary.",
+					"sections": [
+						{
+							"type": "legal",
+							"eyebrow": "",
+							"title": "Editorial standards.",
+							"subtitle": "ALTIX Insights publishes educational material on litigation finance, asset recovery, financial crime, forensic intelligence and related developments.",
+							"legalItems": [
+								{
+									"heading": "",
+									"body": "<p>ALTIX Insights publishes educational material on litigation finance, asset recovery, financial crime, forensic intelligence and related developments.</p>"
+								},
+								{
+									"heading": "Sources",
+									"body": "<p>Articles should link to primary sources wherever reasonably available and clearly distinguish allegations, regulatory findings, judgments and commentary.</p>"
+								},
+								{
+									"heading": "Authors and reviewers",
+									"body": "<p>Every substantive article should show a named author. Legal or regulatory analysis should identify a qualified reviewer before publication.</p>"
+								},
+								{
+									"heading": "Corrections",
+									"body": "<p>Material factual errors should be corrected promptly. Corrections affecting interpretation should identify the date, nature and reason for the change.</p>"
+								},
+								{
+									"heading": "No advice",
+									"body": "<p>Articles are educational only and do not constitute legal, tax or investment advice.</p>"
+								}
+							]
+						}
+					]
+				}
+			},
+			{
+				"id": "about-leadership",
+				"slug": "about-leadership",
+				"status": "published",
+				"data": {
+					"title": "Elke Biechele - Leadership Profile",
+					"eyebrow": "EXECUTIVE BIOGRAPHY",
+					"lead": "Founder & CEO with 25+ years in financial services, risk management, and cross-border asset recovery.",
+					"sections": [
+						{
+							"title": "Background & Experience",
+							"body": "Over two decades leading risk management, financial crime intelligence, and litigation finance initiatives."
+						}
+					]
+				}
+			}
+		],
+		"posts": [
+			{
+				"id": "what-is-litigation-finance",
+				"slug": "what-is-litigation-finance",
+				"status": "published",
+				"data": {
+					"title": "What Is Litigation Finance? A Practical Guide for Businesses",
+					"excerpt": "Litigation finance is a structure in which external capital can support the costs of pursuing a legal claim, subject to the relevant agreement and jurisdiction.",
+					"published_at": "2026-08-26T00:00:00.000Z",
+					"content": [
+						{
+							"_type": "block",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What litigation finance does"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "<p>A claimant may have a legally credible claim but still face legal fees, expert costs, adverse-cost exposure or enforcement expenditure that it prefers not to carry entirely on its own balance sheet. Litigation finance can transfer part of that cost and risk to an external capital provider.</p>"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What a funder normally evaluates"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "<p>Professional funding review typically considers legal merit, evidence, damages, budget, expected duration, adverse costs, defendant quality, collectability, enforcement and the economic terms of the proposed funding.</p>"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Why preparation matters"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "<p>A funder-ready matter is more than a legal memorandum. It needs a coherent chronology, evidence index, supported damages, realistic budget and a credible route from legal success to actual recovery.</p>"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What ALTIX does"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "<p>ALTIX helps organize selected legal and recovery matters into a more consistent format for professional review and may coordinate access to suitable funding participants.</p>"
+								}
+							]
+						}
+					],
+					"disclaimer": "<strong>Important:</strong> This article is general educational information and does not constitute legal, tax or investment advice. Funding suitability and legal rights depend on the facts, jurisdiction and professional assessment.",
+					"sections": [
+						{
+							"title": "What litigation finance does",
+							"body": "<p>A claimant may have a legally credible claim but still face legal fees, expert costs, adverse-cost exposure or enforcement expenditure that it prefers not to carry entirely on its own balance sheet. Litigation finance can transfer part of that cost and risk to an external capital provider.</p>"
+						},
+						{
+							"title": "What a funder normally evaluates",
+							"body": "<p>Professional funding review typically considers legal merit, evidence, damages, budget, expected duration, adverse costs, defendant quality, collectability, enforcement and the economic terms of the proposed funding.</p>"
+						},
+						{
+							"title": "Why preparation matters",
+							"body": "<p>A funder-ready matter is more than a legal memorandum. It needs a coherent chronology, evidence index, supported damages, realistic budget and a credible route from legal success to actual recovery.</p>"
+						},
+						{
+							"title": "What ALTIX does",
+							"body": "<p>ALTIX helps organize selected legal and recovery matters into a more consistent format for professional review and may coordinate access to suitable funding participants.</p>"
+						}
+					]
+				}
+			},
+			{
+				"id": "collectability-matters",
+				"slug": "collectability-matters",
+				"status": "published",
+				"data": {
+					"title": "Legal Merit Is Not Enough: Why Collectability Matters",
+					"excerpt": "A claim can be legally strong and economically weak if a successful judgment cannot realistically be converted into recovery.",
+					"published_at": "2026-08-26T00:00:00.000Z",
+					"content": [
+						{
+							"_type": "block",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Judgment and recovery are different questions"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "<p>Underwriting a legal asset requires both a view on legal success and a view on what can actually be collected after settlement or judgment.</p>"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "What collectability review may consider"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "<p>Relevant factors include defendant solvency, insurance, asset location, ownership structure, enforcement venues, competing creditors, freezing options and likely cost of enforcement.</p>"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Why this belongs before funding"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "<p>Early collectability work can prevent capital from being committed to matters where the headline damages are disconnected from realistic recovery.</p>"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Cross-border complexity"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "<p>International recovery can involve several legal systems, disclosure tools, insolvency processes and asset classes. Specialist legal and forensic input may therefore be required.</p>"
+								}
+							]
+						}
+					],
+					"disclaimer": "<strong>Important:</strong> This article is general educational information and does not constitute legal, tax or investment advice. Funding suitability and legal rights depend on the facts, jurisdiction and professional assessment.",
+					"sections": [
+						{
+							"title": "Judgment and recovery are different questions",
+							"body": "<p>Underwriting a legal asset requires both a view on legal success and a view on what can actually be collected after settlement or judgment.</p>"
+						},
+						{
+							"title": "What collectability review may consider",
+							"body": "<p>Relevant factors include defendant solvency, insurance, asset location, ownership structure, enforcement venues, competing creditors, freezing options and likely cost of enforcement.</p>"
+						},
+						{
+							"title": "Why this belongs before funding",
+							"body": "<p>Early collectability work can prevent capital from being committed to matters where the headline damages are disconnected from realistic recovery.</p>"
+						},
+						{
+							"title": "Cross-border complexity",
+							"body": "<p>International recovery can involve several legal systems, disclosure tools, insolvency processes and asset classes. Specialist legal and forensic input may therefore be required.</p>"
+						}
+					]
+				}
+			},
+			{
+				"id": "what-makes-a-claim-fundable",
+				"slug": "what-makes-a-claim-fundable",
+				"status": "published",
+				"data": {
+					"title": "What Makes a Legal Claim Suitable for Funding?",
+					"excerpt": "Funding suitability depends on a combination of legal merit, evidence, economics, collectability, duration, integrity and structure.",
+					"published_at": "2026-08-26T00:00:00.000Z",
+					"content": [
+						{
+							"_type": "block",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Legal merit is the starting point"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "<p>Independent legal review should identify the cause of action, standing, likely defences, jurisdiction, limitation and the strength of the available evidence.</p>"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Economics must support the capital"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "<p>Funders compare realistic recoverable value with the litigation budget, expected duration, risk and proposed return structure.</p>"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Collectability can change the answer"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "<p>A strong judgment has limited economic value if the defendant lacks assets, insurance or an enforceable recovery route.</p>"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Integrity and process matter"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "<p>Authority, KYC/AML, sanctions, conflicts, document authenticity and credible counterparties are part of a professional funding process.</p>"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "h2",
+							"children": [
+								{
+									"_type": "span",
+									"text": "Case Readiness"
+								}
+							]
+						},
+						{
+							"_type": "block",
+							"style": "normal",
+							"children": [
+								{
+									"_type": "span",
+									"text": "<p>ALTIX Case Readiness is intended to identify these issues early and organize a suitable matter before professional capital is approached.</p>"
+								}
+							]
+						}
+					],
+					"disclaimer": "<strong>Important:</strong> This article is general educational information and does not constitute legal, tax or investment advice. Funding suitability and legal rights depend on the facts, jurisdiction and professional assessment.",
+					"sections": [
+						{
+							"title": "Legal merit is the starting point",
+							"body": "<p>Independent legal review should identify the cause of action, standing, likely defences, jurisdiction, limitation and the strength of the available evidence.</p>"
+						},
+						{
+							"title": "Economics must support the capital",
+							"body": "<p>Funders compare realistic recoverable value with the litigation budget, expected duration, risk and proposed return structure.</p>"
+						},
+						{
+							"title": "Collectability can change the answer",
+							"body": "<p>A strong judgment has limited economic value if the defendant lacks assets, insurance or an enforceable recovery route.</p>"
+						},
+						{
+							"title": "Integrity and process matter",
+							"body": "<p>Authority, KYC/AML, sanctions, conflicts, document authenticity and credible counterparties are part of a professional funding process.</p>"
+						},
+						{
+							"title": "Case Readiness",
+							"body": "<p>ALTIX Case Readiness is intended to identify these issues early and organize a suitable matter before professional capital is approached.</p>"
+						}
+					]
+				}
+			}
+		]
+	}
+}

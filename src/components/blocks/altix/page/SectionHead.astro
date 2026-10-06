@@ -1,0 +1,23 @@
+---
+/**
+ * Shared eyebrow + section heading used by the page-section blocks.
+ * Markup mirrors the original [slug].astro section renderer so styling
+ * (global.css `.eyebrow`, `.section-head`) is unchanged.
+ */
+interface Props {
+	eyebrow?: string;
+	title?: string;
+	subtitle?: string;
+	/** Some legacy sections never rendered the eyebrow (FAQ). */
+	showEyebrow?: boolean;
+}
+const { eyebrow, title, subtitle, showEyebrow = true } = Astro.props;
+---
+
+{showEyebrow && eyebrow && <span class="eyebrow">{eyebrow}</span>}
+{(title || subtitle) && (
+	<div class="section-head">
+		{title && <h2>{title}</h2>}
+		{subtitle && <p>{subtitle}</p>}
+	</div>
+)}

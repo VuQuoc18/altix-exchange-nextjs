@@ -1,0 +1,120 @@
+---
+import { getEmDashEntry } from "emdash";
+import Base from "../layouts/Base.astro";
+import CtaBand from "../components/sections/CtaBand.astro";
+import MarketingBlocks from "../components/MarketingBlocks.astro";
+import LegacySections from "../components/LegacySections.astro";
+import { toBool } from "../lib/blocks";
+import { ArrowRight } from "lucide-react";
+
+/**
+ * Any published page in the "Pages" collection is served at /{slug}, so pages
+ * editors create in the admin work without a code change.
+ *
+ * Slugs that have their own dedicated route are redirected there instead of
+ * being rendered twice.
+ */
+const DEDICATED_ROUTES: Record<string, string> = {
+	home: "/",
+	"about-leadership": "/about/leadership/elke-biechele",
+};
+
+/** Pages that historically had no bottom CTA band (used until `show_cta_band` is set). */
+const NO_CTA_BAND = new Set(["thank-you", "contact", "submit-a-matter", "request-institutional-access"]);
+
+const { slug } = Astro.params;
+
+if (!slug) {
+	Astro.response.status = 404;
+	return Astro.rewrite("/404");
+}
+
+if (DEDICATED_ROUTES[slug]) {
+	return Astro.redirect(DEDICATED_ROUTES[slug], 301);
+}
+
+const { entry: page, cacheHint } = await getEmDashEntry("pages", slug);
+
+if (Astro.cache?.enabled && cacheHint) {
+	Astro.cache.set(cacheHint);
+}
+
+if (!page) {
+	Astro.response.status = 404;
+	return Astro.rewrite("/404");
+}
+
+const pageData = (page.data || {}) as Record<string, any>;
+const title = pageData.title || slug;
+const eyebrow = pageData.eyebrow;
+const lead = pageData.lead;
+const heroCtaLabel = pageData.hero_cta_label;
+const heroCtaUrl = pageData.hero_cta_url;
+const microcopy = pageData.microcopy;
+const content = Array.isArray(pageData.content) && pageData.content.length > 0 ? pageData.content : null;
+const legacySections = Array.isArray(pageData.sections) ? pageData.sections : [];
+
+// Hero layout: narrow, no artwork, for pages that are mostly a message.
+const narrowHero = slug === "thank-you" || slug === "newsroom";
+
+// Bottom CTA band — editors control it with the "Show call-to-action band" toggle.
+// Pages not yet migrated (toggle never saved) keep their historical behaviour.
+const showCtaBand = toBool(pageData.show_cta_band) ?? !NO_CTA_BAND.has(slug);
+const ctaBandData = showCtaBand
+	? pageData.cta_band || {
+			eyebrow: "Start here",
+			title: "Start with a structured initial review.",
+			body: "Do not send privileged or highly sensitive evidence through the initial contact form. ALTIX will provide secure upload instructions if further materials are required.",
+			button: "Submit a case",
+		}
+	: null;
+---
+
+<Base title={title} description={lead}>
+	<div class="inner-page">
+		<!-- Dynamic Production Navy Hero -->
+		<section class="hero">
+			<div class:list={["container", narrowHero ? "narrow" : "hero-grid"]}>
+				<div>
+					{eyebrow && <span class="eyebrow eyebrow--light">{eyebrow}</span>}
+					<h1>{title}</h1>
+					{lead && <p class="hero-lead">{lead}</p>}
+					{heroCtaLabel && (
+						<div class="button-row">
+							<a class="button inline-flex items-center gap-2 whitespace-nowrap" href={heroCtaUrl || "/submit-a-matter"}>
+								{heroCtaLabel}
+								<ArrowRight className="w-4 h-4" />
+							</a>
+						</div>
+					)}
+					{slug === "thank-you" && !heroCtaLabel && (
+						<div class="button-row">
+							<a class="button" href="/">Return home</a>
+						</div>
+					)}
+					{microcopy && <p class="microcopy">{microcopy}</p>}
+				</div>
+
+				{!narrowHero && (
+					<div class="hero-art" aria-hidden="true">
+						<div class="orbit o1" />
+						<div class="orbit o2" />
+						<div class="hero-panel">
+							<small>ALTIX CONTROLLED WORKFLOW</small>
+							<strong>Case → diligence → structure → capital → reporting</strong>
+							<span>Professional access • permission-based data • case-specific review</span>
+						</div>
+					</div>
+				)}
+			</div>
+		</section>
+
+		{content ? (
+			<MarketingBlocks value={content} />
+		) : (
+			legacySections.length > 0 && <LegacySections sections={legacySections} slug={slug} />
+		)}
+
+		{ctaBandData && <CtaBand data={ctaBandData} />}
+	</div>
+</Base>

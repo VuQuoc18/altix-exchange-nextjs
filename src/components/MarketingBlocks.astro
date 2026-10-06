@@ -1,0 +1,101 @@
+---
+/**
+ * Page content renderer.
+ *
+ * Maps plugin block types (altix.*) to Astro components and groups native
+ * rich text (paragraphs, headings, images, galleries) into a styled section.
+ * See segmentContent() in src/lib/blocks.ts for the grouping rules.
+ *
+ * When adding a block type to src/plugins/marketing-blocks/index.ts, register
+ * its renderer in `sectionTypes` (or, for inline blocks rendered inside rich
+ * text, in `flowTypes` and INLINE_PLUGIN_TYPES).
+ */
+import type { PortableTextBlock } from "emdash";
+import { PortableText } from "emdash/ui";
+import { segmentContent } from "../lib/blocks";
+import SectionHead from "./blocks/altix/page/SectionHead.astro";
+// Homepage
+import AltixHero from "./blocks/altix/Hero.astro";
+import AltixWhatWeDo from "./blocks/altix/WhatWeDo.astro";
+import AltixEcosystem from "./blocks/altix/Ecosystem.astro";
+import AltixProcess from "./blocks/altix/Process.astro";
+import AltixUnderwriting from "./blocks/altix/Underwriting.astro";
+import AltixRoadmap from "./blocks/altix/Roadmap.astro";
+import AltixLeadership from "./blocks/altix/Leadership.astro";
+import AltixInsights from "./blocks/altix/Insights.astro";
+import AltixCtaBand from "./blocks/altix/CtaBand.astro";
+// Images & media
+import AltixCarousel from "./blocks/altix/Carousel.astro";
+import AltixGallery from "./blocks/altix/Gallery.astro";
+import AltixBeforeAfter from "./blocks/altix/BeforeAfter.astro";
+import AltixSplitMedia from "./blocks/altix/SplitMedia.astro";
+import AltixCards from "./blocks/altix/Cards.astro";
+// Page sections
+import Intro from "./blocks/altix/page/Intro.astro";
+import CardGrid from "./blocks/altix/page/CardGrid.astro";
+import Checklist from "./blocks/altix/page/Checklist.astro";
+import Steps from "./blocks/altix/page/Steps.astro";
+import Faq from "./blocks/altix/page/Faq.astro";
+import FormSection from "./blocks/altix/page/FormSection.astro";
+import Person from "./blocks/altix/page/Person.astro";
+import Notice from "./blocks/altix/page/Notice.astro";
+import Callout from "./blocks/altix/page/Callout.astro";
+
+interface Props {
+	value: PortableTextBlock[];
+}
+
+const { value } = Astro.props;
+
+const sectionTypes = {
+	"altix.hero": AltixHero,
+	"altix.whatWeDo": AltixWhatWeDo,
+	"altix.ecosystem": AltixEcosystem,
+	"altix.process": AltixProcess,
+	"altix.underwriting": AltixUnderwriting,
+	"altix.roadmap": AltixRoadmap,
+	"altix.leadership": AltixLeadership,
+	"altix.insights": AltixInsights,
+	"altix.ctaBand": AltixCtaBand,
+	"altix.carousel": AltixCarousel,
+	"altix.gallery": AltixGallery,
+	"altix.beforeAfter": AltixBeforeAfter,
+	"altix.splitMedia": AltixSplitMedia,
+	"altix.cards": AltixCards,
+	"altix.intro": Intro,
+	"altix.cardGrid": CardGrid,
+	"altix.checklist": Checklist,
+	"altix.steps": Steps,
+	"altix.faq": Faq,
+	"altix.form": FormSection,
+	"altix.person": Person,
+	"altix.notice": Notice,
+};
+
+const flowTypes = { "altix.callout": Callout };
+
+const segments = segmentContent(value);
+---
+
+{segments.map((seg) =>
+	seg.kind === "section" ? (
+		<PortableText value={[seg.block] as PortableTextBlock[]} components={{ type: sectionTypes }} />
+	) : (
+		<section class="section rich-text">
+			<div class="container">
+				{seg.intro && (
+					<SectionHead
+						eyebrow={seg.intro.eyebrow as string | undefined}
+						title={seg.intro.title as string | undefined}
+						subtitle={seg.intro.subtitle as string | undefined}
+					/>
+				)}
+				{seg.blocks.length > 0 && (
+					<div class="legal-copy">
+						<PortableText value={seg.blocks as PortableTextBlock[]} components={{ type: flowTypes }} />
+					</div>
+				)}
+			</div>
+		</section>
+	),
+)}

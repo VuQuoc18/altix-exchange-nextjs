@@ -1,0 +1,12 @@
+---
+/**
+ * Highlighted note. Rendered inline (a bare <p class="callout">) because
+ * MarketingBlocks groups it into the surrounding rich-text section.
+ */
+interface Props {
+	node: { label?: string; text?: string };
+}
+const { node } = Astro.props;
+---
+
+<p class="callout">{node.label && <strong>{node.label}</strong>}{node.label && node.text ? " " : ""}{node.text}</p>

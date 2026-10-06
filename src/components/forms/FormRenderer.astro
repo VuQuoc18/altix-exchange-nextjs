@@ -1,0 +1,260 @@
+---
+interface Props {
+  formType: string;
+  formNote?: string;
+}
+
+const { formType, formNote } = Astro.props;
+---
+
+{formType === "matter-submission" && (
+  <form class="form" name="matter-submission" method="POST" action="/thank-you">
+    <input type="hidden" name="form-name" value="matter-submission" />
+    <div class="form-grid">
+      <label>
+        Full name
+        <input required name="name" autocomplete="name" />
+      </label>
+      <label>
+        Company / claimant name
+        <input required name="company" />
+      </label>
+      <label>
+        Work email
+        <input required type="email" name="email" />
+      </label>
+      <label>
+        Telephone
+        <input name="phone" autocomplete="tel" />
+      </label>
+      <label>
+        Your role
+        <select required name="role">
+          <option value="">Select</option>
+          <option>Claimant</option>
+          <option>Company representative</option>
+          <option>Lawyer / legal adviser</option>
+          <option>Insolvency practitioner</option>
+          <option>Authorized representative</option>
+        </select>
+      </label>
+      <label>
+        Matter type
+        <select required name="matter-type">
+          <option value="">Select</option>
+          <option>Commercial dispute</option>
+          <option>Fraud / investment loss</option>
+          <option>Asset recovery</option>
+          <option>Enforcement / judgment</option>
+          <option>Insolvency / receivable</option>
+          <option>Group / class-type matter</option>
+          <option>Other</option>
+        </select>
+      </label>
+      <label>
+        Claimant jurisdiction
+        <input required name="claimant-jurisdiction" />
+      </label>
+      <label>
+        Defendant jurisdiction
+        <input required name="defendant-jurisdiction" />
+      </label>
+      <label>
+        Approximate claim-value range
+        <select required name="claim-value">
+          <option value="">Select</option>
+          <option>Below €250,000</option>
+          <option>€250,000–€1m</option>
+          <option>€1m–€5m</option>
+          <option>€5m–€25m</option>
+          <option>Above €25m</option>
+        </select>
+      </label>
+      <label>
+        Approximate funding requirement
+        <input name="funding-requirement" />
+      </label>
+      <label>
+        Current procedural stage
+        <input name="procedural-stage" />
+      </label>
+      <label>
+        Known filing / limitation date
+        <input type="date" name="limitation-date" />
+      </label>
+      <label class="full">
+        Short non-confidential summary
+        <textarea required rows="6" name="summary"></textarea>
+      </label>
+      <label class="full check">
+        <input required type="checkbox" name="authority" />
+        <span>I confirm that I am the claimant, an authorized representative or a legal adviser authorized to provide this initial information.</span>
+      </label>
+      <label class="full check">
+        <input required type="checkbox" name="privacy" />
+        <span>I agree to the processing of this submission in accordance with the ALTIX Privacy Notice.</span>
+      </label>
+    </div>
+    <button class="button" type="submit">Submit for initial review</button>
+  </form>
+)}
+
+{formType === "institutional-access" && (
+  <form class="form" name="institutional-access" method="POST" action="/thank-you">
+    <input type="hidden" name="form-name" value="institutional-access" />
+    <div class="form-grid">
+      <label>
+        Full name
+        <input required name="name" />
+      </label>
+      <label>
+        Professional title
+        <input required name="title" />
+      </label>
+      <label>
+        Organization
+        <input required name="organization" />
+      </label>
+      <label>
+        Work email
+        <input required type="email" name="email" />
+      </label>
+      <label>
+        Country
+        <input required name="country" />
+      </label>
+      <label>
+        Investor type
+        <select required name="investor-type">
+          <option value="">Select</option>
+          <option>Litigation funder</option>
+          <option>Family office</option>
+          <option>Special situations investor</option>
+          <option>Private credit</option>
+          <option>Institutional alternatives team</option>
+          <option>Insurer / strategic financial partner</option>
+          <option>Other professional investor</option>
+        </select>
+      </label>
+      <label>
+        Typical allocation range
+        <input name="allocation-range" />
+      </label>
+      <label>
+        Preferred jurisdictions
+        <input name="jurisdictions" />
+      </label>
+      <label class="full">
+        Preferred case types
+        <textarea name="case-types" rows="4"></textarea>
+      </label>
+      <label class="full">
+        Relevant litigation-finance experience
+        <textarea name="experience" rows="4"></textarea>
+      </label>
+      <label class="full check">
+        <input required type="checkbox" name="risk" />
+        <span>I understand that litigation and recovery investments are illiquid, uncertain and capable of partial or total loss.</span>
+      </label>
+      <label class="full check">
+        <input required type="checkbox" name="eligibility" />
+        <span>I consent to eligibility, KYC/AML and source-of-funds review where required.</span>
+      </label>
+    </div>
+    <button class="button" type="submit">Request institutional access</button>
+  </form>
+)}
+
+{formType === "general-contact" && (
+  <form class="form" name="general-contact" method="POST" action="/thank-you">
+    <input type="hidden" name="form-name" value="general-contact" />
+    <div class="form-grid">
+      <label>
+        Full name
+        <input required name="name" />
+      </label>
+      <label>
+        Organization
+        <input name="organization" />
+      </label>
+      <label>
+        Work email
+        <input required type="email" name="email" />
+      </label>
+      <label>
+        Country
+        <input name="country" />
+      </label>
+      <label class="full">
+        Enquiry type
+        <select name="enquiry-type">
+          <option>General</option>
+          <option>Media</option>
+          <option>Speaking</option>
+          <option>Research</option>
+          <option>Professional network</option>
+        </select>
+      </label>
+      <label class="full">
+        Message
+        <textarea required name="message" rows="6"></textarea>
+      </label>
+      <label class="full check">
+        <input required type="checkbox" name="privacy" />
+        <span>I agree to the processing of this enquiry in accordance with the ALTIX Privacy Notice.</span>
+      </label>
+    </div>
+    <button class="button" type="submit">Send enquiry</button>
+    {formNote && <p class="form-note">{formNote}</p>}
+  </form>
+)}
+
+{formType === "professional-network" && (
+  <form class="form" name="professional-network" method="POST" action="/thank-you">
+    <input type="hidden" name="form-name" value="professional-network" />
+    <div class="form-grid">
+      <label>
+        Full name
+        <input required name="name" autocomplete="name" />
+      </label>
+      <label>
+        Professional title
+        <input required name="title" />
+      </label>
+      <label>
+        Firm / organization
+        <input required name="organization" />
+      </label>
+      <label>
+        Work email
+        <input required type="email" name="email" autocomplete="email" />
+      </label>
+      <label>
+        Country / jurisdiction
+        <input required name="jurisdiction" />
+      </label>
+      <label>
+        Category
+        <select required name="category">
+          <option value="">Select</option>
+          <option>Legal Expert</option>
+          <option>Forensic Expert</option>
+          <option>Funding Participant</option>
+        </select>
+      </label>
+      <label class="full">
+        Primary expertise
+        <textarea required name="expertise" rows="4"></textarea>
+      </label>
+      <label class="full">
+        Website or LinkedIn
+        <input type="url" name="profile" />
+      </label>
+      <label class="full check">
+        <input required type="checkbox" name="consent" />
+        <span>I understand that submission does not create a membership, partnership, employment relationship, referral-fee arrangement, commission arrangement, revenue-sharing arrangement or guarantee of case allocation.</span>
+      </label>
+    </div>
+    <button class="button" type="submit">Submit application</button>
+  </form>
+)}

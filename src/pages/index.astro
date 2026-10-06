@@ -1,0 +1,61 @@
+---
+import { getEmDashCollection, getEmDashEntry } from "emdash";
+import Base from "../layouts/Base.astro";
+import MarketingBlocks from "../components/MarketingBlocks.astro";
+import HeroIsland from "../components/react/HeroIsland";
+import WhatWeDo from "../components/sections/WhatWeDo.astro";
+import Ecosystem from "../components/sections/Ecosystem.astro";
+import Process from "../components/sections/Process.astro";
+import Underwriting from "../components/sections/Underwriting.astro";
+import Roadmap from "../components/sections/Roadmap.astro";
+import Leadership from "../components/sections/Leadership.astro";
+import Insights from "../components/sections/Insights.astro";
+import CtaBand from "../components/sections/CtaBand.astro";
+import { hasLegacyHomeFields, homeFromPage } from "../lib/home-copy";
+
+const { entry: page, cacheHint: pageHint } = await getEmDashEntry("pages", "home");
+// Posts feed the "Latest insights" block; query here too so publishing a post
+// invalidates the homepage cache.
+const { entries: posts, cacheHint: postsHint } = await getEmDashCollection("posts", {
+	status: "published",
+	limit: 12,
+	orderBy: { published_at: "desc" },
+});
+
+if (Astro.cache?.enabled) {
+	const tags = [
+		...new Set([
+			...(((pageHint as { tags?: string[] } | undefined)?.tags) ?? []),
+			...(((postsHint as { tags?: string[] } | undefined)?.tags) ?? []),
+		]),
+	];
+	Astro.cache.set(tags.length ? { tags } : (pageHint ?? postsHint));
+}
+
+const pageData = (page?.data || {}) as Record<string, any>;
+const pageTitle = pageData.title;
+
+// The homepage is block-based: editors reorder / hide sections in "Page content".
+// Until scripts/migrate-to-blocks.ts has folded the old per-section fields into
+// those blocks, fall back to the legacy fixed layout so nothing is lost.
+const useLegacyLayout = hasLegacyHomeFields(pageData) || !Array.isArray(pageData.content) || pageData.content.length === 0;
+const home = useLegacyLayout ? homeFromPage(pageData, page?.edit) : null;
+---
+
+<Base title={pageTitle !== "Home" ? pageTitle : undefined}>
+  {home ? (
+    <>
+      <HeroIsland client:load {...home.hero.data} fields={home.hero.fields} />
+      <WhatWeDo data={home.whatWeDo.data} fields={home.whatWeDo.fields} />
+      <Ecosystem data={home.ecosystem.data} fields={home.ecosystem.fields} />
+      <Process data={home.process.data} fields={home.process.fields} />
+      <Underwriting data={home.underwriting.data} fields={home.underwriting.fields} />
+      <Roadmap data={home.roadmap.data} fields={home.roadmap.fields} />
+      <Leadership data={home.leadership.data} fields={home.leadership.fields} />
+      <Insights posts={posts || []} />
+      <CtaBand data={home.ctaBand.data} fields={home.ctaBand.fields} />
+    </>
+  ) : (
+    <MarketingBlocks value={pageData.content} />
+  )}
+</Base>

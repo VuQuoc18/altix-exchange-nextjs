@@ -1,0 +1,40 @@
+---
+import SectionHead from "./SectionHead.astro";
+import { pad2 } from "../../../../lib/blocks";
+
+interface Card {
+	title?: string;
+	description?: string;
+	linkText?: string;
+	linkUrl?: string;
+}
+interface Props {
+	node: {
+		eyebrow?: string;
+		title?: string;
+		subtitle?: string;
+		numbered?: boolean;
+		cards?: Card[];
+	};
+}
+const { node } = Astro.props;
+const cards = Array.isArray(node.cards) ? node.cards : [];
+---
+
+<section class="section">
+	<div class="container">
+		<SectionHead eyebrow={node.eyebrow} title={node.title} subtitle={node.subtitle} />
+		<div class="card-grid">
+			{cards.map((card, i) => (
+				<article class="card">
+					{node.numbered && <span class="card-no">{pad2(i + 1)}</span>}
+					{card.title && <h3>{card.title}</h3>}
+					{card.description && <p>{card.description}</p>}
+					{card.linkText && card.linkUrl && (
+						<a class="text-link" href={card.linkUrl}>{card.linkText}</a>
+					)}
+				</article>
+			))}
+		</div>
+	</div>
+</section>

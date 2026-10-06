@@ -1,0 +1,32 @@
+---
+import SectionHead from "./SectionHead.astro";
+import { pad2 } from "../../../../lib/blocks";
+
+interface Props {
+	node: {
+		eyebrow?: string;
+		title?: string;
+		subtitle?: string;
+		steps?: Array<{ title?: string; description?: string }>;
+	};
+}
+const { node } = Astro.props;
+const steps = Array.isArray(node.steps) ? node.steps : [];
+---
+
+<section class="section">
+	<div class="container">
+		<SectionHead eyebrow={node.eyebrow} title={node.title} subtitle={node.subtitle} />
+		<ol class="process process--detail">
+			{steps.map((step, i) => (
+				<li>
+					<span>{pad2(i + 1)}</span>
+					<div>
+						{step.title && <h3>{step.title}</h3>}
+						{step.description && <p>{step.description}</p>}
+					</div>
+				</li>
+			))}
+		</ol>
+	</div>
+</section>

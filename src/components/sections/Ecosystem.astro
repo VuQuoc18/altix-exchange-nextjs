@@ -1,0 +1,154 @@
+---
+import { Users, Briefcase, Landmark, SearchCode, ArrowRight } from "lucide-react";
+
+interface EcosystemItem {
+  title?: string;
+  description?: string;
+  linkText?: string;
+  points?: string[];
+}
+
+interface EcosystemData {
+  eyebrow?: string;
+  title?: string;
+  body?: string;
+  items?: EcosystemItem[];
+}
+
+interface Props {
+  data?: EcosystemData;
+  fields?: {
+    eyebrow?: Record<string, unknown>;
+    title?: Record<string, unknown>;
+    body?: Record<string, unknown>;
+  };
+}
+
+const { data, fields } = Astro.props;
+
+const eyebrow = data?.eyebrow ?? "Who we work with";
+const title = data?.title ?? "Built for the full recovery ecosystem.";
+const body = data?.body ?? "ALTIX coordinates the parties needed to assess, fund and execute selected matters.";
+
+const defaultItems = [
+  {
+    no: '01',
+    icon: Users,
+    link: '/claimants-and-businesses',
+    fallback: {
+      title: 'Claimants & Businesses',
+      description: 'Individuals, SMEs, companies, insolvency estates and claimant groups with significant legal or recovery rights.',
+      linkText: 'For claimants',
+      points: [
+        'Portfolio dispute assessment',
+        'Non-recourse legal capital',
+        'Damages & budget modeling',
+      ],
+    },
+  },
+  {
+    no: '02',
+    icon: Briefcase,
+    link: '/law-firms',
+    fallback: {
+      title: 'Law Firms',
+      description: 'Legal teams seeking a structured route to prepare and present suitable client matters to professional capital.',
+      linkText: 'For law firms',
+      points: ['Streamlined funder intake', 'Fee budget structure', 'Workload & liability sharing'],
+    },
+  },
+  {
+    no: '03',
+    icon: Landmark,
+    link: '/funding-participants',
+    fallback: {
+      title: 'Funding Participants',
+      description: 'Litigation funders, family offices, special-situations investors, private-credit firms and other eligible professional capital providers.',
+      linkText: 'For funding participants',
+      points: [
+        'Permission-based Data Room',
+        'Pre-screened claim merit',
+        'Enforcement collectability review',
+      ],
+    },
+  },
+  {
+    no: '04',
+    icon: SearchCode,
+    link: '/forensic-experts',
+    fallback: {
+      title: 'Forensic Experts',
+      description: 'Investigators, forensic accountants, asset tracers, cyber intelligence professionals and other specialists.',
+      linkText: 'Forensic network',
+      points: [
+        'Cross-border asset tracing',
+        'Financial-crime intelligence',
+        'Solvency & recovery analytics',
+      ],
+    },
+  },
+];
+
+const items = defaultItems.map((item, index) => {
+  const itemData = data?.items?.[index];
+  return {
+    ...item,
+    title: itemData?.title ?? item.fallback.title,
+    description: itemData?.description ?? item.fallback.description,
+    linkText: itemData?.linkText ?? item.fallback.linkText,
+    points: itemData?.points ?? item.fallback.points,
+  };
+});
+---
+
+<section class="section bg-white border-y border-slate-200">
+  <div class="container">
+    {/* Eyebrow */}
+    <div class="eyebrow mb-2">
+      <Users className="w-4 h-4 text-[#e6463a]" />
+      <span {...fields?.eyebrow}>{eyebrow}</span>
+    </div>
+
+    {/* Section Head */}
+    <div class="section-head">
+      <h2 {...fields?.title}>{title}</h2>
+      <p {...fields?.body}>{body}</p>
+    </div>
+
+    {/* Ecosystem Grid */}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {items.map((item) => {
+        const Icon = item.icon;
+        return (
+          <article class="bg-slate-50 border border-slate-200 p-6 rounded-xl flex flex-col justify-between hover:bg-white hover:shadow-xl hover:border-[#e6463a]/40 transition-all duration-300 group">
+            <div>
+              <div class="flex items-center justify-between mb-4">
+                <div class="p-3 rounded-lg bg-white border border-slate-200 text-[#e6463a] group-hover:bg-[#e6463a] group-hover:text-white transition-colors duration-300 shadow-sm">
+                  <Icon className="w-5 h-5" />
+                </div>
+                <span class="text-xs font-mono font-bold text-slate-400">{item.no}</span>
+              </div>
+
+              <h3 class="text-xl font-bold text-slate-900 mb-2">{item.title}</h3>
+              <p class="text-sm text-slate-600 mb-4">{item.description}</p>
+
+              <ul class="space-y-1.5 mb-6 text-xs text-slate-500 border-t border-slate-200 pt-3">
+                {item.points.map((pt) => (
+                  <li class="flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-[#e6463a]" />
+                    <span>{pt}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <a class="text-link text-sm" href={item.link}>
+              <span>{item.linkText}</span>
+              <ArrowRight className="w-4 h-4" />
+            </a>
+          </article>
+        );
+      })}
+    </div>
+  </div>
+</section>
