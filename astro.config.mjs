@@ -47,6 +47,46 @@ export default defineConfig({
 					}
 				},
 			},
+			{
+				name: "smithy-workerd-compat",
+				enforce: "pre",
+				transform(code, id) {
+					let modified = false;
+					let newCode = code;
+					if (id.includes("stream-type-check")) {
+						newCode = newCode
+							.replace(
+								/export const isBlob = \(blob\) => \{/,
+								`export const isBlob = (blob) => { if (typeof blob?.arrayBuffer === "function" && typeof blob?.slice === "function") return true;`,
+							)
+							.replace(
+								/export const isReadableStream = \(stream\) =>/,
+								`export const isReadableStream = (stream) => (typeof stream?.getReader === "function") ||`,
+							);
+						modified = true;
+					}
+					if (id.includes("stream-collector.browser")) {
+						newCode = newCode.replace(
+							/export const streamCollector = async \(stream\) => \{/,
+							`export const streamCollector = async (stream) => {
+								if (!stream) return new Uint8Array();
+								if (stream instanceof Uint8Array) return stream;
+								if (typeof stream.arrayBuffer === "function") return collectBlob(stream);
+								if (typeof stream.getReader === "function") return collectReadableStream(stream);
+								return new Uint8Array();`,
+						);
+						modified = true;
+					}
+					if (id.includes("sdk-stream-mixin.browser")) {
+						newCode = newCode.replace(
+							/const isBlobInstance = \(stream\) => typeof Blob === "function" && stream instanceof Blob;/,
+							`const isBlobInstance = (stream) => (typeof Blob === "function" && stream instanceof Blob) || (typeof stream?.arrayBuffer === "function" && typeof stream?.slice === "function");`,
+						);
+						modified = true;
+					}
+					return modified ? newCode : null;
+				},
+			},
 		],
 		ssr: {
 			optimizeDeps: {
